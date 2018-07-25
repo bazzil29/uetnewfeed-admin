@@ -12,7 +12,7 @@ export default class Event extends React.Component {
             <div className="card">
                 <div className="card-header">
                     <i className="fas fa-calendar-alt"/> Event Header
-                    <Button className={'event-edit-btn'} color={'primary'}>Chỉnh sửa</Button>
+                    <Button className={'event-edit-btn'} color={'primary'} onClick={this.props.toggle}>Chỉnh sửa</Button>
                 </div>
                 <div className="card-body">
                     <Row>

@@ -1,0 +1,7 @@
+.react-datetime-picker .react-datetime-picker__button{
+    border: none;
+}
+
+#event-context{
+    overflow: auto;
+}

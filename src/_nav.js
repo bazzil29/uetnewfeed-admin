@@ -23,11 +23,7 @@ export default {
       url: '/event/event-list',
       icon: 'fas fa-calendar-alt',
     },
-    {
-      name: 'Thêm sự kiện',
-      url: '/event/add-event',
-      icon: 'fas fa-calendar-alt',
-    }, {
+     {
       name: 'Danh sách thông báo',
       url: '/event/notification-list',
       icon: 'fas fa-calendar-alt',

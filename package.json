@@ -9,6 +9,7 @@
     "moment": "^2.22.2",
     "prop-types": "latest",
     "react": "^16.4.1",
+    "react-datetime-picker": "^1.4.1",
     "react-dom": "^16.4.1",
     "react-loadable": "^5.4.0",
     "react-scripts": "1.1.4",
