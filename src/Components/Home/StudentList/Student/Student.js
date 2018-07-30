@@ -1,7 +1,7 @@
 
 import React from "react";
-import {Card, CardHeader} from 'reactstrap';
-import {Col, Row, Button} from "reactstrap";
+import { CardHeader} from 'reactstrap';
+import {Col, Row} from "reactstrap";
 import './Student.css';
 
 export default class Student extends React.Component{

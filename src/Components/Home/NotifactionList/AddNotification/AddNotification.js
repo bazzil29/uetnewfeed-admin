@@ -7,7 +7,6 @@ import {
     ListGroupItem,
     ModalFooter,
     Modal,
-    Badge,
     Button,
     ModalBody,
     ModalHeader,
@@ -18,7 +17,7 @@ import {
 export default class AddNotification extends React.Component{
     state = {
         date: new Date(),
-    }
+    };
     render(){
         return (
             <div>

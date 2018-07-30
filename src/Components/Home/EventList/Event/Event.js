@@ -1,7 +1,6 @@
 import * as React from "react/cjs/react.development";
 import {Col, Row, Button} from "reactstrap";
 import './Event.css';
-import $ from 'jquery';
 import moment from "moment";
 
 export default class Event extends React.Component {

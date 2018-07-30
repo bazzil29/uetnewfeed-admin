@@ -8,7 +8,6 @@ import {
     ListGroupItem,
     ModalFooter,
     Modal,
-    Badge,
     Button,
     ModalBody,
     ModalHeader,
@@ -27,7 +26,7 @@ export default class NotificationDetails extends React.Component {
             context:"Đây là nội dung"
         },
         date: new Date(),
-    }
+    };
     onChange = date => this.setState({date});
     idEventOnChange=(e)=>{
         this.state.info.idEvent= e.value;
@@ -40,7 +39,7 @@ export default class NotificationDetails extends React.Component {
     contextOnChange=(e)=>{
         this.state.info.context= e.value;
         this.setState(this.state);
-    }
+    };
 
     render() {
         return (

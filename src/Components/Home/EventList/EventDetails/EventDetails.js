@@ -12,8 +12,8 @@ import {
     Label,
     Input,
     ListGroupItem,
-    ListGroup, Badge, CardBody, Card,
-    Collapse, Row, Col, CardHeader, CustomInput
+    ListGroup, CardBody, Card,
+    Collapse, Row, Col, CardHeader,
 } from "reactstrap";
 
 export default class EventDetails extends React.Component {

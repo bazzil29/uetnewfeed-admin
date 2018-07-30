@@ -11,7 +11,7 @@ import {
     Label,
     Input,
     ListGroupItem,
-    ListGroup, Badge
+    ListGroup,
 } from "reactstrap";
 
 export default class AddEvent extends React.Component{

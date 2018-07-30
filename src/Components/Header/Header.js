@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
+import {  DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
+import {  AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../img/Icon-44@2x.png';
 import sygnet from '../../img/sygnet.svg';
-import { Route, Link,withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 
 const propTypes = {

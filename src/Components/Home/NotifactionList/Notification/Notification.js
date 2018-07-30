@@ -1,5 +1,5 @@
 import React from "react";
-import {CardBody, CardSubtitle, CardTitle, Card, CardText, CardLink, CardHeader, Button, Row, Col} from "reactstrap";
+import {CardBody, CardSubtitle, CardTitle, Card, CardText,  CardHeader, Button, Row, Col} from "reactstrap";
 import './Notification.css';
 import moment from "moment/moment";
 export default class Notification extends React.Component{

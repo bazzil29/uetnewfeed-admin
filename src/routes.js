@@ -1,14 +1,9 @@
-import React from 'react';
-import Loadable from 'react-loadable'
 
 import Home from './Components/Home/Home';
 import EventList from "./Components/Home/EventList/EventList";
 import StudentList from "./Components/Home/StudentList/StudetnList";
 import NotificationList from "./Components/Home/NotifactionList/NotificationList";
 
-function Loading() {
-  return <div>Loading...</div>;
-}
 
 const routes = [
   { path: '/', exact: true, name: 'Home', component: Home },
