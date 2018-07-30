@@ -33,8 +33,6 @@ export default class Event extends React.Component {
                                 <p>Hanoi</p>
                             </div>
                         </Col>
-
-
                     </Row>
                 </div>
             </div>

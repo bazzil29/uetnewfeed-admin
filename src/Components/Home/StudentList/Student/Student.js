@@ -17,7 +17,6 @@ export default class Student extends React.Component{
                         <span className={'event-edit-btn'} onClick={this.props.toggle}>Chi tiết</span>
                     </Col>
                 </Row>
-
             </CardHeader>
 
         )

@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e0abaca3-70d2-4a67-9cb8-cda8d527a314" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/Components/Home/EventList/AddEvent/AddEvent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Home/EventList/AddEvent/AddEvent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Home/EventList/Event/Event.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Home/EventList/Event/Event.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Home/EventList/EventDetails/EventDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Home/EventList/EventDetails/EventDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Home/EventList/EventList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Home/EventList/EventList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Home/NotifactionList/AddNotification/AddNotification.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Home/NotifactionList/AddNotification/AddNotification.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Home/NotifactionList/Notification/Notification.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Home/NotifactionList/Notification/Notification.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Home/NotifactionList/NotificationDetails/NotificationDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Home/NotifactionList/NotificationDetails/NotificationDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Home/NotifactionList/NotificationList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Home/NotifactionList/NotificationList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Home/StudentList/Student/Student.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Home/StudentList/Student/Student.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Home/StudentList/StudentDetails/StudentDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Home/StudentList/StudentDetails/StudentDetails.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Home/StudentList/StudetnList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Home/StudentList/StudetnList.js" afterDir="false" />
-    </list>
+    <list default="true" id="e0abaca3-70d2-4a67-9cb8-cda8d527a314" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -56,10 +44,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Home.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Home.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Components/Home/Home.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
+            <state relative-caret-position="867">
               <caret line="51" column="36" lean-forward="true" selection-start-line="51" selection-start-column="36" selection-end-line="51" selection-end-column="36" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
@@ -98,7 +86,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Notification.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Notification.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Components/Home/NotifactionList/Notification/Notification.js">
           <provider selected="true" editor-type-id="text-editor">
             <state>
@@ -397,16 +385,15 @@
       <workItem from="1532671873143" duration="8050000" />
       <workItem from="1532696975914" duration="2466000" />
       <workItem from="1532756670906" duration="3784000" />
-      <workItem from="1532922755934" duration="4496000" />
+      <workItem from="1532922755934" duration="5238000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72859000" />
+    <option name="totallyTimeSpent" value="73601000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16815476" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -731,13 +718,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Components/Home/NotifactionList/Notification/Notification.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="41" selection-start-column="41" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Components/Home/NotifactionList/NotificationDetails/NotificationDetails.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -770,12 +750,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Components/Home/Home.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
+        <state relative-caret-position="867">
           <caret line="51" column="36" lean-forward="true" selection-start-line="51" selection-start-column="36" selection-end-line="51" selection-end-column="36" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
             <element signature="e#425#459#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Components/Home/NotifactionList/Notification/Notification.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="41" selection-start-column="41" selection-end-column="41" />
         </state>
       </provider>
     </entry>

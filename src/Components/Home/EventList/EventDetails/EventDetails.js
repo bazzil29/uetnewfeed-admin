@@ -16,7 +16,7 @@ import {
     Collapse, Row, Col, CardHeader,
 } from "reactstrap";
 
-export default class EventDetails extends React.Component {
+export default class EventDetails extends Component {
     state = {
         info: {
             name: "ĐÂY LÀ TIÊU ĐỀ SỰ KIỆN",
@@ -29,8 +29,8 @@ export default class EventDetails extends React.Component {
         },
         date: new Date(),
         collapse: false,
-        students: ['a', 'b', 'c', 'd','f','g','h','i','j'],
-        isStudentsOpen:false
+        students: ['a', 'b', 'c', 'd', 'f', 'g', 'h', 'i', 'j'],
+        isStudentsOpen: false
     };
     addStudentSearch = (e) => {
         const tmp = e.target;
@@ -176,7 +176,7 @@ export default class EventDetails extends React.Component {
 
 
     toggle() {
-        this.setState({collapse: !this.state.collapse});
+        this.setState({ collapse: !this.state.collapse });
     }
 
     makeListStudent = () => {
@@ -189,7 +189,7 @@ export default class EventDetails extends React.Component {
                     <Col lg={'3'} md={'3'} sm={'3'} xs={'3'}>{e}</Col>
                     <Col lg={'2'} md={'2'} sm={'2'} xs={'2'}>
                         <div className="checkbox checkbox-primary">
-                            <input id="checkbox" type="checkbox"/>
+                            <input id="checkbox" type="checkbox" />
                         </div>
 
                     </Col>
@@ -198,7 +198,7 @@ export default class EventDetails extends React.Component {
         })
     }
 
-    onChange = date => this.setState({date});
+    onChange = date => this.setState({ date });
     nameOnChange = (value) => {
         this.state.info.name = value;
         this.setState(this.state);
@@ -231,7 +231,7 @@ export default class EventDetails extends React.Component {
 
     render() {
 
-        const students = (this.state.isStudentsOpen)?this.makeListStudent():null;
+        const students = (this.state.isStudentsOpen) ? this.makeListStudent() : null;
 
         return (
             <div>
@@ -243,53 +243,53 @@ export default class EventDetails extends React.Component {
                                 <Label>Tiêu đề sự kiện:</Label>
                                 <Input type="text" value={this.state.info.name} onChange={e => {
                                     this.nameOnChange(e.target.value);
-                                }}/>
+                                }} />
                                 <Label>Mã sự kiện:</Label>
-                                <Input type="text" placeholder={this.state.info.id} disabled/>
+                                <Input type="text" placeholder={this.state.info.id} disabled />
                                 <Label>Nội dung sự kiện:</Label>
                                 <textarea name="" className={'form-control'} value={this.state.info.context}
-                                          cols="auto" rows="auto" id={'event-context'} onChange={e => {
-                                    this.contextOnChange(e.target.value);
-                                }}/>
+                                    cols="auto" rows="auto" id={'event-context'} onChange={e => {
+                                        this.contextOnChange(e.target.value);
+                                    }} />
                                 <Label>Thời gian tổ chức</Label>
-                                <br/>
+                                <br />
                                 <DateTimePicker className={'form-control'} id={'react-datetime-picker'}
-                                                onChange={this.onChange}
-                                                value={this.state.date}
+                                    onChange={this.onChange}
+                                    value={this.state.date}
                                 />
-                                <br/>
+                                <br />
                                 <Label>Đơn vị tổ chức:</Label>
                                 <Input type="text" value={this.state.info.organization} onChange={e => {
                                     this.organzationOnChange(e.target.value);
-                                }}/>
+                                }} />
                                 <Label>Số điện thoại:</Label>
                                 <Input type="phone" value={this.state.info.phone} onChange={e => {
                                     this.phoneOnChange(e.target.value);
-                                }}/>
+                                }} />
                                 <Label>E-mail:</Label>
                                 <Input type="email" value={this.state.info.email} onChange={e => {
                                     this.emailOnChange(e.target.value);
-                                }}/>
+                                }} />
                                 <Label>Ảnh bìa đính kèm:</Label>
                                 <Input type="text" value={this.state.info.img} onChange={e => {
                                     this.imgOnChange(e.target.value);
-                                }}/>
+                                }} />
                                 <Label>Sinh viên đã đăng ký:</Label>
-                                <Input type="number" placeholder={this.state.info.point}/>
+                                <Input type="number" placeholder={this.state.info.point} />
                                 <Label>Sinh viên mặc định tham gia:</Label>
                                 <ListGroup>
                                     <ListGroupItem className="justify-content-between">id Sinh viên 1<i
                                         className="fas fa-minus-circle"
-                                        id={"student-icon"}/></ListGroupItem>
+                                        id={"student-icon"} /></ListGroupItem>
                                     <ListGroupItem className="justify-content-between">id Sinh viên 2<i
                                         className="fas fa-minus-circle "
-                                        id={"student-icon"}/></ListGroupItem>
+                                        id={"student-icon"} /></ListGroupItem>
                                     <ListGroupItem className="justify-content-between">id Sinh viên 3 <i
                                         className="fas fa-minus-circle "
-                                        id={"student-icon"}/></ListGroupItem>
+                                        id={"student-icon"} /></ListGroupItem>
                                     <ListGroupItem className="justify-content-between" onClick={this.toggle}>Thêm sinh
                                         viên<i
-                                            className="fas fa-plus-circle " id={"student-icon"}/></ListGroupItem>
+                                            className="fas fa-plus-circle " id={"student-icon"} /></ListGroupItem>
                                     <Collapse isOpen={this.state.collapse}>
                                         <Card id={'add-student-card'}>
                                             <CardBody>
@@ -307,7 +307,7 @@ export default class EventDetails extends React.Component {
                                                     </Col>
                                                     <Col>
                                                         <Input type={'select'} name={"select"} id={'select-year'}
-                                                               onChange={this.addStudentSearch}>
+                                                            onChange={this.addStudentSearch}>
                                                             <option value="rand">Khóa</option>
                                                             <option value="k59">K59</option>
                                                             <option value="k60">K60</option>
@@ -322,7 +322,7 @@ export default class EventDetails extends React.Component {
                                                         </Input>
                                                     </Col>
                                                     <Col>
-                                                        <Button onClick={()=>{
+                                                        <Button onClick={() => {
                                                             this.state.isStudentsOpen = !this.state.isStudentsOpen;
                                                             this.setState(this.state);
                                                         }}>Tìm</Button>
@@ -337,15 +337,15 @@ export default class EventDetails extends React.Component {
                                 <ListGroup>
                                     <ListGroupItem className="justify-content-between">id sinh vien 1 <i
                                         className="fas fa-minus-circle"
-                                        id={"student-icon"}/></ListGroupItem>
+                                        id={"student-icon"} /></ListGroupItem>
                                     <ListGroupItem className="justify-content-between">id sinh vien 2 <i
                                         className="fas fa-minus-circle "
-                                        id={"student-icon"}/></ListGroupItem>
+                                        id={"student-icon"} /></ListGroupItem>
                                     <ListGroupItem className="justify-content-between">id sinh vien 3 <i
                                         className="fas fa-minus-circle "
-                                        id={"student-icon"}/></ListGroupItem>
+                                        id={"student-icon"} /></ListGroupItem>
                                     <ListGroupItem className="justify-content-between">Thêm sinh viên<i
-                                        className="fas fa-plus-circle " id={"student-icon"}/></ListGroupItem>
+                                        className="fas fa-plus-circle " id={"student-icon"} /></ListGroupItem>
                                 </ListGroup>
                             </FormGroup>
                         </Form>
