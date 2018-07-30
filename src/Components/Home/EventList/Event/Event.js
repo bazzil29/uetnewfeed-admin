@@ -1,4 +1,4 @@
-import * as React from "react/cjs/react.development";
+import React, { Component } from 'react';
 import {Col, Row, Button} from "reactstrap";
 import './Event.css';
 import moment from "moment";

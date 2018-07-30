@@ -1,5 +1,5 @@
+import React, { Component } from 'react';
 import Event from "./Event/Event";
-import * as React from "react/cjs/react.development";
 import EventDetails from "./EventDetails/EventDetails";
 import {Button} from "reactstrap";
 import './EventList.css'

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import './EventDetails.css'
 import DateTimePicker from 'react-datetime-picker';
 import {

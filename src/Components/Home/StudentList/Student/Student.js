@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { Component } from 'react';
 import { CardHeader} from 'reactstrap';
 import {Col, Row} from "reactstrap";
 import './Student.css';

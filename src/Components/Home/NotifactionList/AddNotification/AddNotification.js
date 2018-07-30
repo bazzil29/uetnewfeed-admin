@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import {
     Input,

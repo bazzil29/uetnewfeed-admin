@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import './NotificationList.css'
 import Notification from "./Notification/Notification";
 import {Button} from 'reactstrap';

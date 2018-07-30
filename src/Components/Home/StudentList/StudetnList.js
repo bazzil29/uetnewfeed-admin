@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import Student from "./Student/Student";
 import StudentDetails from "./StudentDetails/StudentDetails";
 import {Card, CardHeader, Col, Row} from 'reactstrap';

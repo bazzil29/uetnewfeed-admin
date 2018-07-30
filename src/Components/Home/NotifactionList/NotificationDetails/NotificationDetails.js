@@ -1,5 +1,5 @@
+import React, { Component } from 'react';
 import './NotificationDetails.css';
-import React from "react";
 import DateTimePicker from 'react-datetime-picker';
 import {
     Input,

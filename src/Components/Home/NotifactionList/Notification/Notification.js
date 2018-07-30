@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import {CardBody, CardSubtitle, CardTitle, Card, CardText,  CardHeader, Button, Row, Col} from "reactstrap";
 import './Notification.css';
 import moment from "moment/moment";
