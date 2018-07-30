@@ -23,7 +23,9 @@ export default class StudentDetails extends React.Component {
             phone: '0971486734',
             gpa: '3.0',
             point: '90',
-            birthDay: '2/9/1998'
+            birthDay: '2/9/1998',
+            class:"K61N",
+            major:"CNTT"
 
         }
     }
@@ -41,6 +43,10 @@ export default class StudentDetails extends React.Component {
                                 <Input type="text" placeholder={this.state.info.name}/>
                                 <Label>Mã sinh viên:</Label>
                                 <Input type="number" placeholder={this.state.info.id}/>
+                                <Label>Lớp:</Label>
+                                <Input type="text" placeholder={this.state.info.class}/>
+                                <Label>Khoa:</Label>
+                                <Input type="text" placeholder={this.state.info.major}/>
                                 <Label>Ngày sinh:</Label>
                                 <Input type="date" placeholder={this.state.info.birthDay}/>
                                 <Label>E-mail:</Label>

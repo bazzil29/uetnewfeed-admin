@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../img/Icon-44@2x.png';
 import sygnet from '../../img/sygnet.svg';
+import { Route, Link,withRouter } from "react-router-dom";
+
 
 const propTypes = {
     children: PropTypes.node,
@@ -41,7 +43,9 @@ class DefaultHeader extends Component {
                             <DropdownItem header tag="div" className="text-center"><strong>Thông tin</strong></DropdownItem>
                             <DropdownItem><i className="fa fa-user"/>Tài khoản</DropdownItem>
                             <DropdownItem><i className="fa fa-wrench"/>Cài đặt tài khoản</DropdownItem>
-                            <DropdownItem><i className="fa fa-lock"/>Đăng xuất</DropdownItem>
+                            <DropdownItem onClick={()=>{
+                                this.props.history.push("/login")
+                            }}><i className="fa fa-lock" />Đăng xuất</DropdownItem>
                         </DropdownMenu>
                     </AppHeaderDropdown>
                 </Nav>
@@ -53,4 +57,4 @@ class DefaultHeader extends Component {
 DefaultHeader.propTypes = propTypes;
 DefaultHeader.defaultProps = defaultProps;
 
-export default DefaultHeader;
+export default withRouter(DefaultHeader);

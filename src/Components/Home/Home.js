@@ -47,7 +47,7 @@ class Home extends Component {
                                             : (null);
                                     },
                                 )}
-                                <Redirect from="/" to="/dashboard" />
+                                <Redirect from="/" to="/event" />
                             </Switch>
                         </Container>
                     </main>

@@ -1,0 +1,7 @@
+.event-edit-btn{
+    font-weight:bold;
+}
+.event-edit-btn:hover{
+    font-weight:bolder;
+    cursor: pointer;
+}

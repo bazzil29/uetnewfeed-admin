@@ -12,7 +12,8 @@ import {
     Label,
     Input,
     ListGroupItem,
-    ListGroup, Badge
+    ListGroup, Badge, CardBody, Card,
+    Collapse, Row, Col, CardHeader, CustomInput
 } from "reactstrap";
 
 export default class EventDetails extends React.Component {
@@ -27,24 +28,210 @@ export default class EventDetails extends React.Component {
             img: 'link img',
         },
         date: new Date(),
+        collapse: false,
+        students: ['a', 'b', 'c', 'd','f','g','h','i','j'],
+        isStudentsOpen:false
     };
+    addStudentSearch = (e) => {
+        const tmp = e.target;
+        const tmp1 = document.getElementById('select-major');
+        const tmp2 = tmp1[tmp1.selectedIndex].value;
+        const tmp3 = tmp[tmp.selectedIndex].value;
+        console.log(tmp2);
+        console.log(tmp3);
+        if (tmp2 === 'rand') {
+            const tmp5 = document.getElementById("select-class");
+            tmp5.innerHTML = `
+                                        <option value="class id" >Lớp</option>
+                                    `;
+
+        }
+        else if (tmp2 === "FIT") {
+            if (tmp3 === "rand") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="rand">Lớp</option>
+                                    `;
+            }
+            else if (tmp3 === "k59") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="class id" >K59CNTT1</option>
+                                        <option value="class id">K59CNTT2</option>
+                                        <option value="class id">K59CNTT3</option>
+                                        <option value="class id">K59CNTT4</option>
+                                        <option value="class id">K59CNTT5</option>
+                                    `;
+
+            } else if (tmp3 === "k60") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="class id" >K60CNTT1</option>
+                                        <option value="class id">K60CNTT2</option>
+                                        <option value="class id">K60CNTT3</option>
+                                        <option value="class id">K60CNTT4</option>
+                                        <option value="class id">K60CNTT5</option>
+                                    `;
+
+            } else if (tmp3 === "k61") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="class id" >K61CNTT1</option>
+                                        <option value="class id">K61CNTT2</option>
+                                        <option value="class id">K61CNTT3</option>
+                                        <option value="class id">K61CNTT4</option>
+                                        <option value="class id">K61CNTT5</option>
+                                    `;
+
+            } else if (tmp3 === "k62") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="class id" >K62CNTT1</option>
+                                        <option value="class id">K62CNTT2</option>
+                                        <option value="class id">K62CNTT3</option>
+                                        <option value="class id">K62CNTT4</option>
+                                        <option value="class id">K562CNTT5</option>
+                                    `;
+
+            } else if (tmp3 === "k63") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="class id" >K63CNTT1</option>
+                                        <option value="class id">K63CNTT2</option>
+                                        <option value="class id">K63CNTT3</option>
+                                        <option value="class id">K63CNTT4</option>
+                                        <option value="class id">63CNTT5</option>
+                                    `;
+
+            }
+
+        }
+        else if (tmp2 === 'FET') {
+            if (tmp3 === "rand") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="rand">Lớp</option>
+                                    `;
+            }
+            else if (tmp3 === "k59") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="class id" >K59CNTT1</option>
+                                        <option value="class id">K59CNTT2</option>
+                                        <option value="class id">K59CNTT3</option>
+                                        <option value="class id">K59CNTT4</option>
+                                        <option value="class id">K59CNTT5</option>
+                                    `;
+
+            } else if (tmp3 === "k60") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="class id" >K60CNTT1</option>
+                                        <option value="class id">K60CNTT2</option>
+                                        <option value="class id">K60CNTT3</option>
+                                        <option value="class id">K60CNTT4</option>
+                                        <option value="class id">K60CNTT5</option>
+                                    `;
+
+            } else if (tmp3 === "k61") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="class id" >K61CNTT1</option>
+                                        <option value="class id">K61CNTT2</option>
+                                        <option value="class id">K61CNTT3</option>
+                                        <option value="class id">K61CNTT4</option>
+                                        <option value="class id">K61CNTT5</option>
+                                    `;
+
+            } else if (tmp3 === "k62") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="class id" >K62CNTT1</option>
+                                        <option value="class id">K62CNTT2</option>   
+                                        <option value="class id">K62CNTT3</option>
+                                        <option value="class id">K62CNTT4</option>
+                                        <option value="class id">K562CNTT5</option>
+                                    `;
+
+            } else if (tmp3 === "k63") {
+                const tmp5 = document.getElementById("select-class");
+                tmp5.innerHTML = `
+                                        <option value="class id" >K63CNTT1</option>
+                                        <option value="class id">K63CNTT2</option>
+                                        <option value="class id">K63CNTT3</option>
+                                        <option value="class id">K63CNTT4</option>
+                                        <option value="class id">63CNTT5</option>
+                                    `;
+
+            }
+
+        }
+    };
+
+    constructor(props) {
+        super(props);
+        this.toggle = this.toggle.bind(this);
+    }
+
+
+
+    toggle() {
+        this.setState({collapse: !this.state.collapse});
+    }
+
+    makeListStudent = () => {
+        const tmp = this.state.students;
+        return tmp.map((e, key) => {
+            return <CardHeader>
+                <Row>
+                    <Col lg={'1'} md={'1'} sm={'1'} xs={'1'}>{e}</Col>
+                    <Col lg={'6'} md={'6'} sm={'6'} xs={'6'}>{e}</Col>
+                    <Col lg={'3'} md={'3'} sm={'3'} xs={'3'}>{e}</Col>
+                    <Col lg={'2'} md={'2'} sm={'2'} xs={'2'}>
+                        <div className="checkbox checkbox-primary">
+                            <input id="checkbox" type="checkbox"/>
+                        </div>
+
+                    </Col>
+                </Row>
+            </CardHeader>
+        })
+    }
 
     onChange = date => this.setState({date});
     nameOnChange = (value) => {
-        this.setState({
-            info: {
-                name: value,
-                id: this.state.info.id,
-                email: this.state.info.email,
-                phone: this.state.info.phone,
-                context: this.state.info.context,
-                organization: this.state.info.organization,
-                img: this.state.info.img,
-            }
-        })
+        this.state.info.name = value;
+        this.setState(this.state);
+
+    };
+    contextOnChange = (value) => {
+        this.state.info.context = value;
+        this.setState(this.state);
+    }
+
+    organzationOnChange = (value) => {
+        this.state.info.organization = value;
+        this.setState(this.state);
     };
 
+    phoneOnChange(value) {
+        this.state.info.phone = value;
+        this.setState(this.state);
+    }
+
+    emailOnChange(value) {
+        this.state.info.email = value;
+        this.setState(this.state);
+    }
+
+    imgOnChange(value) {
+        this.state.info.img = value;
+        this.setState(this.state);
+    }
+
     render() {
+
+        const students = (this.state.isStudentsOpen)?this.makeListStudent():null;
 
         return (
             <div>
@@ -100,8 +287,51 @@ export default class EventDetails extends React.Component {
                                     <ListGroupItem className="justify-content-between">id Sinh viên 3 <i
                                         className="fas fa-minus-circle "
                                         id={"student-icon"}/></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">Thêm sự sinh viên<i
-                                        className="fas fa-plus-circle " id={"student-icon"}/></ListGroupItem>
+                                    <ListGroupItem className="justify-content-between" onClick={this.toggle}>Thêm sinh
+                                        viên<i
+                                            className="fas fa-plus-circle " id={"student-icon"}/></ListGroupItem>
+                                    <Collapse isOpen={this.state.collapse}>
+                                        <Card id={'add-student-card'}>
+                                            <CardBody>
+                                                <Row>
+                                                    <Col>
+                                                        <Input type={'select'} name={"select"} id={'select-major'}>
+                                                            <option value="rand">Khoa</option>
+                                                            <option value="FIT">Công nghệ thông tin</option>
+                                                            <option value="FET">Điện tử viễn thông</option>
+                                                            <option value="FEMA">Cơ học kỹ thuật & Tự động hóa</option>
+                                                            <option value="FFU">Công nghệ hàng không và vũ trụ</option>
+                                                            <option value="FEPN">Vật lý kỹ thuật & Công nghệ Nano
+                                                            </option>
+                                                        </Input>
+                                                    </Col>
+                                                    <Col>
+                                                        <Input type={'select'} name={"select"} id={'select-year'}
+                                                               onChange={this.addStudentSearch}>
+                                                            <option value="rand">Khóa</option>
+                                                            <option value="k59">K59</option>
+                                                            <option value="k60">K60</option>
+                                                            <option value="k61">K61</option>
+                                                            <option value="k62">K62</option>
+                                                            <option value="k63">K63</option>
+                                                        </Input>
+                                                    </Col>
+                                                    <Col>
+                                                        <Input type={'select'} name={"select"} id={'select-class'}>
+                                                            <option value="rand">Lớp</option>
+                                                        </Input>
+                                                    </Col>
+                                                    <Col>
+                                                        <Button onClick={()=>{
+                                                            this.state.isStudentsOpen = !this.state.isStudentsOpen;
+                                                            this.setState(this.state);
+                                                        }}>Tìm</Button>
+                                                    </Col>
+                                                </Row>
+                                                {students}
+                                            </CardBody>
+                                        </Card>
+                                    </Collapse>
                                 </ListGroup>
                                 <Label>Sinh viên đã tham gia:</Label>
                                 <ListGroup>
@@ -129,74 +359,6 @@ export default class EventDetails extends React.Component {
         )
     }
 
-    contextOnChange=(value) =>{
-        this.setState({
-            info: {
-                name: this.state.info.name,
-                id: this.state.info.id,
-                email: this.state.info.email,
-                phone: this.state.info.phone,
-                context: value,
-                organization: this.state.info.organization,
-                img: this.state.info.img,
-            }
-        })
-    }
 
-    organzationOnChange=(value) =>{
-        this.setState({
-            info: {
-                name: this.state.info.name,
-                id: this.state.info.id,
-                email: this.state.info.email,
-                phone: this.state.info.phone,
-                context: this.state.info.context,
-                organization: value,
-                img: this.state.info.img,
-            }
-        })
-    }
-
-    phoneOnChange(value) {
-        this.setState({
-            info: {
-                name: this.state.info.name,
-                id: this.state.info.id,
-                email: this.state.info.email,
-                phone: value,
-                context: this.state.info.context,
-                organization: this.state.info.organization,
-                img: this.state.info.img,
-            }
-        })
-    }
-
-    emailOnChange(value) {
-        this.setState({
-            info: {
-                name: this.state.info.name,
-                id: this.state.info.id,
-                email: value,
-                phone:this.state.info.phone,
-                context: this.state.info.context,
-                organization: this.state.info.organization,
-                img: this.state.info.img,
-            }
-        })
-    }
-
-    imgOnChange(value) {
-        this.setState({
-            info: {
-                name: this.state.info.name,
-                id: this.state.info.id,
-                email: this.state.info.email,
-                phone:this.state.info.phone,
-                context: this.state.info.context,
-                organization: this.state.info.organization,
-                img: value,
-            }
-        })
-    }
 }
 

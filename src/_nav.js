@@ -1,12 +1,12 @@
 export default {
   items: [
     {
-      name: 'ADMIN SITE',
+      name: 'Trang quản lý',
       url: '/dashboard',
       icon: 'icon-speedometer',
       badge: {
         variant: 'info',
-        text: 'NEW',
+        text: 'UET',
       },
     },
     {
@@ -38,16 +38,16 @@ export default {
     },
     {
       name: 'Khoa CNTT ',
-      url: '/base',
+      url: '/fit',
       icon: 'fas fa-graduation-cap',
       children: [
         {
           name: 'K59',
-          url: '/base/breadcrumbs',
+          url: '/fit/k59',
           icon: 'icon-puzzle',
           children:[
             {name: 'K59CNTT1',
-              url: '/student-list',
+              url: '/fit/k59/student-list',
             },
             {name: 'K59CNTT2',
               url: '/base/breadcrumbs',
