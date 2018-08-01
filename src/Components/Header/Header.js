@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import {  DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
+import { DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-import {  AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
+import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../img/Icon-44@2x.png';
 import sygnet from '../../img/sygnet.svg';
 import { withRouter } from "react-router-dom";
+import { deleteToken } from '../../Services/LocalServices';
 
 
 const propTypes = {
@@ -14,7 +15,13 @@ const propTypes = {
 
 const defaultProps = {};
 
+
 class DefaultHeader extends Component {
+    logout = () => {
+        this.props.history.push("/login");
+        deleteToken();
+    }
+
     render() {
 
         // eslint-disable-next-line
@@ -41,11 +48,9 @@ class DefaultHeader extends Component {
                         </DropdownToggle>
                         <DropdownMenu right style={{ right: 'auto' }}>
                             <DropdownItem header tag="div" className="text-center"><strong>Thông tin</strong></DropdownItem>
-                            <DropdownItem><i className="fa fa-user"/>Tài khoản</DropdownItem>
-                            <DropdownItem><i className="fa fa-wrench"/>Cài đặt tài khoản</DropdownItem>
-                            <DropdownItem onClick={()=>{
-                                this.props.history.push("/login")
-                            }}><i className="fa fa-lock" />Đăng xuất</DropdownItem>
+                            <DropdownItem><i className="fa fa-user" />Tài khoản</DropdownItem>
+                            <DropdownItem><i className="fa fa-wrench" />Cài đặt tài khoản</DropdownItem>
+                            <DropdownItem onClick={this.logout}><i className="fa fa-lock" />Đăng xuất</DropdownItem>
                         </DropdownMenu>
                     </AppHeaderDropdown>
                 </Nav>

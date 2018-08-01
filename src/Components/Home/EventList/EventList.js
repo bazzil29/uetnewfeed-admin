@@ -10,7 +10,6 @@ export default class EventList extends React.Component {
         isOpen: false,
         isOpenAdd:false,
     }
-
     toggle = () => {
         this.setState({
             isOpen: !this.state.isOpen,

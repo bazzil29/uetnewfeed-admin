@@ -19,44 +19,59 @@ import navigation from '../../_nav';
 import routes from '../../routes';
 import DefaultHeader from "../Header/Header";
 import DefaultFooter from "../Footer/Footer";
+import { getToken } from '../../Services/LocalServices';
 
 
 class Home extends Component {
+    state = {
+        isLogin: getToken() != null,
+    };
+    componentDidMount() {
+        const token = getToken();
+        this.state.isLogin = (token != null);
+        this.setState(this.state);
+    };
     render() {
-        return (
-            <div className="app">
-                <AppHeader fixed>
-                    <DefaultHeader />
-                </AppHeader>
-                <div className="app-body">
-                    <AppSidebar fixed display="lg">
-                        <AppSidebarHeader />
-                        <AppSidebarForm />
-                        <AppSidebarNav navConfig={navigation} {...this.props} />
-                        <AppSidebarFooter />
-                        <AppSidebarMinimizer />
-                    </AppSidebar>
-                    <main className="main">
-                        <AppBreadcrumb appRoutes={routes}/>
-                        <Container fluid>
-                            <Switch>
-                                {routes.map((route, idx) => {
+        if (this.state.isLogin) {
+            return (
+                <div className="app">
+                    <AppHeader fixed>
+                        <DefaultHeader />
+                    </AppHeader>
+                    <div className="app-body">
+                        <AppSidebar fixed display="lg">
+                            <AppSidebarHeader />
+                            <AppSidebarForm />
+                            <AppSidebarNav navConfig={navigation} {...this.props} />
+                            <AppSidebarFooter />
+                            <AppSidebarMinimizer />
+                        </AppSidebar>
+                        <main className="main">
+                            <AppBreadcrumb appRoutes={routes} />
+                            <Container fluid>
+                                <Switch>
+                                    {routes.map((route, idx) => {
                                         return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
-                                                <route.component {...props} />
-                                            )} />)
+                                            <route.component {...props} />
+                                        )} />)
                                             : (null);
                                     },
-                                )}
-                                <Redirect from="/" to="/event" />
-                            </Switch>
-                        </Container>
-                    </main>
+                                    )}
+                                    <Redirect from="/" to="/event" />
+                                </Switch>
+                            </Container>
+                        </main>
+                    </div>
+                    <AppFooter>
+                        <DefaultFooter />
+                    </AppFooter>
                 </div>
-                <AppFooter>
-                    <DefaultFooter />
-                </AppFooter>
-            </div>
-        );
+            );
+        }
+        else {
+            return <Redirect to={'/login'} />;
+        }
+
     }
 }
 
