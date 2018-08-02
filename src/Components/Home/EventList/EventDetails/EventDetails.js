@@ -15,8 +15,11 @@ import {
     ListGroup, CardBody, Card,
     Collapse, Row, Col, CardHeader,
 } from "reactstrap";
-
 export default class EventDetails extends Component {
+    constructor(props){
+        super(props);
+        this.toggle = this.toggle.bind(this);
+    }
     state = {
         info: {
             name: "ĐÂY LÀ TIÊU ĐỀ SỰ KIỆN",
@@ -30,7 +33,7 @@ export default class EventDetails extends Component {
         date: new Date(),
         collapse: false,
         students: ['a', 'b', 'c', 'd', 'f', 'g', 'h', 'i', 'j'],
-        isStudentsOpen: false
+        isStudentsOpen: false,
     };
     addStudentSearch = (e) => {
         const tmp = e.target;
@@ -168,12 +171,6 @@ export default class EventDetails extends Component {
         }
     };
 
-    constructor(props) {
-        super(props);
-        this.toggle = this.toggle.bind(this);
-    }
-
-
 
     toggle() {
         this.setState({ collapse: !this.state.collapse });
@@ -247,10 +244,10 @@ export default class EventDetails extends Component {
                                 <Label>Mã sự kiện:</Label>
                                 <Input type="text" placeholder={this.state.info.id} disabled />
                                 <Label>Nội dung sự kiện:</Label>
-                                <textarea name="" className={'form-control'} value={this.state.info.context}
+                                {/* <textarea name="" className={'form-control'} value={this.state.info.context}
                                     cols="auto" rows="auto" id={'event-context'} onChange={e => {
                                         this.contextOnChange(e.target.value);
-                                    }} />
+                                    }} /> */}
                                 <Label>Thời gian tổ chức</Label>
                                 <br />
                                 <DateTimePicker className={'form-control'} id={'react-datetime-picker'}
