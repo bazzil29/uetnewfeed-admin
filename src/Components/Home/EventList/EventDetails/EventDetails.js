@@ -15,8 +15,15 @@ import {
     ListGroup, CardBody, Card,
     Collapse, Row, Col, CardHeader,
 } from "reactstrap";
+import $ from 'jquery';
+import ReactSummernote from 'react-summernote';
+import 'react-summernote/dist/react-summernote.css'; // import styles
+import '../../../../index.css';
+window.jQuery = $;
+require('bootstrap');
+
 export default class EventDetails extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.toggle = this.toggle.bind(this);
     }
@@ -32,7 +39,34 @@ export default class EventDetails extends Component {
         },
         date: new Date(),
         collapse: false,
-        students: ['a', 'b', 'c', 'd', 'f', 'g', 'h', 'i', 'j'],
+        students: [{
+            name: 'x',
+            isChoosed: false,
+            id: 1,
+            index: 1
+        },
+        {
+            name: 'y',
+            isChoosed: false,
+            id: 2,
+            index: 2
+
+        },
+        {
+            name: 'z',
+            isChoosed: false,
+            id: 3,
+            index: 3
+
+        },
+        {
+            name: 'k',
+            isChoosed: false,
+            id: 4,
+            index: 4
+
+        }],
+        studentsForce: [],
         isStudentsOpen: false,
     };
     addStudentSearch = (e) => {
@@ -176,19 +210,23 @@ export default class EventDetails extends Component {
         this.setState({ collapse: !this.state.collapse });
     }
 
+    onCheckBox = (index) => {
+        console.log(index);
+        this.state.students[index - 1].isChoosed = !this.state.students[index - 1].isChoosed;
+        this.setState(this.state);
+    }
     makeListStudent = () => {
         const tmp = this.state.students;
-        return tmp.map((e, key) => {
-            return <CardHeader>
-                <Row>
-                    <Col lg={'1'} md={'1'} sm={'1'} xs={'1'}>{e}</Col>
-                    <Col lg={'6'} md={'6'} sm={'6'} xs={'6'}>{e}</Col>
-                    <Col lg={'3'} md={'3'} sm={'3'} xs={'3'}>{e}</Col>
+        return tmp.map((x, index) => {
+            return <CardHeader key={index}>
+                <Row >
+                    <Col lg={'1'} md={'1'} sm={'1'} xs={'1'}>{x.name}</Col>
+                    <Col lg={'6'} md={'6'} sm={'6'} xs={'6'}>{x.id}</Col>
+                    <Col lg={'3'} md={'3'} sm={'3'} xs={'3'}>{x.index}</Col>
                     <Col lg={'2'} md={'2'} sm={'2'} xs={'2'}>
                         <div className="checkbox checkbox-primary">
-                            <input id="checkbox" type="checkbox" />
+                            <input id="checkbox" type="checkbox" onClick={() => { this.onCheckBox(x.index) }} />
                         </div>
-
                     </Col>
                 </Row>
             </CardHeader>
@@ -215,15 +253,32 @@ export default class EventDetails extends Component {
         this.state.info.phone = value;
         this.setState(this.state);
     }
-
     emailOnChange(value) {
         this.state.info.email = value;
         this.setState(this.state);
     }
 
     imgOnChange(value) {
-        this.state.info.img = value;
+        console.log(value);
+        // this.state.info.img = value;
+        // this.setState(this.state);
+    }
+    onAddStudentEvent = (e) => {
+        this.state.students.map((e,index)=>{
+            if(e.isChoosed){
+                this.state.studentsForce.push(e);
+            }
+        })
+        this.state.collapse = false;
         this.setState(this.state);
+    }
+    makeListStudentsForce = () => {
+        const tmp = this.state.studentsForce.map((e, index) => {
+            return <ListGroupItem className="justify-content-between">{e.name}<i
+                className="fas fa-minus-circle"
+                id={"student-icon"} /></ListGroupItem>
+        })
+        return tmp;
     }
 
     render() {
@@ -243,11 +298,16 @@ export default class EventDetails extends Component {
                                 }} />
                                 <Label>Mã sự kiện:</Label>
                                 <Input type="text" placeholder={this.state.info.id} disabled />
-                                <Label>Nội dung sự kiện:</Label>
-                                {/* <textarea name="" className={'form-control'} value={this.state.info.context}
+                                <Label>Thông tin chung:</Label>
+                                <textarea name="" className={'form-control'} value={this.state.info.context}
                                     cols="auto" rows="auto" id={'event-context'} onChange={e => {
                                         this.contextOnChange(e.target.value);
-                                    }} /> */}
+                                    }} />
+                                <Label>Nội dung sự kiện:</Label>
+                                <textarea name="" className={'form-control'} value={this.state.info.context}
+                                    cols="auto" rows="auto" id={'event-context'} onChange={e => {
+                                        this.contextOnChange(e.target.value);
+                                    }} />
                                 <Label>Thời gian tổ chức</Label>
                                 <br />
                                 <DateTimePicker className={'form-control'} id={'react-datetime-picker'}
@@ -268,22 +328,14 @@ export default class EventDetails extends Component {
                                     this.emailOnChange(e.target.value);
                                 }} />
                                 <Label>Ảnh bìa đính kèm:</Label>
-                                <Input type="text" value={this.state.info.img} onChange={e => {
-                                    this.imgOnChange(e.target.value);
+                                <Input type="file" onChange={e => {
+                                    this.imgOnChange(e.target.files[0]);
                                 }} />
                                 <Label>Sinh viên đã đăng ký:</Label>
                                 <Input type="number" placeholder={this.state.info.point} />
                                 <Label>Sinh viên mặc định tham gia:</Label>
                                 <ListGroup>
-                                    <ListGroupItem className="justify-content-between">id Sinh viên 1<i
-                                        className="fas fa-minus-circle"
-                                        id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">id Sinh viên 2<i
-                                        className="fas fa-minus-circle "
-                                        id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">id Sinh viên 3 <i
-                                        className="fas fa-minus-circle "
-                                        id={"student-icon"} /></ListGroupItem>
+                                    {this.makeListStudentsForce()}
                                     <ListGroupItem className="justify-content-between" onClick={this.toggle}>Thêm sinh
                                         viên<i
                                             className="fas fa-plus-circle " id={"student-icon"} /></ListGroupItem>
@@ -326,21 +378,19 @@ export default class EventDetails extends Component {
                                                     </Col>
                                                 </Row>
                                                 {students}
+                                                <Row>
+                                                    <Col>
+                                                        <Button className="add-student-event" onClick={this.onAddStudentEvent}>
+                                                            Thêm
+                                                        </Button>
+                                                    </Col>
+                                                </Row>
                                             </CardBody>
                                         </Card>
                                     </Collapse>
                                 </ListGroup>
                                 <Label>Sinh viên đã tham gia:</Label>
                                 <ListGroup>
-                                    <ListGroupItem className="justify-content-between">id sinh vien 1 <i
-                                        className="fas fa-minus-circle"
-                                        id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">id sinh vien 2 <i
-                                        className="fas fa-minus-circle "
-                                        id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">id sinh vien 3 <i
-                                        className="fas fa-minus-circle "
-                                        id={"student-icon"} /></ListGroupItem>
                                     <ListGroupItem className="justify-content-between">Thêm sinh viên<i
                                         className="fas fa-plus-circle " id={"student-icon"} /></ListGroupItem>
                                 </ListGroup>
@@ -349,6 +399,7 @@ export default class EventDetails extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={this.props.toggle}>Hoàn tất</Button>
+                        <Button color="primary" onClick={this.props.toggle}>Xóa sự kiện</Button>
                         <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
                     </ModalFooter>
                 </Modal>
