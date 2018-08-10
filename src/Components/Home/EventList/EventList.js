@@ -51,15 +51,29 @@ export default class EventList extends React.Component {
     }
     toggleAdd = (e) => {
         this.state.listEvent.unshift(e);
+    };
+
+    toggleEndAdd =()=>{
         this.setState({
             isOpenAdd: !this.state.isOpenAdd,
         })
-    };
+    }
     toggleAddStart = () => {
         this.setState({
             isOpenAdd: !this.state.isOpenAdd,
         })
     };
+
+    deleteEvent = (id) =>{
+        const tmp = this.state.listEvent.filter((e,index)=>{
+            return e.id_eve == id;
+        })
+        this.state.listEvent.splice(tmp,1);
+        this.setState({
+            isOpen: !this.state.isOpen,
+        });
+        this.setState(this.state);
+    }
     renderEvent = () => {
         const listEvent = this.state.listEvent.map((e, index) => {
             return <Event toggle={this.toggle} data = {e}  key={index}  />;
@@ -101,13 +115,13 @@ export default class EventList extends React.Component {
         // this.setState({ state: this.state });
     }
     render() {
-        const tmp = (this.state.isOpen)?<EventDetails modal={this.state.isOpen} open={this.toggle}  toggle={this.endToggle}  data = {this.state.data} />:null;
+        const tmp = (this.state.isOpen)?<EventDetails modal={this.state.isOpen} deleteEvent = {this.deleteEvent} open={this.toggle}  toggle={this.endToggle}  data = {this.state.data} />:null;
         return (
             <div className="animated fadeIn"> 
                 <div className="card">
                     <Button color={"primary"} id={'btn-pill'} onClick={this.toggleAddStart}>Thêm sự kiện</Button>
                 </div>
-                <AddEvent modal={this.state.isOpenAdd} toggle={this.toggleAdd} />
+                <AddEvent modal={this.state.isOpenAdd} toggle={this.toggleEndAdd} toggleAdd={this.toggleAdd} />
                 {this.renderEvent()}
                {tmp} 
             </div>

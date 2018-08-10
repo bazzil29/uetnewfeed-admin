@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import DateTimePicker from 'react-datetime-picker';
+import {createNotification} from "../../../../Services/APIServices.js" 
 import {
     Input,
     Label,
@@ -18,6 +19,17 @@ export default class AddNotification extends React.Component{
     state = {
         date: new Date(),
     };
+    addNotification = () =>{
+        const title = document.getElementById("title-noti").value;
+        const body = document.getElementById("content-noti").value;
+        const tmp = {
+            title:title,
+            body:body
+        }
+        createNotification(tmp);
+        this.props.toggle();
+
+    }
     render(){
         return (
             <div>
@@ -27,11 +39,11 @@ export default class AddNotification extends React.Component{
                         <Form>
                             <FormGroup>
                                 <Label>Tiêu đề thông báo:</Label>
-                                <Input type="text" placeholder={"Điền vào tiêu đề"}/>
+                                <Input type="text" placeholder={"Điền vào tiêu đề"} id="title-noti"/>
                                 <Label>Sự kiện đính kèm thông báo:</Label>
                                 <Input type="text" placeholder={"Sự kiện đính kèm thông báo"}/>
                                 <Label>Nội dung thông báo:</Label>
-                                <Input type="text" placeholder={"Nội dung của thông báo"}/>
+                                <Input type="text" placeholder={"Nội dung của thông báo"} id="content-noti"/>
                                 <Label>Thời gian thông báo:</Label>
                                 <br/>
                                 <DateTimePicker className={'form-control'} id={'react-datetime-picker'}
@@ -57,7 +69,7 @@ export default class AddNotification extends React.Component{
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.props.toggle}>Hoàn tất</Button>
+                        <Button color="primary" onClick={this.addNotification}>Hoàn tất</Button>
                         <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
                     </ModalFooter>
                 </Modal>

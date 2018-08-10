@@ -30,16 +30,6 @@ export default class NotificationList extends React.Component{
                     <Button color={"primary"}  id={'btn-pill'} onClick={this.toggleAdd}>Thêm thông báo</Button>
                 </div>
                 <div className="animated fadeIn">
-                    <Notification toggle={this.toggle}/>
-                    <Notification toggle={this.toggle}/>
-                    <Notification toggle={this.toggle}/>
-                    <Notification toggle={this.toggle}/>
-                    <Notification toggle={this.toggle}/>
-                    <Notification toggle={this.toggle}/>
-                    <Notification toggle={this.toggle}/>
-                    <Notification toggle={this.toggle}/>
-                    <Notification toggle={this.toggle}/>
-                    <Notification toggle={this.toggle}/>
                 </div>
             </div>
         )

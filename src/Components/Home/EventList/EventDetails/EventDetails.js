@@ -24,7 +24,6 @@ import { Redirect } from 'react-router-dom';
 export default class EventDetails extends Component {
     constructor(props){
         super(props);
-        console.log(this.props.data.header);
         this.state = {
             info: {
                 header: this.props.data.header,
@@ -301,8 +300,9 @@ export default class EventDetails extends Component {
         await deleteEvent(id)
             .then((res)=>{
                 console.log(res);
+                this.props.deleteEvent(id);
             });
-           
+        
     }
 
     updated = () =>{

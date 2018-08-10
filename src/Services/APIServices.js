@@ -1,5 +1,5 @@
 import { getToken } from './LocalServices';
-const url = 'http://bc188206.ngrok.io';
+const url = 'http://172.20.10.4:3005';
 const token = getToken();
 export const login = (user, password) => {
     const request = new Request(url + `/api/login`, {
@@ -78,14 +78,14 @@ export const addEvent = (data)=>{
         },
         body: JSON.stringify(
             {
-                header: data.name,
-                content: data.context,
-                image: data.img,
+                header: data.header,
+                content: data.content,
+                image: data.image,
                 place: data.place,
-                time_start: data.time,
+                time_start: data.time_start,
                 event_type:1,
-            }        
-        )
+            }
+        )        
     });
     return fetch(request)
         .then((res)=>{
@@ -98,11 +98,69 @@ export const deleteEvent = (id)=>{
         method: 'DELETE',
         headers: {
             token:token,
-            'Content-Type': 'application/json'
         },
     });
     return fetch(request)
         .then((res)=>{
             return res.json();
         })
+}
+
+export const createNotification = (e) =>{
+    const request = new Request(url + `/api/notification/work_with_content_notification`, {
+        method: 'POST',
+        headers: {
+            token:token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+            {
+                title:e.title,
+                body:e.body,
+            }
+        )    
+        }
+    )
+
+    return fetch(request)
+        .then((res)=>{
+            return res.json();
+        })
+}
+
+export const getFalcuty = () =>{
+    const res  = new Request(url+"/api/admin/get_list" , {
+        method:"GET",   
+        headers: {
+            token:token,
+        }
+    })
+
+    return fetch(res)
+                .then((res)=>{
+                    return res.json();
+                })
+
+}
+
+export const getCourse = (falcuty) =>{
+    const res = new Request (url + "/api/admin/get_list?major="+falcuty,{
+        method:"GET",
+        headers:{
+            token:token,
+        }
+    })
+    return fetch(res)
+            .then(res=>res.json());
+}
+ 
+export const getMajor = (falcuty,course) =>{
+    const res = new Request (url + "/api/admin/get_list?major="+falcuty+"&course="+course.toString(),{
+        method:"GET",
+        headers:{
+            token:token,
+        }
+    })
+    return fetch(res)
+            .then(res=>res.json());
 }
