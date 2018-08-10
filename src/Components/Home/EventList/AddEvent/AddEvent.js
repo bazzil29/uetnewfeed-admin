@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import DateTimePicker from 'react-datetime-picker';
+import moment from 'moment';
 import {
     ModalBody,
     ModalFooter,
@@ -13,21 +14,66 @@ import {
     ListGroupItem,
     ListGroup,
 } from "reactstrap";
+import { addEvent } from '../../../../Services/APIServices';
 
 export default class AddEvent extends React.Component{
     state = {
         info: {
-            name: "ĐÂY LÀ TIÊU ĐỀ SỰ KIỆN",
-            id: '16021629',
-            email: 'oscar.ngo98@gmail.com',
-            phone: '0971486734',
-            context: "Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả, được dùng vào việc trình bày và dàn trang phục vụ cho in ấn. Lorem Ipsum đã được sử dụng như một văn bản chuẩn cho ngành công nghiệp in ấn từ những năm 1500, khi một họa sĩ vô danh ghép nhiều đoạn văn bản với nhau để tạo thành một bản mẫu văn bản. Đoạn văn bản này không những đã tồn tại năm thế kỉ, mà khi được áp dụng vào tin học văn phòng, nội dung của nó vẫn không hề bị thay đổi. Nó đã được phổ biến trong những năm 1960 nhờ việc bán những bản giấy Letraset in những đoạn Lorem Ipsum, và gần đây hơn, được sử dụng trong các ứng dụng dàn trang, như Aldus PageMaker.",
+            header: "day la tieu de",
+            content: "day la noi noi",
             organization: 'NGÔ MINH PHƯƠNG',
-            img: 'link img',
+            image:"anh",
+            place:"dai diem",
+            time_start:"khong biet",
         },
         date: new Date(),
     };
+    onChange = (date) => {
+        this.setState({ date:date})
+        this.state.info.time = date.toISOString();
+        this.setState(this.state);
+        console.log(date.toISOString());
+    };
+    addEvent = async () =>{
+        await addEvent(this.state.info)
+            .then((res)=>{
+                console.log(res);
+            });
+        console.log(this.state.info);
+        this.props.toggle(this.state.info);
+    }
+    nameOnChange = (value) => {
+        this.state.info.name = value;
+        this.setState(this.state);
+    };
+    contextOnChange = (value) => {
+        this.state.info.context = value;
+        this.setState(this.state);
+    }
 
+    organzationOnChange = (value) => {
+        this.state.info.organization = value;
+        this.setState(this.state);
+    };
+
+    phoneOnChange(value) {
+        this.state.info.phone = value;
+        this.setState(this.state);
+    }
+    emailOnChange(value) {
+        this.state.info.email = value;
+        this.setState(this.state);
+    }
+
+    imgOnChange(value) {
+        //console.log(value);
+        this.state.info.img = value;
+        this.setState(this.state);
+    }
+    placeOnChange(value) {
+        this.state.info.place = value;
+        this.setState(this.state);
+    }
     render(){
         return(
 
@@ -36,29 +82,46 @@ export default class AddEvent extends React.Component{
                     <ModalHeader toggle={this.props.toggle}>Thêm sự kiện</ModalHeader>
                     <ModalBody>
                         <Form>
-                            <FormGroup>
-                                <Label>Tiêu đề sự kiện:</Label>
-                                <Input type="text" placeholder={this.state.info.name} />
-                                <Label>Mã sự kiện:</Label>
-                                <Input type="text" placeholder={this.state.info.id}/>
+                            <FormGroup><Label>Tiêu đề sự kiện:</Label>
+                                <Input type="text" value={this.state.info.header} onChange={e => {
+                                    this.nameOnChange(e.target.value);
+                                }} />
                                 <Label>Nội dung sự kiện:</Label>
-                                <textarea name="" className={'form-control'} placeholder={this.state.info.context}
-                                          cols="auto" rows="auto" id={'event-context'}/>
+                                <textarea name="" className={'form-control'} value={this.state.info.content}
+                                    cols="auto" rows="auto" id={'event-context'} onChange={e => {
+                                        this.contextOnChange(e.target.value);
+                                    }} />
                                 <Label>Thời gian tổ chức</Label>
-                                <br/>
+                                <br />
                                 <DateTimePicker className={'form-control'} id={'react-datetime-picker'}
-                                                onChange={this.onChange}
-                                                value={this.state.date}
+                                    onChange={this.onChange}
+                                    value={this.state.date}
                                 />
-                                <br/>
+                                <br />
+                                <Label>Địa điểm:</Label>
+                                <Input type="text" value={this.state.info.place} onChange={e => {
+                                    this.placeOnChange(e.target.value);
+                                }} />
                                 <Label>Đơn vị tổ chức:</Label>
-                                <Input type="text" placeholder={this.state.info.organization}/>
+                                <Input type="text" value={this.state.info.organization} onChange={e => {
+                                    this.organzationOnChange(e.target.value);
+                                }} />
                                 <Label>Số điện thoại:</Label>
-                                <Input type="phone" placeholder={this.state.info.phone} />
+                                <Input type="phone" value={this.state.info.phone} onChange={e => {
+                                    this.phoneOnChange(e.target.value);
+                                }} />
                                 <Label>E-mail:</Label>
-                                <Input type="email" placeholder={this.state.info.email} />
+                                <Input type="email" value={this.state.info.email} onChange={e => {
+                                    this.emailOnChange(e.target.value);
+                                }} />
                                 <Label>Ảnh bìa đính kèm:</Label>
-                                <Input type="text" placeholder={this.state.info.img} />
+                                <Input type="text" value={this.state.info.image} onChange={e => {
+                                    this.imgOnChange(e.target.value);
+                                }} />
+                                
+                                {/* <Input type="file" onChange={e => {
+                                    this.imgOnChange(e.target.files[0]);
+                                }} /> */}
                                 <Label>Sinh viên mặc định tham gia:</Label>
                                 <ListGroup>
                                     <ListGroupItem className="justify-content-between">id Sinh viên 1<i
@@ -77,7 +140,7 @@ export default class AddEvent extends React.Component{
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.props.toggle}>Thêm</Button>
+                        <Button color="primary" onClick={this.addEvent}>Thêm</Button>
                         <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
                     </ModalFooter>
                 </Modal>

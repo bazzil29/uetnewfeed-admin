@@ -4,6 +4,7 @@
 
 #event-context {
     overflow: auto;
+    height: 500px;
 }
 
 #add-student-card {

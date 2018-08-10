@@ -4,7 +4,7 @@ import EventDetails from "./EventDetails/EventDetails";
 import { Button } from "reactstrap";
 import './EventList.css'
 import AddEvent from "./AddEvent/AddEvent";
-import { getListEvent } from '../../../Services/APIServices';
+import { getListEvent, getEventDetails } from '../../../Services/APIServices';
 import Waypoint from '../../../../node_modules/react-waypoint';
 
 export default class EventList extends React.Component {
@@ -17,32 +17,52 @@ export default class EventList extends React.Component {
             listEvent: [],
             isLoading: false,
             page:0,
+            data:{},
         }
+    }   
+    componentDidMount(){
+        this.loadMoreItems();
     }
-    componentDidMount() {   
-        getListEvent(0)
-            .then(res => {
-                this.state.listEvent = res.data.data;
-                this.state.isLoading = false;
-                this.setState(this.state);
+    loadEventDetails = async (id) =>{
+        await getEventDetails(id)
+             .then((res)=>{
+             this.state.data = res.data;
+             this.setState(this.state);
+         })
+    }
+    toggle =  (id) => {
+        this.loadEventDetails(id)
+         .then(()=>{
+            this.setState({
+                isOpen: !this.state.isOpen,
             });
+         })   
     }
-    toggle = (id) => {
+    endToggle = (t) =>{
+        this.state.listEvent.map((e,index)=>{
+            if(e.id_eve==t.id_eve){
+                this.state.listEvent[index] = t;
+            }
+        })
         this.setState({
             isOpen: !this.state.isOpen,
         });
-
+        
     }
-    toggleAdd = () => {
+    toggleAdd = (e) => {
+        this.state.listEvent.unshift(e);
         this.setState({
-            isOpen: this.state.isOpen,
             isOpenAdd: !this.state.isOpenAdd,
         })
     };
-
+    toggleAddStart = () => {
+        this.setState({
+            isOpenAdd: !this.state.isOpenAdd,
+        })
+    };
     renderEvent = () => {
         const listEvent = this.state.listEvent.map((e, index) => {
-            return <Event toggle={this.toggle} data={e} key={index} />;
+            return <Event toggle={this.toggle} data = {e}  key={index}  />;
         })
         return listEvent;
     };
@@ -57,44 +77,39 @@ export default class EventList extends React.Component {
     };
     loadMoreItems = async ()=> {
         var eventsToAdd;
-        await getListEvent(this.state.page++)
+        await getListEvent(this.state.page)
             .then((res)=>{
                 eventsToAdd = res.data.data;
-                console.log(res.data.data)
             })
-        this.state.isLoading = true;
-        this.setState(this.state);
         // fake an async. ajax call with setTimeout
         const self = this;
-        if(this.state.page<10)
         setTimeout(function () {
             // add data
             var currentItems = self.state.listEvent;
             for(var i  = 0 ; i <eventsToAdd.length; i++){
-                console.log(eventsToAdd[i]);
                 currentItems.push(eventsToAdd[i]);
             }
             self.state.isLoading = false;
             self.state.listEvent = currentItems;
             self.setState(self.state);
-            console.log(self);
         }, 2000);   
-
     };
-
+    reRender = () =>{
+        // this.state.listEvent = [],
+        // this.setState(this.state);
+        //this.loadMoreItems();
+        // this.setState({ state: this.state });
+    }
     render() {
+        const tmp = (this.state.isOpen)?<EventDetails modal={this.state.isOpen} open={this.toggle}  toggle={this.endToggle}  data = {this.state.data} />:null;
         return (
-            <div className="animated fadeIn">
+            <div className="animated fadeIn"> 
                 <div className="card">
-                    <Button color={"primary"} id={'btn-pill'} onClick={this.toggleAdd}>Thêm sự kiện</Button>
+                    <Button color={"primary"} id={'btn-pill'} onClick={this.toggleAddStart}>Thêm sự kiện</Button>
                 </div>
                 <AddEvent modal={this.state.isOpenAdd} toggle={this.toggleAdd} />
-                <EventDetails modal={this.state.isOpen} toggle={this.toggle} />
                 {this.renderEvent()}
-                <div className="infinite-scroll-example__waypoint"    >
-                    {this.renderWaypoint()}
-                    Loading more items…
-                </div>
+               {tmp} 
             </div>
         )
     }

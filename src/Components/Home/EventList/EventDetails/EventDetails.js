@@ -19,56 +19,58 @@ import $ from 'jquery';
 import ReactSummernote from 'react-summernote';
 import 'react-summernote/dist/react-summernote.css'; // import styles
 import '../../../../index.css';
-window.jQuery = $;
-require('bootstrap');
-
+import { updateEvent, deleteEvent } from '../../../../Services/APIServices';
+import { Redirect } from 'react-router-dom';
 export default class EventDetails extends Component {
-    constructor(props) {
+    constructor(props){
         super(props);
-        this.toggle = this.toggle.bind(this);
+        console.log(this.props.data.header);
+        this.state = {
+            info: {
+                header: this.props.data.header,
+                id_eve: this.props.data.id_eve,
+                content: this.props.data.content,
+                organization: 'NGÔ MINH PHƯƠNG',
+                image:this.props.data.image,
+                place:this.props.data.place,
+                time_start:this.props.data.time_start,
+            },
+            date: new Date(),
+            collapse: false,
+            students: [{
+                name: 'x',
+                isChoosed: false,
+                id: 1,
+                index: 1
+            },
+            {
+                name: 'y',
+                isChoosed: false,
+                id: 2,
+                index: 2
+    
+            },
+            {
+                name: 'z',
+                isChoosed: false,
+                id: 3,
+                index: 3
+    
+            },
+            {
+                name: 'k',
+                isChoosed: false,
+                id: 4,
+                index: 4
+    
+            }],
+            studentsForce: [],
+            isStudentsOpen: false,
+            isUpdated:false,
+        }
     }
-    state = {
-        info: {
-            name: "ĐÂY LÀ TIÊU ĐỀ SỰ KIỆN",
-            id: '16021629',
-            email: 'oscar.ngo98@gmail.com',
-            phone: '0971486734',
-            context: "Lorem Ipsum chỉ đơn giản là một đoạn văn bản giả, được dùng vào việc trình bày và dàn trang phục vụ cho in ấn. Lorem Ipsum đã được sử dụng như một văn bản chuẩn cho ngành công nghiệp in ấn từ những năm 1500, khi một họa sĩ vô danh ghép nhiều đoạn văn bản với nhau để tạo thành một bản mẫu văn bản. Đoạn văn bản này không những đã tồn tại năm thế kỉ, mà khi được áp dụng vào tin học văn phòng, nội dung của nó vẫn không hề bị thay đổi. Nó đã được phổ biến trong những năm 1960 nhờ việc bán những bản giấy Letraset in những đoạn Lorem Ipsum, và gần đây hơn, được sử dụng trong các ứng dụng dàn trang, như Aldus PageMaker.",
-            organization: 'NGÔ MINH PHƯƠNG',
-            img: 'link img',
-        },
-        date: new Date(),
-        collapse: false,
-        students: [{
-            name: 'x',
-            isChoosed: false,
-            id: 1,
-            index: 1
-        },
-        {
-            name: 'y',
-            isChoosed: false,
-            id: 2,
-            index: 2
-
-        },
-        {
-            name: 'z',
-            isChoosed: false,
-            id: 3,
-            index: 3
-
-        },
-        {
-            name: 'k',
-            isChoosed: false,
-            id: 4,
-            index: 4
-
-        }],
-        studentsForce: [],
-        isStudentsOpen: false,
-    };
+    
+    
     addStudentSearch = (e) => {
         const tmp = e.target;
         const tmp1 = document.getElementById('select-major');
@@ -204,14 +206,11 @@ export default class EventDetails extends Component {
 
         }
     };
-
-
-    toggle() {
+    toggle = ()=> {
         this.setState({ collapse: !this.state.collapse });
     }
 
     onCheckBox = (index) => {
-        console.log(index);
         this.state.students[index - 1].isChoosed = !this.state.students[index - 1].isChoosed;
         this.setState(this.state);
     }
@@ -233,14 +232,18 @@ export default class EventDetails extends Component {
         })
     }
 
-    onChange = date => this.setState({ date });
-    nameOnChange = (value) => {
-        this.state.info.name = value;
+    onChange = (date) => {
+        this.setState({ date:date})
+        this.state.info.time_start = date.toISOString();
         this.setState(this.state);
-
+        console.log(date.toISOString());
+    };
+    nameOnChange = (value) => {
+        this.state.info.header = value;
+        this.setState(this.state);
     };
     contextOnChange = (value) => {
-        this.state.info.context = value;
+        this.state.info.content = value;
         this.setState(this.state);
     }
 
@@ -259,9 +262,13 @@ export default class EventDetails extends Component {
     }
 
     imgOnChange(value) {
-        console.log(value);
-        // this.state.info.img = value;
-        // this.setState(this.state);
+        //console.log(value);
+        this.state.info.image = value;
+        this.setState(this.state);
+    }
+    placeOnChange(value) {
+        this.state.info.place = value;
+        this.setState(this.state);
     }
     onAddStudentEvent = (e) => {
         this.state.students.map((e,index)=>{
@@ -272,6 +279,7 @@ export default class EventDetails extends Component {
         this.state.collapse = false;
         this.setState(this.state);
     }
+
     makeListStudentsForce = () => {
         const tmp = this.state.studentsForce.map((e, index) => {
             return <ListGroupItem className="justify-content-between">{e.name}<i
@@ -281,10 +289,30 @@ export default class EventDetails extends Component {
         return tmp;
     }
 
+    update = async () =>{
+        const id = this.props.data.id_eve;
+        await updateEvent(id,this.state.info)
+            .then((res)=>{
+                console.log(res);
+            });
+    }
+    deleteEvent = async ()=>{
+        const id = this.props.data.id_eve;
+        await deleteEvent(id)
+            .then((res)=>{
+                console.log(res);
+            });
+           
+    }
+
+    updated = () =>{
+        if(this.isUpdated){
+            return <Redirect to='/event' />
+        }
+    }
+
     render() {
-
         const students = (this.state.isStudentsOpen) ? this.makeListStudent() : null;
-
         return (
             <div>
                 <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
@@ -293,21 +321,20 @@ export default class EventDetails extends Component {
                         <Form>
                             <FormGroup>
                                 <Label>Tiêu đề sự kiện:</Label>
-                                <Input type="text" value={this.state.info.name} onChange={e => {
+                                <Input type="text" value={this.state.info.header} onChange={e => {
                                     this.nameOnChange(e.target.value);
                                 }} />
                                 <Label>Mã sự kiện:</Label>
-                                <Input type="text" placeholder={this.state.info.id} disabled />
-                                <Label>Thông tin chung:</Label>
-                                <textarea name="" className={'form-control'} value={this.state.info.context}
-                                    cols="auto" rows="auto" id={'event-context'} onChange={e => {
-                                        this.contextOnChange(e.target.value);
-                                    }} />
+                                <Input type="text" placeholder={this.state.info.id_eve} disabled />
                                 <Label>Nội dung sự kiện:</Label>
-                                <textarea name="" className={'form-control'} value={this.state.info.context}
+                                <textarea name="" className={'form-control'} value={this.state.info.content}
                                     cols="auto" rows="auto" id={'event-context'} onChange={e => {
                                         this.contextOnChange(e.target.value);
                                     }} />
+                                <Label>Địa điểm:</Label>
+                                <Input type="text" value={this.state.info.place} onChange={e => {
+                                    this.placeOnChange(e.target.value);
+                                }} />
                                 <Label>Thời gian tổ chức</Label>
                                 <br />
                                 <DateTimePicker className={'form-control'} id={'react-datetime-picker'}
@@ -328,9 +355,12 @@ export default class EventDetails extends Component {
                                     this.emailOnChange(e.target.value);
                                 }} />
                                 <Label>Ảnh bìa đính kèm:</Label>
-                                <Input type="file" onChange={e => {
-                                    this.imgOnChange(e.target.files[0]);
+                                <Input type="text" value={this.state.info.image} onChange={e => {
+                                    this.imgOnChange(e.target.value);
                                 }} />
+                                {/* <Input type="file" onChange={e => {
+                                    this.imgOnChange(e.target.files[0]);
+                                }} /> */}
                                 <Label>Sinh viên đã đăng ký:</Label>
                                 <Input type="number" placeholder={this.state.info.point} />
                                 <Label>Sinh viên mặc định tham gia:</Label>
@@ -398,15 +428,18 @@ export default class EventDetails extends Component {
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.props.toggle}>Hoàn tất</Button>
-                        <Button color="primary" onClick={this.props.toggle}>Xóa sự kiện</Button>
+                        <Button color="primary" onClick={()=>{
+                            this.update()
+                            .then(()=>{
+                                this.props.toggle(this.state.info);
+                                });    
+                        }}>Hoàn tất</Button>
+                        <Button color="primary" onClick={this.deleteEvent}>Xóa sự kiện</Button>
                         <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
                     </ModalFooter>
                 </Modal>
             </div>
         )
     }
-
-
 }
 

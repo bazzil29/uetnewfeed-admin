@@ -8,6 +8,7 @@ export default class Event extends React.Component {
         this.props.toggle(this.props.data.id_eve);
     }
     render() {
+        // console.log(this.props.data);
         const tmp = new Date(2018, 1, 9, 13, 0, 0);
         const day = moment(tmp)._d;
         return ( 
@@ -23,8 +24,8 @@ export default class Event extends React.Component {
                             height="200px" alt="event"/></Col>
                         <Col lg='8'><p align="justify">{this.props.data.content}</p>
                             <div className={'date-location'}>
-                                {
-                                    day.toLocaleString()
+                                {   
+                                    this.props.data.time_start
                                 }
                                 <p>{this.props.data.place}</p>
                             </div>
