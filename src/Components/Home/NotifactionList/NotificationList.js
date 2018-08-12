@@ -9,7 +9,7 @@ export default class NotificationList extends React.Component{
         isOpen: false,
         isOpenAdd:false,
     };
-
+/*----------------------------------------------------------------------------------------------- */
     toggle = () => {
         this.setState({
             isOpen: !this.state.isOpen,
@@ -21,13 +21,15 @@ export default class NotificationList extends React.Component{
             isOpenAdd: !this.state.isOpenAdd,
         })
     };
+/*----------------------------------------------------------------------------------------------- */
+
     render(){
         return(
             <div>
                 <AddNotification modal={this.state.isOpenAdd} toggle={this.toggleAdd}/>
                 <NotificationDetails modal={this.state.isOpen} toggle={this.toggle}/>
                 <div className="card">
-                    <Button color={"primary"}  id={'btn-pill'} onClick={this.toggleAdd}>ThÃªm thÃ´ng bÃ¡o</Button>
+                    <Button color={"primary"}  id={'btn-pill'} onClick={this.toggleAdd}>Thêm thông báo</Button>
                 </div>
                 <div className="animated fadeIn">
                 </div>

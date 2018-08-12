@@ -3,11 +3,14 @@ import {Col, Row, Button} from "reactstrap";
 import './Event.css';
 import moment from "moment";
 export default class Event extends React.Component {
+/*---------------------------------------------------------------------- */
+
     onClickEdit = () =>{
         this.props.toggle(this.props.data.id_eve);
     }
+/*---------------------------------------------------------------------- */
+
     render() {
-        // console.log(this.props.data);
         const tmp = new Date(2018, 1, 9, 13, 0, 0);
         const day = moment(tmp)._d;
         return ( 

@@ -22,7 +22,7 @@ import '../../../../index.css';
 import { updateEvent, deleteEvent } from '../../../../Services/APIServices';
 import { Redirect } from 'react-router-dom';
 export default class EventDetails extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             info: {
@@ -30,9 +30,9 @@ export default class EventDetails extends Component {
                 id_eve: this.props.data.id_eve,
                 content: this.props.data.content,
                 organization: 'NGÔ MINH PHƯƠNG',
-                image:this.props.data.image,
-                place:this.props.data.place,
-                time_start:this.props.data.time_start,
+                image: this.props.data.image,
+                place: this.props.data.place,
+                time_start: this.props.data.time_start,
             },
             date: new Date(),
             collapse: false,
@@ -47,29 +47,28 @@ export default class EventDetails extends Component {
                 isChoosed: false,
                 id: 2,
                 index: 2
-    
+
             },
             {
                 name: 'z',
                 isChoosed: false,
                 id: 3,
                 index: 3
-    
+
             },
             {
                 name: 'k',
                 isChoosed: false,
                 id: 4,
                 index: 4
-    
+
             }],
             studentsForce: [],
             isStudentsOpen: false,
-            isUpdated:false,
+            isUpdated: false,
         }
     }
-    
-    
+
     addStudentSearch = (e) => {
         const tmp = e.target;
         const tmp1 = document.getElementById('select-major');
@@ -205,14 +204,16 @@ export default class EventDetails extends Component {
 
         }
     };
-    toggle = ()=> {
+
+    toggle = () => {
         this.setState({ collapse: !this.state.collapse });
-    }
+    };
 
     onCheckBox = (index) => {
         this.state.students[index - 1].isChoosed = !this.state.students[index - 1].isChoosed;
         this.setState(this.state);
-    }
+    };
+
     makeListStudent = () => {
         const tmp = this.state.students;
         return tmp.map((x, index) => {
@@ -229,22 +230,24 @@ export default class EventDetails extends Component {
                 </Row>
             </CardHeader>
         })
-    }
+    };
 
     onChange = (date) => {
-        this.setState({ date:date})
+        this.setState({ date: date })
         this.state.info.time_start = date.toISOString();
         this.setState(this.state);
         console.log(date.toISOString());
     };
+
     nameOnChange = (value) => {
         this.state.info.header = value;
         this.setState(this.state);
     };
+
     contextOnChange = (value) => {
         this.state.info.content = value;
         this.setState(this.state);
-    }
+    };
 
     organzationOnChange = (value) => {
         this.state.info.organization = value;
@@ -254,30 +257,32 @@ export default class EventDetails extends Component {
     phoneOnChange(value) {
         this.state.info.phone = value;
         this.setState(this.state);
-    }
+    };
+
     emailOnChange(value) {
         this.state.info.email = value;
         this.setState(this.state);
-    }
+    };
 
     imgOnChange(value) {
-        //console.log(value);
         this.state.info.image = value;
         this.setState(this.state);
-    }
+    };
+
     placeOnChange(value) {
         this.state.info.place = value;
         this.setState(this.state);
-    }
+    };
+
     onAddStudentEvent = (e) => {
-        this.state.students.map((e,index)=>{
-            if(e.isChoosed){
+        this.state.students.map((e, index) => {
+            if (e.isChoosed) {
                 this.state.studentsForce.push(e);
             }
         })
         this.state.collapse = false;
         this.setState(this.state);
-    }
+    };
 
     makeListStudentsForce = () => {
         const tmp = this.state.studentsForce.map((e, index) => {
@@ -286,30 +291,24 @@ export default class EventDetails extends Component {
                 id={"student-icon"} /></ListGroupItem>
         })
         return tmp;
-    }
+    };
 
-    update = async () =>{
+    update = async () => {
         const id = this.props.data.id_eve;
-        await updateEvent(id,this.state.info)
-            .then((res)=>{
+        await updateEvent(id, this.state.info)
+            .then((res) => {
                 console.log(res);
             });
-    }
-    deleteEvent = async ()=>{
+    };
+
+    deleteEvent = async () => {
         const id = this.props.data.id_eve;
         await deleteEvent(id)
-            .then((res)=>{
+            .then((res) => {
                 console.log(res);
                 this.props.deleteEvent(id);
             });
-        
-    }
-
-    updated = () =>{
-        if(this.isUpdated){
-            return <Redirect to='/event' />
-        }
-    }
+    };
 
     render() {
         const students = (this.state.isStudentsOpen) ? this.makeListStudent() : null;
@@ -428,11 +427,11 @@ export default class EventDetails extends Component {
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={()=>{
+                        <Button color="primary" onClick={() => {
                             this.update()
-                            .then(()=>{
-                                this.props.toggle(this.state.info);
-                                });    
+                                .then(() => {
+                                    this.props.toggle(this.state.info);
+                                });
                         }}>Hoàn tất</Button>
                         <Button color="primary" onClick={this.deleteEvent}>Xóa sự kiện</Button>
                         <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
@@ -442,4 +441,3 @@ export default class EventDetails extends Component {
         )
     }
 }
-

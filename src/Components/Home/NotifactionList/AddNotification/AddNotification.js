@@ -16,9 +16,11 @@ import {
 } from "reactstrap";
 
 export default class AddNotification extends React.Component{
+/*----------------------------------------------------------------------------------------------- */
     state = {
         date: new Date(),
     };
+/*----------------------------------------------------------------------------------------------- */
     addNotification = () =>{
         const title = document.getElementById("title-noti").value;
         const body = document.getElementById("content-noti").value;
@@ -28,8 +30,8 @@ export default class AddNotification extends React.Component{
         }
         createNotification(tmp);
         this.props.toggle();
-
     }
+/*----------------------------------------------------------------------------------------------- */
     render(){
         return (
             <div>

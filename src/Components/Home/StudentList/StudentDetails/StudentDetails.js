@@ -26,12 +26,9 @@ export default class StudentDetails extends React.Component {
             birthDay: '2/9/1998',
             class: "K61N",
             major: "CNTT"
-
         }
     }
-
     render() {
-
         return (
             <div>
                 <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
@@ -80,4 +77,3 @@ export default class StudentDetails extends React.Component {
         )
     }
 }
-

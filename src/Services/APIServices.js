@@ -1,5 +1,5 @@
 import { getToken } from './LocalServices';
-const url = 'http://172.20.10.4:3005';
+const url = 'http://18.212.50.83';
 const token = getToken();
 export const login = (user, password) => {
     const request = new Request(url + `/api/login`, {
@@ -155,7 +155,7 @@ export const getCourse = (falcuty) =>{
 }
  
 export const getMajor = (falcuty,course) =>{
-    const res = new Request (url + "/api/admin/get_list?major="+falcuty+"&course="+course.toString(),{
+    const res = new Request (url + "/api/admin/get_list?course="+course+"&major="+falcuty,{
         method:"GET",
         headers:{
             token:token,

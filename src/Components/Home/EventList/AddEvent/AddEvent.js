@@ -28,6 +28,7 @@ export default class AddEvent extends React.Component {
         },
         date: new Date(),
     };
+/*---------------------------------------------------------------------- */
 
     onChange = (date) => {
         this.state.date = date;
@@ -35,10 +36,10 @@ export default class AddEvent extends React.Component {
         this.setState(this.state);
         console.log(date.toISOString());
     };
+
     addEvent = async () => {
         const header = document.getElementById("title-event").value;
         const content = document.getElementById("content-event").value;
-        //const id = document.getElementById("id-event");
         const img = document.getElementById("img-event").value;
         const place = document.getElementById("place-event").value;
         var info = {
@@ -65,7 +66,6 @@ export default class AddEvent extends React.Component {
                 this.props.toggleAdd(info);
             });
         this.props.toggle();
-
     }
     // nameOnChange = (value) => {
     //     this.state.info.name = value;
@@ -75,12 +75,10 @@ export default class AddEvent extends React.Component {
     //     this.state.info.context = value;
     //     this.setState(this.state);
     // }
-
     // organzationOnChange = (value) => {
     //     this.state.info.organization = value;
     //     this.setState(this.state);
     // };
-
     // phoneOnChange(value) {
     //     this.state.info.phone = value;
     //     this.setState(this.state);
@@ -99,6 +97,7 @@ export default class AddEvent extends React.Component {
     //     this.state.info.place = value;
     //     this.setState(this.state);
     // }
+/*---------------------------------------------------------------------- */
 
     render() {
         return (

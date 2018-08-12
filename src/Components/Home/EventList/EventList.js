@@ -20,16 +20,15 @@ export default class EventList extends React.Component {
             data:{},
         }
     }   
+
+    /*------------------------------------------------------------------------------------------ */
+
     componentDidMount(){
         this.loadMoreItems();
-    }
-    loadEventDetails = async (id) =>{
-        await getEventDetails(id)
-             .then((res)=>{
-             this.state.data = res.data;
-             this.setState(this.state);
-         })
-    }
+    };
+
+    /*------------------------------------------------------------------------------------------ */
+
     toggle =  (id) => {
         this.loadEventDetails(id)
          .then(()=>{
@@ -37,7 +36,8 @@ export default class EventList extends React.Component {
                 isOpen: !this.state.isOpen,
             });
          })   
-    }
+    };
+
     endToggle = (t) =>{
         this.state.listEvent.map((e,index)=>{
             if(e.id_eve==t.id_eve){
@@ -48,7 +48,8 @@ export default class EventList extends React.Component {
             isOpen: !this.state.isOpen,
         });
         
-    }
+    };
+
     toggleAdd = (e) => {
         this.state.listEvent.unshift(e);
     };
@@ -57,7 +58,8 @@ export default class EventList extends React.Component {
         this.setState({
             isOpenAdd: !this.state.isOpenAdd,
         })
-    }
+    };
+
     toggleAddStart = () => {
         this.setState({
             isOpenAdd: !this.state.isOpenAdd,
@@ -73,22 +75,10 @@ export default class EventList extends React.Component {
             isOpen: !this.state.isOpen,
         });
         this.setState(this.state);
-    }
-    renderEvent = () => {
-        const listEvent = this.state.listEvent.map((e, index) => {
-            return <Event toggle={this.toggle} data = {e}  key={index}  />;
-        })
-        return listEvent;
     };
 
-    renderWaypoint = () => {
-        if (!this.state.isLoading) {
-            return (
-                <Waypoint   onEnter={this.loadMoreItems}
-                />
-            );
-        }
-    };
+    /*------------------------------------------------------------------------------------------ */
+
     loadMoreItems = async ()=> {
         var eventsToAdd;
         await getListEvent(this.state.page)
@@ -108,18 +98,45 @@ export default class EventList extends React.Component {
             self.setState(self.state);
         }, 2000);   
     };
-    reRender = () =>{
-        // this.state.listEvent = [],
-        // this.setState(this.state);
-        //this.loadMoreItems();
-        // this.setState({ state: this.state });
+
+    loadEventDetails = async (id) =>{
+        await getEventDetails(id)
+             .then((res)=>{
+             this.state.data = res.data;
+             this.setState(this.state);
+         })
     }
-    render() {
+
+    /*------------------------------------------------------------------------------------------ */
+
+    
+    renderEvent = () => {
+        const listEvent = this.state.listEvent.map((e, index) => {
+            return <Event toggle={this.toggle} data = {e}  key={index}  />;
+        })
+        return listEvent;
+    };
+
+    renderWaypoint = () => {
+        if (!this.state.isLoading) {
+            return (
+                <Waypoint   onEnter={this.loadMoreItems}
+                />
+            );
+        }
+    };
+
+    /*------------------------------------------------------------------------------------------ */
+
+        render() {
         const tmp = (this.state.isOpen)?<EventDetails modal={this.state.isOpen} deleteEvent = {this.deleteEvent} open={this.toggle}  toggle={this.endToggle}  data = {this.state.data} />:null;
         return (
             <div className="animated fadeIn"> 
                 <div className="card">
-                    <Button color={"primary"} id={'btn-pill'} onClick={this.toggleAddStart}>Thêm sự kiện</Button>
+                    <Button color={"primary"} id={'btn-pill'} 
+                            onClick={this.toggleAddStart}>
+                            Thêm sự kiện
+                    </Button>
                 </div>
                 <AddEvent modal={this.state.isOpenAdd} toggle={this.toggleEndAdd} toggleAdd={this.toggleAdd} />
                 {this.renderEvent()}

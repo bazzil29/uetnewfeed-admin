@@ -27,6 +27,8 @@ export default class NotificationDetails extends React.Component {
         },
         date: new Date(),
     };
+/*----------------------------------------------------------------------------------------------- */
+
     onChange = date => this.setState({date});
     idEventOnChange=(e)=>{
         this.state.info.idEvent= e.value;
@@ -40,6 +42,8 @@ export default class NotificationDetails extends React.Component {
         this.state.info.context= e.value;
         this.setState(this.state);
     };
+/*----------------------------------------------------------------------------------------------- */
+
 
     render() {
         return (
