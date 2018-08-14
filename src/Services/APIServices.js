@@ -164,3 +164,44 @@ export const getMajor = (falcuty,course) =>{
     return fetch(res)
             .then(res=>res.json());
 }
+
+export const getStudentByClassName = (className) => {
+    const res = new Request (url + "/api/admin/work_with_students/?class_name=" + className ,{
+        method:"Get",
+        headers:{
+            token:token,
+        }
+    }) 
+    return fetch(res)
+            .then((res)=>res.json());
+}
+
+export const updateStudent = (id,data) => {
+    const res = new Request (url + "api/admin/work_with_students/" +id , {
+        method:"PUT",
+        headers:{
+            token:token,
+        },
+        body:JSON.stringify({
+            "email": data.email,
+            "fullname":data.fullname,
+            "major": data.major,
+            "faculty": "",
+            "phonenumber": data.phonenumber,
+            "course": data.course,
+        })
+    })
+    return fetch(res)
+                .then ((res)=>res.json())
+}
+
+export const getStudentDetail = (id) =>{
+    const res  = new Request (url + "/api/admin/work_with_student?id=" + id ,{
+        method: "GET",
+        headers:{
+            token:token
+        },
+    });
+    return fetch(res)
+            .then(res=>res.json())
+}

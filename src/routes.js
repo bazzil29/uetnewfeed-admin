@@ -1,7 +1,7 @@
 
 import Home from './Components/Home/Home';
 import EventList from "./Components/Home/EventList/EventList";
-import StudentList from "./Components/Home/StudentList/StudetnList";
+import StudentList from "./Components/Home/StudentList/StudentList";
 import NotificationList from "./Components/Home/NotifactionList/NotificationList";
 import ManageAdmin from './Components/Home/Admin/ManageAdmin';
 

@@ -2,46 +2,21 @@ import React, { Component } from 'react';
 import Student from "./Student/Student";
 import StudentDetails from "./StudentDetails/StudentDetails";
 import { Card, CardHeader, Col, Row, Button } from 'reactstrap';
-import {
-    getFalcuty,
-    getCourse,
-    getMajor,
-    getStudentByClassName
-} from '../../../Services/APIServices';
+import { getFalcuty, getCourse, getMajor, getStudentByClassName, getStudentDetail } from "../../../Services/APIServices"
+import AddStudent from './AddStudent';
+import './StudentDetails/StudentDetails.css';
 
 export default class StudentList extends React.Component {
     state = {
         isOpen: false,
+        isOpenAddStudent:false,
         isShowList: false,
-        students: [{
-            name: "Ngo Minh Phuong",
-            id: "16021629",
-            position: "admin",
-            point: 100,
-        },
-        {
-            name: "Ngo Minh Phuong",
-            id: "16021629",
-            position: "CTV",
-            point: 100,
-        },
-        {
-            name: "Ngo Minh Phuong",
-            id: "16021629",
-            position: "student",
-            point: 100,
-        },
-        {
-            name: "Ngo Minh Phuong",
-            id: "16021629",
-            position: "admin",
-            point: 100,
-        }],
+        students: [],
         falcutys: [],
         majors: ["Lớp 1", "Lớp 2", "Lớp 3"],
-        courses: []
+        courses: [],
+        studentDetail:{}
     }
-
     /*---------------------------------------------------------------------- */
 
     componentDidMount() {
@@ -83,25 +58,46 @@ export default class StudentList extends React.Component {
 
     choseOption = (e, className) => {
         const tmp = document.getElementsByClassName(className)[0];
-        tmp.innerText = e.target.innerText; 
+        tmp.innerText = e.target.innerText;
     }
     /*---------------------------------------------------------------------- */
     toggleShowList = () => {
-        this.setState({
-            isShowList: true
-        })
-
         const className  = document.getElementsByClassName('major-option')[0].innerText;
         console.log(className);
         getStudentByClassName(className)
             .then ((res)=>{
-                console.log(res);
+                console.log(res.data)
+                this.setState({
+                    students:res.data,
+                    isShowList:true
+                })
             })
-    }        
-    toggle = () => {
+    }
+
+    toggleStudentDetails = () => {
         this.setState({
             isOpen: !this.state.isOpen,
-        })
+        });
+    }
+
+    getStudentToggle = async (id) =>{
+        await getStudentDetail(id)
+            .then(res => {
+                console.log(res);
+                this.setState({
+                    studentDetail:res.data[0]
+                })
+            })
+        console.log(this.state.studentDetail);
+    }
+    handleUpdateStudent = () =>{
+        
+    }
+    toggleAddStudent = () => {
+        this.setState({isOpenAddStudent:!this.state.isOpenAddStudent});
+    }
+    handleAddStudent = () => {
+        this.toggleAddStudent();
     }
     /*---------------------------------------------------------------------- */
     renderCourse = () => {
@@ -125,14 +121,20 @@ export default class StudentList extends React.Component {
     renderMajor = () => {
         return this.state.majors.map((e, index) => {
             return <div className="dropdown-item" key={index} onClick={(e) => {
-                this.choseOption(e,"major-option");
+                this.choseOption(e, "major-option");
             }}>{e.class_name}</div>
         })
     };
 
     renderList = () => {
         return this.state.students.map((e, index) => {
-            return <Student data={e} toggle={this.toggle} key={index} index={index} />;
+            return <Student 
+                        data={e} 
+                        toggle={this.toggleStudentDetails} 
+                        key={index} 
+                        index={index} 
+                        getStudentDetail={this.getStudentToggle}
+                        />;
         })
     }
     /*---------------------------------------------------------------------- */
@@ -141,16 +143,21 @@ export default class StudentList extends React.Component {
         const students = (this.state.isShowList) ? this.renderList() : null;
         return (
             <div>
-                <StudentDetails toggle={this.toggle} modal={this.state.isOpen} />
+                <AddStudent toggle={this.toggleAddStudent} modal={this.state.isOpenAddStudent}/>
+                <StudentDetails 
+                    toggle={this.toggleStudentDetails} 
+                    modal={this.state.isOpen}
+                    data = {this.state.studentDetail}
+                     />
                 <div className="animated fadeIn">
                     <Card>
                         <CardHeader>
                             <div className="btn-group">
-                                <button 
-                                    type="button" 
-                                    className="btn btn-primary dropdown-toggle falcuty-option" 
-                                    data-toggle="dropdown" 
-                                    aria-haspopup="true" 
+                                <button
+                                    type="button"
+                                    className="btn btn-primary dropdown-toggle falcuty-option"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
                                     aria-expanded="false">
                                     Khoa
                                 </button>
@@ -161,8 +168,8 @@ export default class StudentList extends React.Component {
                                     <div className="dropdown-divider"></div>
                                     <div className="dropdown-item input-group" href="#">
                                         <input type="text" className="form-control falcuty" />
-                                        <Button 
-                                            className="input-group-text" 
+                                        <Button
+                                            className="input-group-text"
                                             onClick={this.addFalcuty}>
                                             Thêm
                                         </Button>
@@ -171,11 +178,11 @@ export default class StudentList extends React.Component {
                             </div>
                             <span>     </span>
                             <div className="btn-group">
-                                <button 
-                                    type="button" 
-                                    className="btn btn-info dropdown-toggle source-option" 
-                                    data-toggle="dropdown" 
-                                    aria-haspopup="true" 
+                                <button
+                                    type="button"
+                                    className="btn btn-info dropdown-toggle source-option"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
                                     aria-expanded="false">
                                     Khóa
                                 </button>
@@ -186,8 +193,8 @@ export default class StudentList extends React.Component {
                                     <div className="dropdown-divider"></div>
                                     <div className="dropdown-item input-group" href="#">
                                         <input type="text" className="form-control source" />
-                                        <Button 
-                                            className="input-group-text" 
+                                        <Button
+                                            className="input-group-text"
                                             onClick={this.addSource}>
                                             Thêm
                                         </Button>
@@ -196,11 +203,11 @@ export default class StudentList extends React.Component {
                             </div>
                             <span>     </span>
                             <div className="btn-group">
-                                <button 
-                                    type="button" 
-                                    className="btn btn-danger dropdown-toggle major-option" 
-                                    data-toggle="dropdown" 
-                                    aria-haspopup="true" 
+                                <button
+                                    type="button"
+                                    className="btn btn-danger dropdown-toggle major-option"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
                                     aria-expanded="false">
                                     Lớp
                                 </button>
@@ -211,8 +218,8 @@ export default class StudentList extends React.Component {
                                     <div className="dropdown-divider"></div>
                                     <div className="dropdown-item input-group" href="#">
                                         <input type="text" className="form-control major" />
-                                        <Button 
-                                            className="input-group-text" 
+                                        <Button
+                                            className="input-group-text"
                                             onClick={this.addMajor}>
                                             Thêm
                                         </Button>
@@ -225,6 +232,15 @@ export default class StudentList extends React.Component {
                             </button>
                         </CardHeader>
                     </Card>
+                    <div className="card">
+                        <button
+                            color="primary"
+                            className="btn btn-primary"
+                            onClick={this.toggleAddStudent}
+                             >
+                            Thêm sinh viên
+                    </button>
+                    </div>
                     <Card>
                         <CardHeader>
                             <Row>

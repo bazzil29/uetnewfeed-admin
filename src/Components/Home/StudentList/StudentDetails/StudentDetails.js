@@ -13,21 +13,69 @@ import {
     ListGroupItem,
     ListGroup, Badge
 } from "reactstrap";
+import { updateStudent } from '../../../../Services/APIServices';
 
 export default class StudentDetails extends React.Component {
     state = {
         info: {
-            name: "Ngô Minh Phương",
-            id: '16021629',
-            email: 'oscar.ngo98@gmail.com',
-            phone: '0971486734',
+            fullname: this.props.data.fullname,
+            MSSV: this.props.data.MSSV,
+            email: this.props.data.email,
+            phonenumber: this.props.data.phonenumber,
             gpa: '3.0',
             point: '90',
             birthDay: '2/9/1998',
-            class: "K61N",
+            class_name: this.props.data.calss_name,
             major: "CNTT"
         }
     }
+/*-----------------------------------------------------------------------------------------------------------*/    
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            info:nextProps.data,
+        })
+      }
+/*-----------------------------------------------------------------------------------------------------------*/    
+    onUpdate = () =>{
+        this.props.toggle(this.state.info);
+        updateStudent()
+    }
+/*-----------------------------------------------------------------------------------------------------------*/    
+//onchange text field
+
+    onChangeName = (value) =>{
+        this.setState({
+            info:{
+                fullname:value
+            }
+        })
+    }
+    onChangeId = (value) =>{
+        this.setState({
+            info:{
+                MSSV:value
+            }
+        })
+    }
+    onChangeEmail = (value) =>{
+        this.setState({
+            info:{
+                email:value
+            }
+        })
+    }
+    onChangePhonnumber = (value) =>{
+        this.setState({
+            info:{
+                phonenumber:value
+            }
+        })
+    }
+
+/*-----------------------------------------------------------------------------------------------------------*/    
+
+
     render() {
         return (
             <div>
@@ -37,19 +85,34 @@ export default class StudentDetails extends React.Component {
                         <Form>
                             <FormGroup>
                                 <Label>Họ và tên:</Label>
-                                <Input type="text" placeholder={this.state.info.name} />
+                                <Input type="text" value={this.state.info.fullname} onChange={
+                                    e=>{
+                                        this.onChangeName(e.value);
+                                    }
+                                }/>
                                 <Label>Mã sinh viên:</Label>
-                                <Input type="number" placeholder={this.state.info.id} />
+                                <Input type="text" value={this.state.info.MSSV} onChange={
+                                    e=>this.onChangeId(e.value)
+                                }/>
+                                <Label>Vị trí:</Label>
+                                <br/>
+                                    <input type="radio" name="gender" value = "student"/> Sinh viên 
+                                    <input type="radio" name="gender" value="valunteer"/> Cộng tác viên    
+                                    <input type="radio" name="gender" value="admin"/> Admin 
                                 <Label>Lớp:</Label>
-                                <Input type="text" placeholder={this.state.info.class} />
+                                <Input type="text" placeholder={this.state.info.class_name} disabled />
                                 <Label>Khoa:</Label>
                                 <Input type="text" placeholder={this.state.info.major} />
                                 <Label>Ngày sinh:</Label>
-                                <Input type="date" placeholder={this.state.info.birthDay} />
+                                <Input type="text" placeholder={this.state.info.birthDay} />
                                 <Label>E-mail:</Label>
-                                <Input type="email" placeholder={this.state.info.email} />
+                                <Input type="email" value={this.state.info.email} onChange={
+                                    e=>this.onChangeEmail(e.value)
+                                }/>
                                 <Label>Số điện thoại:</Label>
-                                <Input type="phone" placeholder={this.state.info.phone} />
+                                <Input type="text" value={this.state.info.phonenumber} onChange = {
+                                    e=>this.onChangePhonnumber(e.value)
+                                } />
                                 <Label>GPA:</Label>
                                 <Input type="number" placeholder={this.state.info.gpa} />
                                 <Label>Điểm rèn luyện:</Label>
@@ -69,7 +132,8 @@ export default class StudentDetails extends React.Component {
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.props.toggle}>Hoàn tất</Button>
+                        <Button color="primary" onClick={this.onUpdate}>Hoàn tất</Button>
+                        <Button color="danger" onClick={this.props.toggle}>Xóa sinh viên</Button>
                         <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
                     </ModalFooter>
                 </Modal>

@@ -47,10 +47,9 @@ export default class EventList extends React.Component {
         this.setState({
             isOpen: !this.state.isOpen,
         });
-        
     };
 
-    toggleAdd = (e) => {
+    toggleAddEvent = (e) => {
         this.state.listEvent.unshift(e);
     };
 
@@ -127,9 +126,14 @@ export default class EventList extends React.Component {
     };
 
     /*------------------------------------------------------------------------------------------ */
-
         render() {
-        const tmp = (this.state.isOpen)?<EventDetails modal={this.state.isOpen} deleteEvent = {this.deleteEvent} open={this.toggle}  toggle={this.endToggle}  data = {this.state.data} />:null;
+        const tmp = (this.state.isOpen)?<EventDetails 
+                                            modal={this.state.isOpen} 
+                                            deleteEvent={this.deleteEvent} 
+                                            open={this.toggle}  
+                                            toggle={this.endToggle}  
+                                            data={this.state.data} 
+                                            />:null;
         return (
             <div className="animated fadeIn"> 
                 <div className="card">
@@ -138,7 +142,7 @@ export default class EventList extends React.Component {
                             Thêm sự kiện
                     </Button>
                 </div>
-                <AddEvent modal={this.state.isOpenAdd} toggle={this.toggleEndAdd} toggleAdd={this.toggleAdd} />
+                <AddEvent modal={this.state.isOpenAdd} toggle={this.toggleEndAdd} toggleAdd={this.toggleAddEvent} />
                 {this.renderEvent()}
                {tmp} 
             </div>
