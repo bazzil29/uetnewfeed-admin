@@ -20,26 +20,26 @@ export default class StudentList extends React.Component {
     /*---------------------------------------------------------------------- */
 
     componentDidMount() {
-        getFalcuty()
+        getCourse()
             .then((res) => {
                 console.log(res.data);
-                this.state.falcutys = res.data;
+                this.state.courses = res.data;
                 this.setState(this.state);
             })
     }
 
     /*---------------------------------------------------------------------- */
-    addFalcuty = (e) => {
-        getCourse(e.target.innerText)
-            .then((res) => {
-                this.state.courses = res.data;
-                console.log(res);
-                this.setState(this.state);
-            })
+    // addFalcuty = (e) => {
+    //     getCourse(e.target.innerText)
+    //         .then((res) => {
+    //             this.state.courses = res.data;
+    //             console.log(res);
+    //             this.setState(this.state);
+    //         })
 
-    }
+    // }
 
-    addCource = (e) => {
+    chooseCourse = (e) => {
         const tmp = document.getElementsByClassName("falcuty-option")[0].innerText;
         console.log(tmp);
         console.log(e.target.innerText);
@@ -104,19 +104,19 @@ export default class StudentList extends React.Component {
         return this.state.courses.map((e, index) => {
             return <div className="dropdown-item" key={index} onClick={(e) => {
                 this.choseOption(e, "source-option");
-                this.addCource(e);
+                this.chooseCourse(e);
             }}>{e.course}</div>
         })
     };
 
-    renderFalcuty = () => {
-        return this.state.falcutys.map((e, index) => {
-            return <div className="dropdown-item" key={index} onClick={(e) => {
-                this.choseOption(e, "falcuty-option");
-                this.addFalcuty(e);
-            }}>{e.major}</div>
-        })
-    };
+    // renderFalcuty = () => {
+    //     return this.state.falcutys.map((e, index) => {
+    //         return <div className="dropdown-item" key={index} onClick={(e) => {
+    //             this.choseOption(e, "falcuty-option");
+    //             this.addFalcuty(e);
+    //         }}>{e.major}</div>
+    //     })
+    // };
 
     renderMajor = () => {
         return this.state.majors.map((e, index) => {
@@ -163,7 +163,7 @@ export default class StudentList extends React.Component {
                                 </button>
                                 <div className="dropdown-menu">
                                     {
-                                        this.renderFalcuty()
+                                       // this.renderFalcuty()
                                     }
                                     <div className="dropdown-divider"></div>
                                     <div className="dropdown-item input-group" href="#">
@@ -237,9 +237,9 @@ export default class StudentList extends React.Component {
                             color="primary"
                             className="btn btn-primary"
                             onClick={this.toggleAddStudent}
-                             >
+                        >
                             Thêm sinh viên
-                    </button>
+                        </button>
                     </div>
                     <Card>
                         <CardHeader>

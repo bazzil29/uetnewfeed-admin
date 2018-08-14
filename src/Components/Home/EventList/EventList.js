@@ -66,10 +66,14 @@ export default class EventList extends React.Component {
     };
 
     deleteEvent = (id) =>{
-        const tmp = this.state.listEvent.filter((e,index)=>{
-            return e.id_eve == id;
+        var tmp;
+        this.state.listEvent.map((e,index)=>{
+            if(e.id_eve == id){
+                tmp = index;
+            }
         })
-        this.state.listEvent.splice(tmp,1);
+        console.log(tmp);
+       this.state.listEvent.splice(tmp,1);
         this.setState({
             isOpen: !this.state.isOpen,
         });

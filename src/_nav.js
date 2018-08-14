@@ -26,7 +26,7 @@ export default {
      {
       name: 'Danh sách thông báo',
       url: '/event/notification-list',
-      icon: 'fas fa-calendar-alt',
+      icon: 'fas fa-bell',
     },
     {
       title: true,
@@ -39,7 +39,7 @@ export default {
     {
       name: 'Danh sách sinh viên',
       url: '/student-list',
-      icon: 'fas fa-calendar-alt',
+      icon: 'fas fa-graduation-cap',
     },
     {
       title: true,
@@ -52,7 +52,7 @@ export default {
     {
       name: 'Danh sách admin',
       url: '/admin',
-      icon: 'fas fa-calendar-alt',
+      icon: 'fas fa-unlock-alt',
     },
   ],
 };

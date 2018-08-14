@@ -1,5 +1,5 @@
 import { getToken } from './LocalServices';
-const url = 'http://18.212.50.83';
+const url = 'http://192.168.2.182:3005';
 const token = getToken();
 export const login = (user, password) => {
     const request = new Request(url + `/api/login`, {
@@ -34,7 +34,7 @@ export const getListEvent = (page) => {
 }   
 
 export const getEventDetails = (id)=>{
-    const request = new Request(url + `/api/events/get_event/?id_event=`+id, {
+    const request = new Request(url + `/api/events/`+id, {
         method: 'GET',
         headers: {
             token:token,
@@ -83,13 +83,17 @@ export const addEvent = (data)=>{
                 image: data.image,
                 place: data.place,
                 time_start: data.time_start,
-                event_type:1,
+                introduce_eve:"gioi thieu",  
+                event_type:1
             }
         )        
     });
     return fetch(request)
         .then((res)=>{
             return res.json();
+        })
+        .catch((res)=>{
+            console.log(res);
         })
 }
 
@@ -129,7 +133,7 @@ export const createNotification = (e) =>{
 }
 
 export const getFalcuty = () =>{
-    const res  = new Request(url+"/api/admin/get_list" , {
+    const res  = new Request(url+"/api/admin/faculty" , {
         method:"GET",   
         headers: {
             token:token,
@@ -144,7 +148,7 @@ export const getFalcuty = () =>{
 }
 
 export const getCourse = (falcuty) =>{
-    const res = new Request (url + "/api/admin/get_list?major="+falcuty,{
+    const res = new Request (url + "/api/admin/course",{
         method:"GET",
         headers:{
             token:token,
@@ -155,7 +159,7 @@ export const getCourse = (falcuty) =>{
 }
  
 export const getMajor = (falcuty,course) =>{
-    const res = new Request (url + "/api/admin/get_list?course="+course+"&major="+falcuty,{
+    const res = new Request (url + "/api/admin/class",{
         method:"GET",
         headers:{
             token:token,
