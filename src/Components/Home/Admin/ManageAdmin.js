@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import { Row, CardHeader, Card, Col, Badge, Button } from 'reactstrap';
 import './ManageAdmin.css';
 export default class ManageAdmin extends React.Component {
@@ -25,7 +25,7 @@ export default class ManageAdmin extends React.Component {
                 </CardHeader>
             )
         })
-    }
+    };
 
     renderValunteer = () => {
         return this.state.valunteers.map((e, index) => {
@@ -45,7 +45,7 @@ export default class ManageAdmin extends React.Component {
                 </CardHeader>
             )
         })
-    }
+    };
 
     /*-------------------------------------------------------------------------------------------------- */
     render() {

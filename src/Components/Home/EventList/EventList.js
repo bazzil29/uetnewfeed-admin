@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Event from "./Event/Event";
 import EventDetails from "./EventDetails/EventDetails";
 import { Button } from "reactstrap";
@@ -19,7 +19,7 @@ export default class EventList extends React.Component {
             page:0,
             data:{},
         }
-    }   
+    };   
 
     /*------------------------------------------------------------------------------------------ */
 
@@ -39,9 +39,10 @@ export default class EventList extends React.Component {
     };
 
     endToggle = (t) =>{
-        this.state.listEvent.map((e,index)=>{
-            if(e.id_eve==t.id_eve){
-                this.state.listEvent[index] = t;
+        this.state.listEvent.forEach((e,index)=>{
+            if(e.id===t.id){
+                e = t;
+                this.setState(this.state);
             }
         })
         this.setState({
@@ -53,22 +54,17 @@ export default class EventList extends React.Component {
         this.state.listEvent.unshift(e);
     };
 
-    toggleEndAdd =()=>{
+
+    toggleAddBox = () =>{
         this.setState({
             isOpenAdd: !this.state.isOpenAdd,
         })
     };
 
-    toggleAddStart = () => {
-        this.setState({
-            isOpenAdd: !this.state.isOpenAdd,
-        })
-    };
-
-    deleteEvent = (id) =>{
+    handleDeleteEvent = (id) =>{
         var tmp;
-        this.state.listEvent.map((e,index)=>{
-            if(e.id_eve == id){
+        this.state.listEvent.forEach((e,index)=>{
+            if(e.id === id){
                 tmp = index;
             }
         })
@@ -87,11 +83,13 @@ export default class EventList extends React.Component {
         await getListEvent(this.state.page)
             .then((res)=>{
                 eventsToAdd = res.data.data;
+                console.log(res);
             })
         // fake an async. ajax call with setTimeout
         const self = this;
         setTimeout(function () {
             // add data
+            
             var currentItems = self.state.listEvent;
             for(var i  = 0 ; i <eventsToAdd.length; i++){
                 currentItems.push(eventsToAdd[i]);
@@ -105,10 +103,13 @@ export default class EventList extends React.Component {
     loadEventDetails = async (id) =>{
         await getEventDetails(id)
              .then((res)=>{
-             this.state.data = res.data;
-             this.setState(this.state);
+                console.log(res);
+                 if(res.success){
+                    this.state.data = res.data;
+                     this.setState(this.state);
+                 }
          })
-    }
+    };
 
     /*------------------------------------------------------------------------------------------ */
 
@@ -133,7 +134,7 @@ export default class EventList extends React.Component {
         render() {
         const tmp = (this.state.isOpen)?<EventDetails 
                                             modal={this.state.isOpen} 
-                                            deleteEvent={this.deleteEvent} 
+                                            deleteEvent={this.handleDeleteEvent} 
                                             open={this.toggle}  
                                             toggle={this.endToggle}  
                                             data={this.state.data} 
@@ -142,11 +143,11 @@ export default class EventList extends React.Component {
             <div className="animated fadeIn"> 
                 <div className="card">
                     <Button color={"primary"} id={'btn-pill'} 
-                            onClick={this.toggleAddStart}>
+                            onClick={this.toggleAddBox}>
                             Thêm sự kiện
                     </Button>
                 </div>
-                <AddEvent modal={this.state.isOpenAdd} toggle={this.toggleEndAdd} toggleAdd={this.toggleAddEvent} />
+                <AddEvent modal={this.state.isOpenAdd} toggle={this.toggleAddBox} toggleAdd={this.toggleAddEvent} />
                 {this.renderEvent()}
                {tmp} 
             </div>

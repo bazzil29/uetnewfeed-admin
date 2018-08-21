@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import DateTimePicker from 'react-datetime-picker';
-import moment from 'moment';
 import {
     ModalBody,
     ModalFooter,
@@ -23,25 +22,33 @@ export default class AddEvent extends React.Component {
             content: "day la noi noi",
             organization: 'NGÔ MINH PHƯƠNG',
             image: "anh",
-            place: "dai diem",
+            place: "dia diem",
             time_start: "khong biet",
+            introduce:"gio thieu chung",
+            event_type:1,
         },
         date: new Date(),
     };
 /*---------------------------------------------------------------------- */
 
-    onChange = (date) => {
-        this.state.date = date;
-        this.state.info.time_start = date.toISOString();
-        this.setState(this.state);
+    handleTimeChange = (date) => {
+        this.setState({
+            date:date,
+            info:{
+                time_start:date.toISOString()
+            },
+            event_type:0
+        })
         console.log(date.toISOString());
     };
 
     addEvent = async () => {
         const header = document.getElementById("title-event").value;
-        const content = document.getElementById("content-event").value;
+        const content = document.getElementById("event-context").value;
         const img = document.getElementById("img-event").value;
         const place = document.getElementById("place-event").value;
+        const event_type = this.state.event_type;
+        const introduce = document.getElementById("intro-event").value;
         var info = {
             header: header,
             content: content,
@@ -49,54 +56,43 @@ export default class AddEvent extends React.Component {
             image: img,
             place: place,
             time_start: this.state.info.time_start,
+            introduce:introduce,
+            event_type:event_type,
         };
         await addEvent(info)
             .then((res) => {
-                console.log(res);
-                 info = {
+                if(res.success){
+                    console.log(res);
+                    info = {
                     header: header,
                     content: content,
-                    id_eve: res.id_eve,
+                    id: res.data,
                     organization: 'NGÔ MINH PHƯƠNG',
                     image: img,
                     place: place,
                     time_start: this.state.info.time_start,
+                    introduce:introduce,
+                    event_type:event_type,
                 };
                 console.log(info);
                 this.props.toggleAdd(info);
+                this.props.toggle();
+                }
+                else{
+                    alert(res.reason);
+                }
             });
-        this.props.toggle();
-    }
-    // nameOnChange = (value) => {
-    //     this.state.info.name = value;
-    //     this.setState(this.state);
-    // };
-    // contextOnChange = (value) => {
-    //     this.state.info.context = value;
-    //     this.setState(this.state);
-    // }
-    // organzationOnChange = (value) => {
-    //     this.state.info.organization = value;
-    //     this.setState(this.state);
-    // };
-    // phoneOnChange(value) {
-    //     this.state.info.phone = value;
-    //     this.setState(this.state);
-    // }
-    // emailOnChange(value) {
-    //     this.state.info.email = value;
-    //     this.setState(this.state);
-    // }
+    };
 
-    // imgOnChange(value) {
-    //     //console.log(value);
-    //     this.state.info.img = value;
-    //     this.setState(this.state);
-    // }
-    // placeOnChange(value) {
-    //     this.state.info.place = value;
-    //     this.setState(this.state);
-    // }
+    renderEventType = () =>{
+        const type = this.state.event_type;
+            if(type === 1){
+                return "Không cần điểm danh";
+            }
+            else if (type === 0){
+                return "Cần điểm danh";
+            }
+    }
 /*---------------------------------------------------------------------- */
 
     render() {
@@ -106,15 +102,20 @@ export default class AddEvent extends React.Component {
                     <ModalHeader toggle={this.props.toggle}>Thêm sự kiện</ModalHeader>
                     <ModalBody>
                         <Form>
-                            <FormGroup><Label>Tiêu đề sự kiện:</Label>
+                            <FormGroup>
+                                <Label>Tiêu đề sự kiện:</Label>
                                 <Input type="text" placeholder={this.state.info.header} id="title-event" />
+                                <Label>Phần giới thiệu chung:</Label>
+                                <br/>
+                                <textarea type = "text" className="form-control"  id="intro-event" placeholder={this.state.info.header}/>
+                                <br/>
                                 <Label>Nội dung sự kiện:</Label>
-                                <textarea name="" className={'form-control'} placeholder={this.state.info.content}
-                                    cols="auto" rows="auto" id={'event-context'} id="content-event" />
+                                <textarea name="" className="form-control" placeholder={this.state.info.content}
+                                    cols="auto" rows="auto" id="event-context"  />
                                 <Label>Thời gian tổ chức</Label>
                                 <br />
                                 <DateTimePicker className={'form-control'} id={'react-datetime-picker'}
-                                    onChange={this.onChange}
+                                    onChange={this.handleTimeChange}
                                     value={this.state.date}
                                 />
                                 <br />
@@ -146,6 +147,32 @@ export default class AddEvent extends React.Component {
                                     <ListGroupItem className="justify-content-between">Thêm sự sinh viên<i
                                         className="fas fa-plus-circle " id={"student-icon"} /></ListGroupItem>
                                 </ListGroup>
+                                <Label>Loại sự kiện:</Label>
+                                <br/>
+                                <div className="btn-group">
+                                    <button
+                                        type="button"
+                                        className="btn btn-info dropdown-toggle source-option"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                        {this.renderEventType()}
+                                    </button>
+                                    <div className="dropdown-menu">
+                                        <div className="dropdown-item" onClick = {()=>{
+                                                this.setState({
+                                                    ...this.state,
+                                                        event_type: 0
+                                                })
+                                            }}>Cần điểm danh</div>
+                                        <div className="dropdown-item" onClick = {()=>{
+                                            this.setState({
+                                                    ...this.state,
+                                                        event_type: 1
+                                                })
+                                            }}>Không cần điểm danh</div>
+                                    </div>
+                                 </div>   
                             </FormGroup>
                         </Form>
                     </ModalBody>

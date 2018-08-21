@@ -7,32 +7,29 @@ import {
     ModalHeader,
     Modal,
     Button,
-    Form,
-    FormGroup,
     Label,
     Input,
     ListGroupItem,
     ListGroup, CardBody, Card,
     Collapse, Row, Col, CardHeader,
 } from "reactstrap";
-import $ from 'jquery';
-import ReactSummernote from 'react-summernote';
 import 'react-summernote/dist/react-summernote.css'; // import styles
 import '../../../../index.css';
 import { updateEvent, deleteEvent } from '../../../../Services/APIServices';
-import { Redirect } from 'react-router-dom';
-export default class EventDetails extends Component {
+export default class EventDetails   extends Component {
     constructor(props) {
         super(props);
         this.state = {
             info: {
                 header: this.props.data.header,
-                id_eve: this.props.data.id_eve,
+                id: this.props.data.id,
                 content: this.props.data.content,
                 organization: 'NGÔ MINH PHƯƠNG',
                 image: this.props.data.image,
                 place: this.props.data.place,
                 time_start: this.props.data.time_start,
+                introduce:this.props.data.introduce,
+                event_type:this.props.data.event_type
             },
             date: new Date(),
             collapse: false,
@@ -66,9 +63,116 @@ export default class EventDetails extends Component {
             studentsForce: [],
             isStudentsOpen: false,
             isUpdated: false,
-        }
+        };
     }
 
+   
+/*------------------------------------------------------------------------------------------------------------ */
+    handleTimeChange = (date) => {
+        this.setState({ ...this.state,date: date })
+        this.setState({
+            ...this.state,
+            info:{
+                ...this.state.info,
+                time_start:date.toISOString(),
+            }
+        })
+        console.log(date.toISOString());
+    };
+
+    handleNameChange = (value) => {
+        this.setState({
+            info:{
+                ...this.state.info,
+                header:value
+            }
+        });
+    };
+
+    handleIntroduceChange = (value) =>{
+        this.setState({
+            info:{
+                ...this.state.info,
+                introduce:value
+            }
+        });
+    };
+
+    handleContentChange = (value) => {
+        this.setState({
+            info:{
+                ...this.state.info,
+                content:value
+            }
+        });
+    }
+
+    handleOrganzationChange = (value) => {
+        this.setState({
+            info:{
+                ...this.state.info,
+                organization:value
+            }
+        });
+    }
+
+    handlePhoneChange = (value) => {
+        this.setState({
+            info:{
+                ...this.state.info,
+                phone:value
+            }
+        });
+    }
+
+    handleEmailChange = (value) => {
+        this.setState({
+            info:{
+                ...this.state.info,
+                email:value
+            }
+        });
+    }
+
+    handleImageChange = (value) => {
+        this.setState({
+            info:{
+                ...this.state.info,
+                image:value
+            }
+        });
+    };
+
+    handlePlaceChange = (value) => {
+        this.setState({
+            info:{
+                ...this.state.info,
+                place:value
+            }
+        });
+    };
+/*------------------------------------------------------------------------------------------------------------ */
+
+    onAddStudentEvent = (e) => {
+        this.state.students.forEach((e, index) => {
+            if (e.isChoosed) {
+                this.state.studentsForce.push(e);
+            }
+        })
+        this.setState({
+            ...this.state,
+            collapse:false
+        })
+    };
+
+    makeListStudentsForce = () => {
+        const tmp = this.state.studentsForce.map((e, index) => {
+            return <ListGroupItem className="justify-content-between">{e.name}<i
+                className="fas fa-minus-circle"
+                id={"student-icon"} /></ListGroupItem>
+        })
+        return tmp;
+    };
     addStudentSearch = (e) => {
         const tmp = e.target;
         const tmp1 = document.getElementById('select-major');
@@ -210,7 +314,8 @@ export default class EventDetails extends Component {
     };
 
     onCheckBox = (index) => {
-        this.state.students[index - 1].isChoosed = !this.state.students[index - 1].isChoosed;
+        // let tmp = this.state.students[index - 1].isChoosed;
+        // tmp = !tmp;
         this.setState(this.state);
     };
 
@@ -231,78 +336,24 @@ export default class EventDetails extends Component {
             </CardHeader>
         })
     };
+/*------------------------------------------------------------------------------------------------------------ */
 
-    onChange = (date) => {
-        this.setState({ date: date })
-        this.state.info.time_start = date.toISOString();
-        this.setState(this.state);
-        console.log(date.toISOString());
-    };
-
-    nameOnChange = (value) => {
-        this.state.info.header = value;
-        this.setState(this.state);
-    };
-
-    contextOnChange = (value) => {
-        this.state.info.content = value;
-        this.setState(this.state);
-    };
-
-    organzationOnChange = (value) => {
-        this.state.info.organization = value;
-        this.setState(this.state);
-    };
-
-    phoneOnChange(value) {
-        this.state.info.phone = value;
-        this.setState(this.state);
-    };
-
-    emailOnChange(value) {
-        this.state.info.email = value;
-        this.setState(this.state);
-    };
-
-    imgOnChange(value) {
-        this.state.info.image = value;
-        this.setState(this.state);
-    };
-
-    placeOnChange(value) {
-        this.state.info.place = value;
-        this.setState(this.state);
-    };
-
-    onAddStudentEvent = (e) => {
-        this.state.students.map((e, index) => {
-            if (e.isChoosed) {
-                this.state.studentsForce.push(e);
-            }
-        })
-        this.state.collapse = false;
-        this.setState(this.state);
-    };
-
-    makeListStudentsForce = () => {
-        const tmp = this.state.studentsForce.map((e, index) => {
-            return <ListGroupItem className="justify-content-between">{e.name}<i
-                className="fas fa-minus-circle"
-                id={"student-icon"} /></ListGroupItem>
-        })
-        return tmp;
-    };
-
-    update = async () => {
-        const id = this.props.data.id_eve;
+    handleOnUpdate = async () => {
+        const id = this.props.data.id;
+        console.log(this.state.info);
         await updateEvent(id, this.state.info)
             .then((res) => {
-                console.log(res);
+                if(res.success){
+                    this.props.toggle(this.state.info);
+                }
+                else{
+                    alert(res.reason);
+                }
             });
     };
 
-    deleteEvent = async () => {
-        const id = this.props.data.id_eve;
+    handleDeleteEvent = async () => {
+        const id = this.state.info.id;
         await deleteEvent(id)
             .then((res) => {
                 console.log(res);
@@ -310,70 +361,104 @@ export default class EventDetails extends Component {
             });
     };
 
+
+
+/*------------------------------------------------------------------------------------------------------------ */
+
+renderEventType = () =>{
+    const type = this.state.info.event_type;
+        if(type === 1){
+            return "Không cần điểm danh";
+        }
+        else if (type === 0){
+            return "Cần điểm danh";
+        }
+};
+/*------------------------------------------------------------------------------------------------------------ */
+
     render() {
         const students = (this.state.isStudentsOpen) ? this.makeListStudent() : null;
+        const collapse = this.state.collapse;
+        const {
+            header,
+            id,
+            content,
+            organization,
+            image,
+            place,
+            phone,
+            email,
+            introduce
+            } = this.state.info; 
         return (
             <div>
                 <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.props.toggle}>Chỉnh sửa thông tin sự kiện</ModalHeader>
                     <ModalBody>
-                        <Form>
-                            <FormGroup>
                                 <Label>Tiêu đề sự kiện:</Label>
-                                <Input type="text" value={this.state.info.header} onChange={e => {
-                                    this.nameOnChange(e.target.value);
+                                <input className = "form-control" type="text" defaultValue={header}  onChange={e => {
+                                    this.handleNameChange(e.target.value);
                                 }} />
                                 <Label>Mã sự kiện:</Label>
-                                <Input type="text" placeholder={this.state.info.id_eve} disabled />
+                                <input className = "form-control" type="text" placeholder={id} disabled />
+                                <Label>Giới thiệu chung:</Label>
+                                <textarea name="" className="form-control" defaultValue={introduce}
+                                    cols="auto" rows="auto" id="event-context" onChange={e => {
+                                        this.handleIntroduceChange(e.target.value);
+                                    }} />
                                 <Label>Nội dung sự kiện:</Label>
-                                <textarea name="" className={'form-control'} value={this.state.info.content}
-                                    cols="auto" rows="auto" id={'event-context'} onChange={e => {
-                                        this.contextOnChange(e.target.value);
+                                <textarea name="" className="form-control" defaultValue={content}
+                                    cols="auto" rows="auto" id="event-context" onChange={e => {
+                                        this.handleContentChange(e.target.value);
                                     }} />
                                 <Label>Địa điểm:</Label>
-                                <Input type="text" value={this.state.info.place} onChange={e => {
-                                    this.placeOnChange(e.target.value);
+                                <input className = "form-control" type="text" defaultValue={place} onChange={e => {
+                                    this.handlePlaceChange(e.target.value);
                                 }} />
                                 <Label>Thời gian tổ chức</Label>
                                 <br />
-                                <DateTimePicker className={'form-control'} id={'react-datetime-picker'}
-                                    onChange={this.onChange}
+                                <DateTimePicker className='form-control' id='react-datetime-picker'
+                                    onChange={this.handleTimeChange}
                                     value={this.state.date}
                                 />
                                 <br />
                                 <Label>Đơn vị tổ chức:</Label>
-                                <Input type="text" value={this.state.info.organization} onChange={e => {
-                                    this.organzationOnChange(e.target.value);
-                                }} />
+                                <input className = "form-control" type="text" defaultValue={organization} onChange={e => {
+                                    this.handleOrganzationChange(e.target.value);
+                                }}/>
                                 <Label>Số điện thoại:</Label>
-                                <Input type="phone" value={this.state.info.phone} onChange={e => {
-                                    this.phoneOnChange(e.target.value);
-                                }} />
+                                <input className = "form-control" type="text" defaultValue={phone} onChange={e => {
+                                    this.handlePhoneChange(e.target.value);
+                                }}/>
                                 <Label>E-mail:</Label>
-                                <Input type="email" value={this.state.info.email} onChange={e => {
-                                    this.emailOnChange(e.target.value);
+                                <input className = "form-control" type="text" defaultValue={email} onChange={e => {
+                                    this.handleEmailChange(e.target.value);
                                 }} />
                                 <Label>Ảnh bìa đính kèm:</Label>
-                                <Input type="text" value={this.state.info.image} onChange={e => {
-                                    this.imgOnChange(e.target.value);
+                                <input className = "form-control" type="text" defaultValue={image} onChange={e => {
+                                    this.handleImageChange(e.target.value);
                                 }} />
                                 {/* <Input type="file" onChange={e => {
                                     this.imgOnChange(e.target.files[0]);
                                 }} /> */}
-                                <Label>Sinh viên đã đăng ký:</Label>
-                                <Input type="number" placeholder={this.state.info.point} />
+                                <Label>Sinh viên quan tâm:</Label>
+                                <input className = "form-control" type="number"/>
                                 <Label>Sinh viên mặc định tham gia:</Label>
                                 <ListGroup>
                                     {this.makeListStudentsForce()}
-                                    <ListGroupItem className="justify-content-between" onClick={this.toggle}>Thêm sinh
-                                        viên<i
-                                            className="fas fa-plus-circle " id={"student-icon"} /></ListGroupItem>
-                                    <Collapse isOpen={this.state.collapse}>
+                                    <ListGroupItem 
+                                        className="justify-content-between" 
+                                        onClick={this.toggle}>Thêm sinh
+                                        viên
+                                        <i
+                                            className="fas fa-plus-circle " 
+                                            id="student-icon" /></ListGroupItem>
+                                    <Collapse isOpen={collapse}>
                                         <Card id={'add-student-card'}>
                                             <CardBody>
                                                 <Row>
                                                     <Col>
-                                                        <Input type={'select'} name={"select"} id={'select-major'}>
+                                                        <Input type='select' name="select" id='select-major'>
                                                             <option value="rand">Khoa</option>
                                                             <option value="FIT">Công nghệ thông tin</option>
                                                             <option value="FET">Điện tử viễn thông</option>
@@ -384,7 +469,7 @@ export default class EventDetails extends Component {
                                                         </Input>
                                                     </Col>
                                                     <Col>
-                                                        <Input type={'select'} name={"select"} id={'select-year'}
+                                                        <Input type='select' name="select" id='select-year'
                                                             onChange={this.addStudentSearch}>
                                                             <option value="rand">Khóa</option>
                                                             <option value="k59">K59</option>
@@ -395,14 +480,15 @@ export default class EventDetails extends Component {
                                                         </Input>
                                                     </Col>
                                                     <Col>
-                                                        <Input type={'select'} name={"select"} id={'select-class'}>
+                                                        <Input type='select' name="select" id='select-class'>
                                                             <option value="rand">Lớp</option>
                                                         </Input>
                                                     </Col>
                                                     <Col>
                                                         <Button onClick={() => {
-                                                            this.state.isStudentsOpen = !this.state.isStudentsOpen;
-                                                            this.setState(this.state);
+                                                            this.setState({
+                                                                isStudentsOpen: !this.state.isStudentsOpen
+                                                            })
                                                         }}>Tìm</Button>
                                                     </Col>
                                                 </Row>
@@ -421,19 +507,42 @@ export default class EventDetails extends Component {
                                 <Label>Sinh viên đã tham gia:</Label>
                                 <ListGroup>
                                     <ListGroupItem className="justify-content-between">Thêm sinh viên<i
-                                        className="fas fa-plus-circle " id={"student-icon"} /></ListGroupItem>
+                                        className="fas fa-plus-circle " id="student-icon" /></ListGroupItem>
                                 </ListGroup>
-                            </FormGroup>
-                        </Form>
+                                <Label>Loại sự kiện:</Label>
+                                <br/>
+                                <div className="btn-group">
+                                    <button
+                                        type="button"
+                                        className="btn btn-info dropdown-toggle source-option"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                        {this.renderEventType()}
+                                    </button>
+                                    <div className="dropdown-menu">
+                                        <div className="dropdown-item" onClick = {()=>{
+                                                this.setState({
+                                                    info:{
+                                                        ...this.state.info,
+                                                        event_type: 0
+                                                    }
+                                                })
+                                            }}>Cần điểm danh</div>
+                                        <div className="dropdown-item" onClick = {()=>{
+                                                this.setState({
+                                                    info:{
+                                                        ...this.state.info,
+                                                        event_type: 1
+                                                    }
+                                                })
+                                            }}>Không cần điểm danh</div>
+                                    </div>
+                                 </div>   
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={() => {
-                            this.update()
-                                .then(() => {
-                                    this.props.toggle(this.state.info);
-                                });
-                        }}>Hoàn tất</Button>
-                        <Button color="primary" onClick={this.deleteEvent}>Xóa sự kiện</Button>
+                        <Button color="primary" onClick={this.handleOnUpdate}>Hoàn tất</Button>
+                        <Button color="danger" onClick={this.handleDeleteEvent}>Xóa sự kiện</Button>
                         <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
                     </ModalFooter>
                 </Modal>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import {createNotification} from "../../../../Services/APIServices.js" 
 import {
@@ -21,15 +21,23 @@ export default class AddNotification extends React.Component{
         date: new Date(),
     };
 /*----------------------------------------------------------------------------------------------- */
-    addNotification = () =>{
+    handleAddNotification = () =>{
         const title = document.getElementById("title-noti").value;
         const body = document.getElementById("content-noti").value;
         const tmp = {
             title:title,
             body:body
         }
-        createNotification(tmp);
-        this.props.toggle();
+        createNotification(tmp)
+            .then((res)=>{
+                if(res.success){
+                    this.props.toggle();
+                }
+                else{
+                    alert(res.reason);
+                }
+            })
+        
     }
 /*----------------------------------------------------------------------------------------------- */
     render(){
@@ -71,7 +79,7 @@ export default class AddNotification extends React.Component{
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.addNotification}>Hoàn tất</Button>
+                        <Button color="primary" onClick={this.handleAddNotification}>Hoàn tất</Button>
                         <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
                     </ModalFooter>
                 </Modal>

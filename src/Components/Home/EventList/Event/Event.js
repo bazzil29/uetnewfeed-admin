@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Col, Row, Button} from "reactstrap";
 import './Event.css';
-import moment from "moment";
 export default class Event extends React.Component {
 /*---------------------------------------------------------------------- */
 
     onClickEdit = () =>{
-        this.props.toggle(this.props.data.id_eve);
+        const id =this.props.data.id;
+        console.log(id);
+        this.props.toggle(id);
     }
 /*---------------------------------------------------------------------- */
 
     render() {
-        const tmp = new Date(2018, 1, 9, 13, 0, 0);
-        const day = moment(tmp)._d;
         return ( 
             <div className="card">
                 <div className="card-header">
@@ -24,7 +23,7 @@ export default class Event extends React.Component {
                         <Col lg='4'><img id={"event-img"}
                             src={this.props.data.image}
                             height="200px" alt="event"/></Col>
-                        <Col lg='8'><p align="justify">{this.props.data.content}</p>
+                        <Col lg='8'>
                             <div className={'date-location'}>
                                 {   
                                     this.props.data.time_start

@@ -28,8 +28,9 @@ class Home extends Component {
     };
     componentDidMount() {
         const token = getToken();
-        this.state.isLogin = (token != null);
-        this.setState(this.state);
+        this.setState({
+            isLogin:(token != null)
+        });
     };
     render() {
         if (this.state.isLogin) {

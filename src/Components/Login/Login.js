@@ -1,32 +1,55 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import {
+    Button,
+    Card,
+    CardBody,
+    CardGroup,
+    Col,
+    Container,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText,
+    Row
+} from 'reactstrap';
 import { login } from '../../Services/APIServices';
 import Redirect from "react-router-dom/es/Redirect";
 import { saveToken, getToken } from '../../Services/LocalServices';
 import './Login.css';
 
 class Login extends Component {
-    state = {
-        isLogin: false,
-    }
+
+    constructor (props) {
+        super(props);
+        this.state = {
+            isLogin: false,
+        };
+        this.loginButton = React.createRef();    
+    };
+
     componentDidMount() {
         const token = getToken();
-        this.state.isLogin = (token != null);
-        this.setState(this.state);
-    }
-    onLogin = () => {
+        this.setState({
+            isLogin: (token != null)
+        })
+    };
+
+    handleLogin = () => {
         const user = document.getElementById("user-login").value;
         const password = document.getElementById("password-login").value;
         login(user, password)
             .then((res) => {
+                console.log(res);
                 if (res.success) {
                     const tmp = document.getElementById('fail-login-info');
+                    console.log(res)
                     tmp.style.visibility = 'hidden';
-                    this.state.isLogin = true;
                     saveToken(res.accessToken);
-                    this.setState(this.state);
+                    this.setState({
+                        isLogin: true
+                    });
                 }
-                else{
+                else {
                     const tmp = document.getElementById('fail-login-info');
                     tmp.style.visibility = 'visible';
                 }
@@ -35,7 +58,8 @@ class Login extends Component {
                 console.log(err);
             })
 
-    }
+    };
+
     render() {
         if (this.state.isLogin) {
             return <Redirect to={'/'} />;
@@ -57,7 +81,12 @@ class Login extends Component {
                                                         <i className="icon-user" />
                                                     </InputGroupText>
                                                 </InputGroupAddon>
-                                                <Input type="text" placeholder="Username" id="user-login" />
+                                                <Input type="text" placeholder="Username" id="user-login" onKeyUp={(e) => {
+                                                    e.preventDefault();
+                                                    if(e.keyCode === 13){
+                                                        this.loginButton.current.onClick();
+                                                    }
+                                                }} />
                                             </InputGroup>
                                             <InputGroup className="mb-4">
                                                 <InputGroupAddon addonType="prepend">
@@ -65,12 +94,27 @@ class Login extends Component {
                                                         <i className="icon-lock" />
                                                     </InputGroupText>
                                                 </InputGroupAddon>
-                                                <Input type="password" placeholder="Password" id="password-login" />
+                                                <Input  type="password" 
+                                                        placeholder="Password" 
+                                                        id="password-login" 
+                                                        onKeyUp={(e) => {
+                                                             e.preventDefault();
+                                                            if(e.keyCode === 13){
+                                                            this.loginButton.current.onClick();
+                                                        }
+                                                }} 
+                                                        />
                                             </InputGroup>
-                                            <p id = 'fail-login-info'>Sai thông tin tài khoản</p>
+                                            <p id='fail-login-info'>Sai thông tin tài khoản</p>
                                             <Row>
                                                 <Col xs="6">
-                                                    <Button color="primary" className="px-4" onClick={this.onLogin}>Đăng nhập</Button>
+                                                    <Button
+                                                        ref={this.loginButton} 
+                                                        color="primary"
+                                                        className="px-4"
+                                                        onClick={this.handleLogin}>
+                                                        Đăng nhập
+                                                    </Button>
                                                 </Col>
                                                 <Col xs="6" className="text-right">
                                                     <Button color="link" className="px-0">Quên mật khẩu</Button>

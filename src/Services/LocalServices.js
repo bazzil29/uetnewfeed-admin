@@ -1,5 +1,4 @@
 export const saveToken =(token)=>{
-    const tmp = token.toString();
     localStorage.setItem('token',token);
 }
 

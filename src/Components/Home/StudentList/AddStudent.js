@@ -1,4 +1,4 @@
-import React , {component} from 'react';
+import React  from 'react';
 import {
     ModalBody,
     ModalFooter,
@@ -8,75 +8,206 @@ import {
     Form,
     FormGroup,
     Label,
-    Input,
-    ListGroupItem,
-    ListGroup, Badge
+    Input
 } from "reactstrap";
+import { getCourse, getMajor } from '../../../Services/APIServices';
 export default class AddStudent extends React.Component {
     state = {
         info: {
-            name: "Ngô Minh Phương",
-            id: '16021629',
-            email: 'oscar.ngo98@gmail.com',
-            phone: '0971486734',
-            gpa: '3.0',
-            point: '90',
-            birthDay: '2/9/1998',
-            class: "K61N",
-            major: "CNTT"
+            full_name: "Họ và tên",
+            mssv: "Mã sinh viên",
+            phone_number: "",
+            course: "Khóa",
+            class_name: "Lớp",
+            email: "Email",
+            role_id: null,
+            id_course: null,
+            id_class: null,
+            faculty: null,
+        },
+        courses: [],
+        majors: []
+    };
+
+    componentDidMount() {
+        getCourse()
+            .then((res) => {
+                if (res.success) {
+                    console.log(res.data)
+                    this.setState({
+                        ...this.state,
+                        courses: res.data
+                    })
+                }
+            })
+    };
+
+    chooseCourse = (e) => {
+        console.log(e);
+        getMajor(e.id)
+            .then((res) => {
+                console.log(res.data);
+                this.setState({
+                    ...this.state,
+                    majors: res.data,
+                    info:{
+                        ...this.state.info,
+                        course:e.name,
+                        id_course:e.id
+                    }
+                });
+            })
+    };
+
+    chooseMajor = (e) => {
+        console.log(e.id);
+        this.setState({
+            ...this.state,
+            info:{
+                ...this.state.info,
+                class_name:e.name,
+                id_class:e.id
+            }
+        });
+    };
+
+    renderPosition = () => {
+        const position = this.state.info.role_id;
+        if (position === 2) {
+            return "Sinh viên";
         }
-    }
+        else if (position === 3) {
+            return "Cộng tác viên";
+        }
+        return "Admin";
+    };
+
+    renderCourse = () => {
+        return this.state.courses.map((e, index) => {
+            return <div className="dropdown-item" key={index} onClick={(t) => {
+                this.chooseCourse(e);
+            }}>{e.name}</div>
+        })
+    };
+
+    renderMajor = () => {
+        return this.state.majors.map((e, index) => {
+            return <div className="dropdown-item" key={index} onClick={(t) => {
+                this.chooseMajor(e)
+            }}>{e.name}</div>
+        })
+    };
     render(){
-        return(
-            <div>
-                <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
-                    <ModalHeader toggle={this.props.toggle}>Chỉnh sửa thông tin sinh viên</ModalHeader>
-                    <ModalBody>
-                        <Form>
-                            <FormGroup>
-                                <Label>Họ và tên:</Label>
-                                <Input type="text" placeholder={this.state.info.name} />
-                                <Label>Mã sinh viên:</Label>
-                                <Input type="number" placeholder={this.state.info.id} />
-                                <Label>Vị trí:</Label>
-                                <br/>
-                                    <input type="radio" name="gender" value="male"/> Sinh viên 
-                                    <input type="radio" name="gender" value="female"/> Cộng tác viên    
-                                    <input type="radio" name="gender" value="other"/> Admin  
-                                <Label>Lớp:</Label>
-                                <Input type="text" placeholder={this.state.info.class} />
-                                <Label>Khoa:</Label>
-                                <Input type="text" placeholder={this.state.info.major} />
-                                <Label>Ngày sinh:</Label>
-                                <Input type="date" placeholder={this.state.info.birthDay} />
-                                <Label>E-mail:</Label>
-                                <Input type="email" placeholder={this.state.info.email} />
-                                <Label>Số điện thoại:</Label>
-                                <Input type="phone" placeholder={this.state.info.phone} />
-                                <Label>GPA:</Label>
-                                <Input type="number" placeholder={this.state.info.gpa} />
-                                <Label>Điểm rèn luyện:</Label>
-                                <Input type="number" placeholder={this.state.info.point} />
-                                <Label>Danh sách sự kiện đã tham gia:</Label>
-                                <ListGroup>
-                                    <ListGroupItem className="justify-content-between">Event 1 <Badge
-                                        pill>10</Badge><i className="fas fa-minus-circle" id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">Event 2 <Badge
-                                        pill>10</Badge><i className="fas fa-minus-circle " id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">Event 3 <Badge
-                                        pill>10</Badge><i className="fas fa-minus-circle " id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">Thêm sự kiện<i
-                                        className="fas fa-plus-circle " id={"student-icon"} /></ListGroupItem>
-                                </ListGroup>
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={this.props.toggle}>Thêm sinh viên</Button>
-                        <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
-                    </ModalFooter>
-                </Modal>
-            </div>
-        )
+            const {
+                full_name, mssv,  course, class_name
+            } = this.state.info;
+            return (
+                <div>
+                    <Modal isOpen={this.props.modal} toggle={this.props.toggle} >
+                        <ModalHeader toggle={this.props.toggle}>Chỉnh sửa thông tin sinh viên</ModalHeader>
+                        <ModalBody>
+                            <Form>
+                                <FormGroup>
+                                    <Label>Họ và tên:</Label>
+                                    <Input
+                                        placeholder={full_name}
+                                    />
+                                    <Label>Mã sinh viên:</Label>
+                                    <Input
+                                        type="number"
+                                        placeholder={mssv}
+                                    />
+                                    <Label>Vai trò:</Label>
+                                    <br />
+                                    <div className="btn-group">
+                                        <button
+                                            type="button"
+                                            className="btn btn-info dropdown-toggle source-option"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+                                            {this.renderPosition()}
+                                        </button>
+                                        <div className="dropdown-menu">
+                                            <div className="dropdown-item" onClick={() =>
+                                                this.setState({
+                                                    ...this.state,
+                                                    info: {
+                                                        ...this.state.info,
+                                                        role_id: 2
+                                                    }
+                                                })
+                                            }>Sinh viên</div>
+                                            <div className="dropdown-item" onClick={() =>
+                                                this.setState({
+                                                    ...this.state,
+                                                    info: {
+                                                        ...this.state.info,
+                                                        role_id: 3
+                                                    }
+                                                })
+                                            }>Cộng tác viên</div>
+                                            <div className="dropdown-item" onClick={() =>
+                                                this.setState({
+                                                    ...this.state,
+                                                    info: {
+                                                        ...this.state.info,
+                                                        role_id: 1
+                                                    }
+                                                })
+                                            }>Admin</div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <Label>Khóa:</Label>
+                                        <br/>
+                                    <div className="btn-group">
+                                        <button
+                                            type="button"
+                                            className="btn btn-info dropdown-toggle source-option"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+                                            {
+                                                course
+                                            }
+                                    </button>
+                                        <div className="dropdown-menu">
+                                            {
+                                                this.renderCourse()
+                                            }
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <Label>Lớp:</Label>
+                                    <br/>
+                                    <div className="btn-group">
+                                        <button
+                                            type="button"
+                                            className="btn btn-danger dropdown-toggle major-option"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+                                            {
+                                                class_name
+                                            }
+                                    </button>
+                                        <div className="dropdown-menu">
+                                            {
+                                                this.renderMajor()
+                                            }
+                                        </div>
+                                    </div>
+                                    <br />
+                                </FormGroup>
+                            </Form>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="primary" onClick={this.handleOnAdd}>Thêm sinh viên</Button>
+                            <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
+                        </ModalFooter>
+                    </Modal>
+                </div>
+            )
     }
 }
