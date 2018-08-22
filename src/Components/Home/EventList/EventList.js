@@ -1,14 +1,20 @@
 import React from 'react';
 import Event from "./Event/Event";
 import EventDetails from "./EventDetails/EventDetails";
-import { Button } from "reactstrap";
+import { Button, PaginationItem, PaginationLink, Pagination } from "reactstrap";
 import './EventList.css'
 import AddEvent from "./AddEvent/AddEvent";
-import { getListEvent, getEventDetails } from '../../../Services/APIServices';
+import {
+    getListEvent,
+    getEventDetails,
+    getPageNumbers
+} from '../../../Services/APIServices';
 import Waypoint from '../../../../node_modules/react-waypoint';
+import './EventDetails/EventDetails.css';
+import ReactLoading from 'react-loading';
 
 export default class EventList extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             isOpen: false,
@@ -16,107 +22,137 @@ export default class EventList extends React.Component {
             eventDetail: {},
             listEvent: [],
             isLoading: false,
-            page:0,
-            data:{},
+            page: 0,
+            data: {},
+            pageNumbers: 0,
         }
-    };   
+    };
 
-    /*------------------------------------------------------------------------------------------ */
+    /** 
+    *
+    * 
+    * 
+    * -----------------------------------------------------------------------------------------------------------------------------------------------
+    * 
+    *
+    *  
+    * */
 
-    componentDidMount(){
+    componentDidMount() {
         this.loadMoreItems();
+        getPageNumbers()
+            .then(res => {
+                console.log(res.data)
+                this.setState({
+                    ...this.state,
+                    pageNumbers: res.data
+                })
+            })
     };
 
-    /*------------------------------------------------------------------------------------------ */
+    /** 
+    *
+    * 
+    * 
+    * -----------------------------------------------------------------------------------------------------------------------------------------------
+    * 
+            *  
+    * */
 
-    toggle =  (id) => {
+    toggle = (id) => {
         this.loadEventDetails(id)
-         .then(()=>{
-            this.setState({
-                isOpen: !this.state.isOpen,
-            });
-         })   
+            .then(() => {
+                this.setState({
+                    isOpen: !this.state.isOpen,
+                });
+            })
     };
 
-    endToggle = (t) =>{
-        this.state.listEvent.forEach((e,index)=>{
-            if(e.id===t.id){
-                e = t;
-                this.setState(this.state);
-            }
-        })
+    handleUpdateEvent = (t) => {
+        this.loadMoreItems();
         this.setState({
             isOpen: !this.state.isOpen,
         });
     };
 
-    toggleAddEvent = (e) => {
-        this.state.listEvent.unshift(e);
-    };
-
-
-    toggleAddBox = () =>{
-        this.setState({
-            isOpenAdd: !this.state.isOpenAdd,
-        })
-    };
-
-    handleDeleteEvent = (id) =>{
+    handleDeleteEvent = (id) => {
         var tmp;
-        this.state.listEvent.forEach((e,index)=>{
-            if(e.id === id){
+        this.state.listEvent.forEach((e, index) => {
+            if (e.id === id) {
                 tmp = index;
             }
         })
         console.log(tmp);
-       this.state.listEvent.splice(tmp,1);
+        this.state.listEvent.splice(tmp, 1);
         this.setState({
             isOpen: !this.state.isOpen,
         });
         this.setState(this.state);
     };
 
-    /*------------------------------------------------------------------------------------------ */
+    /** 
+    *
+    * 
+    * 
+    * -----------------------------------------------------------------------------------------------------------------------------------------------
+    * 
+    *
+    *  
+    * */
 
-    loadMoreItems = async ()=> {
-        var eventsToAdd;
-        await getListEvent(this.state.page)
-            .then((res)=>{
-                eventsToAdd = res.data.data;
+    loadMoreItems = () => {
+        getListEvent(this.state.page)
+            .then((res) => {
                 console.log(res);
+                if (res.data.success && res.data.data !== null) {
+                    this.setState({
+                        ...this.state,
+                        isLoading: true
+                    });
+                    const self = this;
+                    setTimeout(function () {
+                        // add data
+                        self.setState({
+                            ...self.state,
+                            listEvent: res.data.data,
+                            isLoading: false
+                        })
+                    }, 2000);
+                }
+                else {
+                    this.setState({
+                        ...this.state,
+                        isLoading: true
+                    });
+                }
             })
         // fake an async. ajax call with setTimeout
-        const self = this;
-        setTimeout(function () {
-            // add data
-            
-            var currentItems = self.state.listEvent;
-            for(var i  = 0 ; i <eventsToAdd.length; i++){
-                currentItems.push(eventsToAdd[i]);
-            }
-            self.state.isLoading = false;
-            self.state.listEvent = currentItems;
-            self.setState(self.state);
-        }, 2000);   
     };
 
-    loadEventDetails = async (id) =>{
+    loadEventDetails = async (id) => {
         await getEventDetails(id)
-             .then((res)=>{
+            .then((res) => {
                 console.log(res);
-                 if(res.success){
+                if (res.success) {
                     this.state.data = res.data;
-                     this.setState(this.state);
-                 }
-         })
+                    this.setState(this.state);
+                }
+            })
     };
 
-    /*------------------------------------------------------------------------------------------ */
+    /** 
+        *
+        * 
+        * 
+        * -----------------------------------------------------------------------------------------------------------------------------------------------
+        * 
+        *
+        *  
+        * */
 
-    
     renderEvent = () => {
         const listEvent = this.state.listEvent.map((e, index) => {
-            return <Event toggle={this.toggle} data = {e}  key={index}  />;
+            return <Event toggle={this.toggle} data={e} key={index} />;
         })
         return listEvent;
     };
@@ -124,32 +160,101 @@ export default class EventList extends React.Component {
     renderWaypoint = () => {
         if (!this.state.isLoading) {
             return (
-                <Waypoint   onEnter={this.loadMoreItems}
+                <Waypoint onEnter={this.loadMoreItems}
                 />
             );
         }
     };
 
-    /*------------------------------------------------------------------------------------------ */
-        render() {
-        const tmp = (this.state.isOpen)?<EventDetails 
-                                            modal={this.state.isOpen} 
-                                            deleteEvent={this.handleDeleteEvent} 
-                                            open={this.toggle}  
-                                            toggle={this.endToggle}  
-                                            data={this.state.data} 
-                                            />:null;
+    renderPanigation = () => {
+        const tmp = this.state.pageNumbers;
+        var a = [];
+        for (let i = 0; i < tmp; i++) {
+            a.push(i);
+        }
+        return a.map((e, index) => {
+            if (index === this.state.page) {
+                return (
+                    <PaginationItem active key={index} index={index}>
+                        <PaginationLink >
+                            {e + 1}
+                        </PaginationLink>
+                    </PaginationItem>
+                )
+            }
+            return (
+                <PaginationItem key={index} index={index} onClick={
+                    (e) => {
+                        this.setState({
+                            ...this.state,
+                            page: index
+                        })
+                        this.loadMoreItems();
+                    }
+                }>
+                    <PaginationLink >
+                        {e + 1}
+                    </PaginationLink>
+                </PaginationItem>
+            )
+        })
+    }
+
+    /** 
+    *
+    * 
+    * 
+    * -----------------------------------------------------------------------------------------------------------------------------------------------
+    * 
+    *
+    *  
+    * */
+
+    render() {
+        const eventDetails = (this.state.isOpen) ? <EventDetails
+            modal={this.state.isOpen}
+            deleteEvent={this.handleDeleteEvent}
+            open={this.toggle}
+            updateEvent={this.handleUpdateEvent}
+            toggle={() => {
+                this.setState({
+                    isOpen: !this.state.isOpen,
+                });
+            }}
+            data={this.state.data}
+        /> : null;
         return (
-            <div className="animated fadeIn"> 
+            <div className="animated fadeIn">
                 <div className="card">
-                    <Button color={"primary"} id={'btn-pill'} 
-                            onClick={this.toggleAddBox}>
-                            Thêm sự kiện
+                    <Button color={"primary"} id={'btn-pill'}
+                        onClick={() => {
+                            this.setState({
+                                ...this.state,
+                                isOpenAdd: !this.state.isOpenAdd
+                            })
+                        }}>
+                        Thêm sự kiện
                     </Button>
                 </div>
-                <AddEvent modal={this.state.isOpenAdd} toggle={this.toggleAddBox} toggleAdd={this.toggleAddEvent} />
-                {this.renderEvent()}
-               {tmp} 
+                <AddEvent modal={this.state.isOpenAdd} toggle={() => {
+                    this.setState({
+                        ...this.state,
+                        isOpenAdd: !this.state.isOpenAdd
+                    })
+                }} toggleAdd={this.loadMoreItems} />
+                {
+                    (this.state.isLoading) ? <ReactLoading type="bars" color="#20a8d8" height='5%' width='5%' /> : this.renderEvent()
+                }
+                {eventDetails}
+                <Pagination aria-label="Page navigation example">
+                    <PaginationItem>
+                        <PaginationLink previous href="#" />
+                    </PaginationItem>
+                    {this.renderPanigation()}
+                    <PaginationItem>
+                        <PaginationLink next href="#" />
+                    </PaginationItem>
+                </Pagination>
             </div>
         )
     }

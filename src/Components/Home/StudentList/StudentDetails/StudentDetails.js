@@ -13,7 +13,7 @@ import {
     ListGroupItem,
     ListGroup, Badge
 } from "reactstrap";
-import { updateStudent, getMajor, getCourse } from '../../../../Services/APIServices';
+import { updateStudent, getMajor, getCourse, deleteStudent } from '../../../../Services/APIServices';
 
 export default class StudentDetails extends React.Component {
 
@@ -95,7 +95,7 @@ export default class StudentDetails extends React.Component {
             .then((res) => {
                 if (res.success) {
                     this.props.onUpdate();
-                    this.props.toggle(info);
+                    this.props.toggle();
                 }
                 else {
                     alert(res.reason);
@@ -188,7 +188,7 @@ export default class StudentDetails extends React.Component {
 
     render() {
         const {
-            full_name, mssv, phone_number, course, email, class_name,faculty
+            full_name, mssv, phone_number, course, email, class_name,faculty,id
         } = this.state.info;
         return (
             <div>
@@ -323,7 +323,17 @@ export default class StudentDetails extends React.Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={this.handleOnUpdate}>Hoàn tất</Button>
-                        <Button color="danger" onClick={this.props.toggle}>Xóa sinh viên</Button>
+                        <Button color="danger" onClick={()=>{
+                                                    deleteStudent(id)
+                                                        .then(res=>{
+                                                            if(res.success){
+                                                                this.props.toggle();
+                                                            }
+                                                            else{
+                                                                alert(res.reason)
+                                                            }
+                                                        })
+                                                    }}>Xóa sinh viên</Button>
                         <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
                     </ModalFooter>
                 </Modal>

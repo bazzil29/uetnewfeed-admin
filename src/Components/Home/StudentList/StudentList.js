@@ -150,14 +150,17 @@ export default class StudentList extends React.Component {
         const students = (this.state.isShowList) ? this.renderList() : null;
         const studentDetails = (this.state.isOpen) ?
             (<StudentDetails
-                toggle={this.toggleStudentDetails}
+                toggle={()=>{
+                        this.toggleStudentDetails();
+                        this.toggleShowList();
+                        }}
                 modal={this.state.isOpen}
                 data={this.state.studentDetail}
                 onUpdate={this.handleUpdateStudent}
             />) : null
         return (
             <div>
-                <AddStudent toggle={this.toggleAddStudent} modal={this.state.isOpenAddStudent} />
+                <AddStudent toggle={this.toggleAddStudent} modal={this.state.isOpenAddStudent} reRender={this.toggleShowList}/>
                 {studentDetails}
                 <div className="animated fadeIn">
                     <Card>

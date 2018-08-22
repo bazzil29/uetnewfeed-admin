@@ -1,5 +1,6 @@
 import { getToken } from './LocalServices';
-const url = 'http://192.168.0.61:3005';
+//const url = 'http://192.168.0.181:3005';
+const url = 'http://18.212.50.83';
 export const login = (user, password) => {
     const request = new Request(url + `/api/login`, {
         method: 'POST',
@@ -13,9 +14,7 @@ export const login = (user, password) => {
     });
     return fetch(request)
         .then(res => res.json())
-        .catch((err) => {
-            console.log(err);
-        })
+       
 }
 
 export const getListEvent = (page) => {
@@ -44,6 +43,8 @@ export const getEventDetails = (id) => {
         .then((res) => {
             return res.json();
         })
+        .catch(err=>err)
+
 }
 export const updateEvent = (id, data) => {
     const token = getToken();
@@ -69,6 +70,8 @@ export const updateEvent = (id, data) => {
         .then((res) => {
             return res.json();
         })
+        .catch(err=>err)
+
 }
 
 export const addEvent = (data) => {
@@ -112,6 +115,8 @@ export const deleteEvent = (id) => {
         .then((res) => {
             return res.json();
         })
+        .catch(err=>err)
+
 }
 
 export const createNotification = (e) => {
@@ -130,11 +135,11 @@ export const createNotification = (e) => {
         )
     }
     )
-
     return fetch(request)
         .then((res) => {
             return res.json();
         })
+        .catch(err=>err)
 }
 
 export const getFalcuty = () => {
@@ -150,6 +155,7 @@ export const getFalcuty = () => {
         .then((res) => {
             return res.json();
         })
+        .catch(err=>err)
 
 }
 
@@ -162,7 +168,8 @@ export const getCourse = (falcuty) => {
         }
     })
     return fetch(res)
-        .then(res => res.json());
+        .then(res => res.json())
+        .catch(err=>err)
 }
 
 export const getMajor = (id) => {
@@ -174,7 +181,8 @@ export const getMajor = (id) => {
         }
     })
     return fetch(res)
-        .then(res => res.json());
+        .then(res => res.json())
+        .catch(err=>err)
 }
 
 export const getStudentByClassName = (id) => {
@@ -186,7 +194,8 @@ export const getStudentByClassName = (id) => {
         }
     })
     return fetch(res)
-        .then((res) => res.json());
+        .then((res) => res.json())
+        .catch(err=>err)
 }
 
 export const updateStudent = (id, data) => {
@@ -213,6 +222,7 @@ export const updateStudent = (id, data) => {
     })
     return fetch(res)
         .then((res) => res.json())
+        .catch(err=>err)
 }
 
 export const getStudentDetail = (id) => {
@@ -225,4 +235,56 @@ export const getStudentDetail = (id) => {
     });
     return fetch(res)
         .then(res => res.json())
+        .catch(err=>err)
+}
+
+export const addStudent = (data) =>{
+    const token = getToken();
+    const res = new Request(url +"/api/admin/students",{
+        method:"POST",
+        headers:{
+            token:token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+            {
+                "mssv": data.mssv,
+                "full_name": data.full_name,
+                "id_class": data.id_class,
+                "id_course": data.id_course,
+                "faculty": "1"
+            }
+        )
+    });
+
+    return fetch(res)
+            .then(res=>res.json())
+            .catch(err=>err)
+}
+
+
+export const deleteStudent = (id) =>{
+    const token  = getToken();
+    const res = new Request (url +"/api/admin/students/" + id,{
+        method:"DELETE",
+        headers:{
+            token:token
+        },
+    })
+    return fetch(res)
+            .then(res=>res.json())
+            .catch(err=>err)
+}
+
+export const getPageNumbers  = () =>{
+    const token  = getToken();
+    const res  =  new Request(url+"/api/events/page",{
+        method:"GET",
+        headers:{
+            token:token
+        }
+    })
+    return fetch(res)
+        .then(res=>res.json())
+        .catch(err=>err)
 }

@@ -63,19 +63,7 @@ export default class AddEvent extends React.Component {
             .then((res) => {
                 if(res.success){
                     console.log(res);
-                    info = {
-                    header: header,
-                    content: content,
-                    id: res.data,
-                    organization: 'NGÔ MINH PHƯƠNG',
-                    image: img,
-                    place: place,
-                    time_start: this.state.info.time_start,
-                    introduce:introduce,
-                    event_type:event_type,
-                };
-                console.log(info);
-                this.props.toggleAdd(info);
+                this.props.toggleAdd();
                 this.props.toggle();
                 }
                 else{

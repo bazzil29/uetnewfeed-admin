@@ -344,7 +344,7 @@ export default class EventDetails   extends Component {
         await updateEvent(id, this.state.info)
             .then((res) => {
                 if(res.success){
-                    this.props.toggle(this.state.info);
+                    this.props.updateEvent();
                 }
                 else{
                     alert(res.reason);
@@ -357,7 +357,7 @@ export default class EventDetails   extends Component {
         await deleteEvent(id)
             .then((res) => {
                 console.log(res);
-                this.props.deleteEvent(id);
+                this.props.updateEvent();
             });
     };
 

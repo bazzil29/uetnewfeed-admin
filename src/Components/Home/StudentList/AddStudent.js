@@ -7,11 +7,15 @@ import {
     Button,
     Form,
     FormGroup,
-    Label,
-    Input
+    Label
 } from "reactstrap";
-import { getCourse, getMajor } from '../../../Services/APIServices';
+import { getCourse, getMajor, addStudent } from '../../../Services/APIServices';
 export default class AddStudent extends React.Component {
+    constructor(props){
+        super(props);
+        this.full_name = React.createRef();
+        this.mssv  =  React.createRef();
+    }
     state = {
         info: {
             full_name: "Họ và tên",
@@ -42,6 +46,29 @@ export default class AddStudent extends React.Component {
             })
     };
 
+/*----------------------------------------------------------------------------------------------------------- */
+    handleOnAdd = () =>{
+        const data = {
+            id_course: this.state.info.id_course,
+            id_class: this.state.info.id_class,
+            full_name:this.refs.full_name.value,
+            mssv:this.refs.mssv.value
+        };
+        console.log(data,this.refs);
+        addStudent(data)
+            .then(res=>{
+                if(res.success){
+                    this.props.toggle();
+                    this.props.reRender();
+                }
+                else{
+                    alert(res.reason)
+                }
+            })
+            
+    }
+
+/*----------------------------------------------------------------------------------------------------------- */
     chooseCourse = (e) => {
         console.log(e);
         getMajor(e.id)
@@ -71,16 +98,7 @@ export default class AddStudent extends React.Component {
         });
     };
 
-    renderPosition = () => {
-        const position = this.state.info.role_id;
-        if (position === 2) {
-            return "Sinh viên";
-        }
-        else if (position === 3) {
-            return "Cộng tác viên";
-        }
-        return "Admin";
-    };
+/*----------------------------------------------------------------------------------------------------------- */
 
     renderCourse = () => {
         return this.state.courses.map((e, index) => {
@@ -104,60 +122,24 @@ export default class AddStudent extends React.Component {
             return (
                 <div>
                     <Modal isOpen={this.props.modal} toggle={this.props.toggle} >
-                        <ModalHeader toggle={this.props.toggle}>Chỉnh sửa thông tin sinh viên</ModalHeader>
+                        <ModalHeader toggle={this.props.toggle}>Thêm sinh viên</ModalHeader>
                         <ModalBody>
                             <Form>
                                 <FormGroup>
                                     <Label>Họ và tên:</Label>
-                                    <Input
+                                    <input 
+                                        className = "form-control"
+                                        ref="full_name"
+                                        type = "text"
                                         placeholder={full_name}
                                     />
                                     <Label>Mã sinh viên:</Label>
-                                    <Input
+                                    <input
+                                    className = "form-control"
+                                        ref = "mssv"
                                         type="number"
                                         placeholder={mssv}
                                     />
-                                    <Label>Vai trò:</Label>
-                                    <br />
-                                    <div className="btn-group">
-                                        <button
-                                            type="button"
-                                            className="btn btn-info dropdown-toggle source-option"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false">
-                                            {this.renderPosition()}
-                                        </button>
-                                        <div className="dropdown-menu">
-                                            <div className="dropdown-item" onClick={() =>
-                                                this.setState({
-                                                    ...this.state,
-                                                    info: {
-                                                        ...this.state.info,
-                                                        role_id: 2
-                                                    }
-                                                })
-                                            }>Sinh viên</div>
-                                            <div className="dropdown-item" onClick={() =>
-                                                this.setState({
-                                                    ...this.state,
-                                                    info: {
-                                                        ...this.state.info,
-                                                        role_id: 3
-                                                    }
-                                                })
-                                            }>Cộng tác viên</div>
-                                            <div className="dropdown-item" onClick={() =>
-                                                this.setState({
-                                                    ...this.state,
-                                                    info: {
-                                                        ...this.state.info,
-                                                        role_id: 1
-                                                    }
-                                                })
-                                            }>Admin</div>
-                                        </div>
-                                    </div>
                                     <br />
                                     <Label>Khóa:</Label>
                                         <br/>
