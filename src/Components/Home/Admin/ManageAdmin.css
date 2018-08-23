@@ -1,0 +1,20 @@
+.fa-angle-double-up {
+    font-size: 30px;
+}
+
+.fa-angle-double-up:hover {
+    font-size: 40px;
+}
+
+.fa-angle-double-down {
+    font-size: 30px;
+}
+
+.fa-angle-double-down:hover {
+    font-size: 40px;
+}
+
+#admin-loading {
+    position: relative;
+    left: 45%;
+}

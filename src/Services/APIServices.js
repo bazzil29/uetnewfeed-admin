@@ -14,7 +14,7 @@ export const login = (user, password) => {
     });
     return fetch(request)
         .then(res => res.json())
-       
+
 }
 
 export const getListEvent = (page) => {
@@ -43,7 +43,7 @@ export const getEventDetails = (id) => {
         .then((res) => {
             return res.json();
         })
-        .catch(err=>err)
+        .catch(err => err)
 
 }
 export const updateEvent = (id, data) => {
@@ -63,6 +63,7 @@ export const updateEvent = (id, data) => {
                 time_start: data.time_start,
                 event_type: data.event_type,
                 introduce: data.introduce,
+                link_register: data.link_register
             }
         )
     });
@@ -70,7 +71,7 @@ export const updateEvent = (id, data) => {
         .then((res) => {
             return res.json();
         })
-        .catch(err=>err)
+        .catch(err => err)
 
 }
 
@@ -90,7 +91,8 @@ export const addEvent = (data) => {
                 place: data.place,
                 time_start: data.time_start,
                 introduce: data.introduce,
-                event_type: data.event_type
+                event_type: data.event_type,
+
             }
         )
     });
@@ -115,9 +117,72 @@ export const deleteEvent = (id) => {
         .then((res) => {
             return res.json();
         })
-        .catch(err=>err)
+        .catch(err => err)
 
 }
+
+
+export const getStudentEvent = (id) =>{
+    const token  = getToken();
+    const res  = new Request (url +"/api/admin/student_event/" +id ,{
+        method:"GET",
+        headers:{
+            token:token
+        }
+    })
+    return fetch(res)
+            .then(res=>res.json())
+}
+
+
+export const addStudentToEvent = (mssv, id_eve) => {
+    const token = getToken();
+    const res = new Request(url + "/api/admin/student_event", {
+        method: "POST",
+        headers:{
+            token:token,
+            'content-type':"application/json"
+        },
+        body: JSON.stringify({
+            mssv: mssv,
+            id_eve: id_eve
+        })
+    })
+    return fetch(res)
+            .then(res=>res.json())
+            .catch(err=>err)
+
+}
+
+export const deleteStudentFromEvent = (id, id_eve) => {
+    const token = getToken();
+    const res = new Request(url + "/api/admin/student_event", {
+        method: "DELETE",
+        headers:{
+            token:token,
+            'content-type':"application/json"
+        },
+        body: JSON.stringify({
+            id_stu:id,
+            id_eve:id_eve
+        })
+    })
+    return fetch(res)
+            .then(res=>res.json())
+            .catch(err=>err)
+
+}
+
+
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 
 export const createNotification = (e) => {
     const token = getToken();
@@ -139,8 +204,18 @@ export const createNotification = (e) => {
         .then((res) => {
             return res.json();
         })
-        .catch(err=>err)
+        .catch(err => err)
 }
+
+/**
+* 
+* 
+* 
+* 
+* 
+* 
+*/
+
 
 export const getFalcuty = () => {
     const token = getToken();
@@ -155,7 +230,7 @@ export const getFalcuty = () => {
         .then((res) => {
             return res.json();
         })
-        .catch(err=>err)
+        .catch(err => err)
 
 }
 
@@ -169,7 +244,7 @@ export const getCourse = (falcuty) => {
     })
     return fetch(res)
         .then(res => res.json())
-        .catch(err=>err)
+        .catch(err => err)
 }
 
 export const getMajor = (id) => {
@@ -182,7 +257,7 @@ export const getMajor = (id) => {
     })
     return fetch(res)
         .then(res => res.json())
-        .catch(err=>err)
+        .catch(err => err)
 }
 
 export const getStudentByClassName = (id) => {
@@ -195,7 +270,7 @@ export const getStudentByClassName = (id) => {
     })
     return fetch(res)
         .then((res) => res.json())
-        .catch(err=>err)
+        .catch(err => err)
 }
 
 export const updateStudent = (id, data) => {
@@ -216,13 +291,13 @@ export const updateStudent = (id, data) => {
                 id_class: data.id_class,
                 faculty: data.faculty,
                 id_course: data.id_course,
-                role_id:data.role_id
+                role_id: data.role_id
             }
         )
     })
     return fetch(res)
         .then((res) => res.json())
-        .catch(err=>err)
+        .catch(err => err)
 }
 
 export const getStudentDetail = (id) => {
@@ -235,15 +310,15 @@ export const getStudentDetail = (id) => {
     });
     return fetch(res)
         .then(res => res.json())
-        .catch(err=>err)
+        .catch(err => err)
 }
 
-export const addStudent = (data) =>{
+export const addStudent = (data) => {
     const token = getToken();
-    const res = new Request(url +"/api/admin/students",{
-        method:"POST",
-        headers:{
-            token:token,
+    const res = new Request(url + "/api/admin/students", {
+        method: "POST",
+        headers: {
+            token: token,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(
@@ -258,33 +333,137 @@ export const addStudent = (data) =>{
     });
 
     return fetch(res)
-            .then(res=>res.json())
-            .catch(err=>err)
+        .then(res => res.json())
+        .catch(err => err)
 }
 
 
-export const deleteStudent = (id) =>{
-    const token  = getToken();
-    const res = new Request (url +"/api/admin/students/" + id,{
-        method:"DELETE",
-        headers:{
-            token:token
+export const deleteStudent = (id) => {
+    const token = getToken();
+    const res = new Request(url + "/api/admin/students/" + id, {
+        method: "DELETE",
+        headers: {
+            token: token
         },
     })
+    return fetch(res)
+        .then(res => res.json())
+        .catch(err => err)
+}
+
+export const getPageNumbers = () => {
+    const token = getToken();
+    const res = new Request(url + "/api/events/page", {
+        method: "GET",
+        headers: {
+            token: token
+        }
+    })
+    return fetch(res)
+        .then(res => res.json())
+        .catch(err => err)
+}
+
+export const getURLImg = (file) => {
+    
+    var form = new FormData();
+    form.append("fileName", file);
+    const token = getToken();
+    const res = new Request(url + "/api/image_file", {
+        method: "POST",
+        headers: {
+            token: token
+        },
+        body: form
+    })
+    return fetch(res)
+        .then(res => res.json())
+        .catch(err => err)
+}
+
+/**
+ *Phần xử lý vể chỉnh sửa admin
+ *
+ */
+export const createAcount = (data) =>{
+    const token = getToken();
+    const res  = new Request(url+"/api/admin/role_user" , {
+        method:"POST",
+        headers:{
+            token:token,
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({
+                phone_number: data.phone_number,
+                password: data.password,
+                full_name: data.full_name,
+                role_id: data.role_id,
+                email: data.email
+        })
+    });
     return fetch(res)
             .then(res=>res.json())
             .catch(err=>err)
 }
 
-export const getPageNumbers  = () =>{
-    const token  = getToken();
-    const res  =  new Request(url+"/api/events/page",{
+
+export const getUserByRoleId = (id) =>{
+    const token = getToken();
+    const res = new Request(url+"/api/admin/students?role_id=" + id,{
         method:"GET",
         headers:{
             token:token
         }
     })
+
     return fetch(res)
-        .then(res=>res.json())
-        .catch(err=>err)
+            .then(res=>res.json())
+}
+
+export const updateAdmin = (id,data,role_id) => {
+    const token = getToken();
+    console.log(data, id);
+    const res = new Request(url + "/api/admin/students/" + id, {
+        method: "PUT",
+        headers: {
+            token: token,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+            {
+                email: data.email,
+                phone_number: data.phone_number,
+                full_name: data.full_name,
+                mssv: null,
+                id_class: null,
+                faculty: null,
+                id_course: null,
+                role_id: role_id
+            }
+        )
+    })
+    return fetch(res)
+        .then((res) => res.json())
+        .catch(err => err)
+}
+
+
+export const changePassword = (oldPassword,newPassword)=>{
+    const token = getToken();
+    console.log(oldPassword,newPassword);
+    const res =  new Request (url + "/api/change_password", {
+        method:"PUT",
+        headers:{
+            token:token,
+            'Content-Type':"application/json"
+        },
+        body:JSON.stringify({
+                password: oldPassword,
+                newPassword: newPassword
+        })
+    })
+
+    return fetch(res)
+                .then(res=>res.json())
+                .catch(err=>console.log(err))
 }

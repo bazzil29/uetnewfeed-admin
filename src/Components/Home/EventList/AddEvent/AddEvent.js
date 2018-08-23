@@ -10,22 +10,21 @@ import {
     FormGroup,
     Label,
     Input,
-    ListGroupItem,
-    ListGroup,
 } from "reactstrap";
-import { addEvent } from '../../../../Services/APIServices';
+import { addEvent, getURLImg } from '../../../../Services/APIServices';
 
 export default class AddEvent extends React.Component {
     state = {
         info: {
-            header: "day la tieu de",
-            content: "day la noi noi",
-            organization: 'NGÔ MINH PHƯƠNG',
-            image: "anh",
-            place: "dia diem",
-            time_start: "khong biet",
-            introduce:"gio thieu chung",
+            header: "Tiêu đề sự kiên",
+            content: "Nội dung chi tiết",
+            organization: 'UET-COM-RANG-TEAM',
+            image: "ảnh",
+            place: "Địa điểm",
+            time_start: "",
+            introduce:"Giới thiệu chung",
             event_type:1,
+            link_register:""
         },
         date: new Date(),
     };
@@ -33,11 +32,12 @@ export default class AddEvent extends React.Component {
 
     handleTimeChange = (date) => {
         this.setState({
+            ...this.state,
             date:date,
             info:{
+                ...this.state.info,
                 time_start:date.toISOString()
             },
-            event_type:0
         })
         console.log(date.toISOString());
     };
@@ -45,19 +45,21 @@ export default class AddEvent extends React.Component {
     addEvent = async () => {
         const header = document.getElementById("title-event").value;
         const content = document.getElementById("event-context").value;
-        const img = document.getElementById("img-event").value;
+        const img = this.state.info.image;
         const place = document.getElementById("place-event").value;
-        const event_type = this.state.event_type;
+        const event_type = this.state.info.event_type;
         const introduce = document.getElementById("intro-event").value;
-        var info = {
+        const link_register = (this.state.info.event_type=1)?"":this.refs.formCheckin.value;
+        const info = {
             header: header,
             content: content,
-            organization: 'NGÔ MINH PHƯƠNG',
+            organization: 'UET-COM-RANG-TEAM',
             image: img,
             place: place,
             time_start: this.state.info.time_start,
             introduce:introduce,
             event_type:event_type,
+            link_register:link_register
         };
         await addEvent(info)
             .then((res) => {
@@ -73,14 +75,30 @@ export default class AddEvent extends React.Component {
     };
 
     renderEventType = () =>{
-        const type = this.state.event_type;
+        const type = this.state.info.event_type;
             if(type === 1){
                 return "Không cần điểm danh";
             }
             else if (type === 0){
                 return "Cần điểm danh";
             }
-    }
+    };
+
+    renderLinkFormCheckin = () =>{
+        const type = this.state.info.event_type;
+            if(type === 1){
+                return null;
+            }
+            else if (type === 0){
+                return  <div>
+                            <Label>Link đăng ký:</Label>
+                            <input ref="formCheckin"
+                                className = "form-control" 
+                                type="text" 
+                                />
+                </div>
+            }
+    };
 /*---------------------------------------------------------------------- */
 
     render() {
@@ -116,25 +134,23 @@ export default class AddEvent extends React.Component {
                                 <Label>E-mail:</Label>
                                 <Input type="email" placeholder={this.state.info.email} id="email-event" />
                                 <Label>Ảnh bìa đính kèm:</Label>
-                                <Input type="text" placeholder={this.state.info.image} id="img-event" />
-
-                                {/* <Input type="file" onChange={e => {
-                                    this.imgOnChange(e.target.files[0]);
-                                }} /> */}
-                                <Label>Sinh viên mặc định tham gia:</Label>
-                                <ListGroup>
-                                    <ListGroupItem className="justify-content-between">id Sinh viên 1<i
-                                        className="fas fa-minus-circle"
-                                        id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">id Sinh viên 2<i
-                                        className="fas fa-minus-circle "
-                                        id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">id Sinh viên 3 <i
-                                        className="fas fa-minus-circle "
-                                        id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">Thêm sự sinh viên<i
-                                        className="fas fa-plus-circle " id={"student-icon"} /></ListGroupItem>
-                                </ListGroup>
+                                <Input type="file" onChange={(e)=>{
+                                    getURLImg(e.target.files[0])
+                                        .then((res=>{
+                                            if(res.success){
+                                                this.setState({
+                                                    ...this.state,
+                                                    info:{
+                                                        ...this.state.info,
+                                                        image:res.url
+                                                    }
+                                                })
+                                            }
+                                            else{
+                                                alert(res.result)
+                                            }
+                                        }))
+                                }}/>
                                 <Label>Loại sự kiện:</Label>
                                 <br/>
                                 <div className="btn-group">
@@ -150,17 +166,26 @@ export default class AddEvent extends React.Component {
                                         <div className="dropdown-item" onClick = {()=>{
                                                 this.setState({
                                                     ...this.state,
-                                                        event_type: 0
+                                                    info:{
+                                                            ...this.state.info,
+                                                            event_type:0
+                                                        }
                                                 })
                                             }}>Cần điểm danh</div>
                                         <div className="dropdown-item" onClick = {()=>{
                                             this.setState({
                                                     ...this.state,
-                                                        event_type: 1
+                                                        info:{
+                                                            ...this.state.info,
+                                                            event_type:1
+                                                        }
                                                 })
                                             }}>Không cần điểm danh</div>
                                     </div>
-                                 </div>   
+                                 </div>
+                                 {
+                                     this.renderLinkFormCheckin()
+                                 }      
                             </FormGroup>
                         </Form>
                     </ModalBody>

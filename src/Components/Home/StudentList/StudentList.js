@@ -77,6 +77,7 @@ export default class StudentList extends React.Component {
                 if(res.success){
                     console.log(res)
                 this.setState({
+                    ...this.state,
                     students: res.data,
                     isShowList: true
                 })

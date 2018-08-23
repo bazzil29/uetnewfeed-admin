@@ -59,7 +59,7 @@ export default class EventList extends React.Component {
             *  
     * */
 
-    toggle = (id) => {
+    handleOpenEventDetails = (id) => {
         this.loadEventDetails(id)
             .then(() => {
                 this.setState({
@@ -75,20 +75,6 @@ export default class EventList extends React.Component {
         });
     };
 
-    handleDeleteEvent = (id) => {
-        var tmp;
-        this.state.listEvent.forEach((e, index) => {
-            if (e.id === id) {
-                tmp = index;
-            }
-        })
-        console.log(tmp);
-        this.state.listEvent.splice(tmp, 1);
-        this.setState({
-            isOpen: !this.state.isOpen,
-        });
-        this.setState(this.state);
-    };
 
     /** 
     *
@@ -117,7 +103,7 @@ export default class EventList extends React.Component {
                             listEvent: res.data.data,
                             isLoading: false
                         })
-                    }, 2000);
+                    }, 1000);
                 }
                 else {
                     this.setState({
@@ -136,6 +122,13 @@ export default class EventList extends React.Component {
                 if (res.success) {
                     this.state.data = res.data;
                     this.setState(this.state);
+                    this.setState({
+                        ...this.state,
+                        data:{
+                            ...res.data,
+                            interested:res.interested
+                        }
+                    })
                 }
             })
     };
@@ -152,7 +145,7 @@ export default class EventList extends React.Component {
 
     renderEvent = () => {
         const listEvent = this.state.listEvent.map((e, index) => {
-            return <Event toggle={this.toggle} data={e} key={index} />;
+            return <Event toggle={this.handleOpenEventDetails} data={e} key={index} />;
         })
         return listEvent;
     };
@@ -213,7 +206,6 @@ export default class EventList extends React.Component {
     render() {
         const eventDetails = (this.state.isOpen) ? <EventDetails
             modal={this.state.isOpen}
-            deleteEvent={this.handleDeleteEvent}
             open={this.toggle}
             updateEvent={this.handleUpdateEvent}
             toggle={() => {

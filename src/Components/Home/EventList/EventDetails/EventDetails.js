@@ -15,8 +15,18 @@ import {
 } from "reactstrap";
 import 'react-summernote/dist/react-summernote.css'; // import styles
 import '../../../../index.css';
-import { updateEvent, deleteEvent } from '../../../../Services/APIServices';
-export default class EventDetails   extends Component {
+import {
+    updateEvent,
+    deleteEvent,
+    getURLImg,
+    getCourse,
+    getMajor,
+    getStudentByClassName,
+    addStudentToEvent,
+    getStudentEvent,
+    deleteStudentFromEvent
+} from '../../../../Services/APIServices';
+export default class EventDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,57 +34,66 @@ export default class EventDetails   extends Component {
                 header: this.props.data.header,
                 id: this.props.data.id,
                 content: this.props.data.content,
-                organization: 'NGÔ MINH PHƯƠNG',
+                organization: 'UET-COM-RANG-TEAM',
                 image: this.props.data.image,
                 place: this.props.data.place,
                 time_start: this.props.data.time_start,
-                introduce:this.props.data.introduce,
-                event_type:this.props.data.event_type
+                introduce: this.props.data.introduce,
+                event_type: this.props.data.event_type,
+                link_register: this.props.data.link_register,
+                interested:this.props.data.interested
             },
+            courses: [],
+            majors: [],
             date: new Date(),
             collapse: false,
-            students: [{
-                name: 'x',
-                isChoosed: false,
-                id: 1,
-                index: 1
-            },
-            {
-                name: 'y',
-                isChoosed: false,
-                id: 2,
-                index: 2
-
-            },
-            {
-                name: 'z',
-                isChoosed: false,
-                id: 3,
-                index: 3
-
-            },
-            {
-                name: 'k',
-                isChoosed: false,
-                id: 4,
-                index: 4
-
-            }],
+            students: [],
             studentsForce: [],
             isStudentsOpen: false,
             isUpdated: false,
+            studentToAdd:[],
+            studentRemove : []
         };
     }
 
-   
-/*------------------------------------------------------------------------------------------------------------ */
-    handleTimeChange = (date) => {
-        this.setState({ ...this.state,date: date })
+    componentDidMount() {
         this.setState({
             ...this.state,
-            info:{
+            date:new Date(this.state.info.time_start)
+        });
+
+        getCourse()
+            .then((res) => {
+                console.log(res.data);
+                if (res.success) {
+                    this.setState({
+                        courses: res.data
+                    });
+                }
+            })
+
+        getStudentEvent(this.state.info.id)
+            .then(res=>{
+                console.log(res)
+                if(res.success){
+                    this.setState({
+                        ...this.state,
+                        studentsForce:res.data
+                    })
+                }
+            })
+            
+    }
+
+    /*------------------------------------------------------------------------------------------------------------ */
+    handleTimeChange = (date) => {
+        this.setState({ ...this.state, date: date })
+        this.setState({
+            ...this.state,
+            date:date,
+            info: {
                 ...this.state.info,
-                time_start:date.toISOString(),
+                time_start: date.toISOString(),
             }
         })
         console.log(date.toISOString());
@@ -82,271 +101,112 @@ export default class EventDetails   extends Component {
 
     handleNameChange = (value) => {
         this.setState({
-            info:{
+            info: {
                 ...this.state.info,
-                header:value
+                header: value
             }
         });
     };
 
-    handleIntroduceChange = (value) =>{
+    handleIntroduceChange = (value) => {
         this.setState({
-            info:{
+            info: {
                 ...this.state.info,
-                introduce:value
+                introduce: value
             }
         });
     };
 
     handleContentChange = (value) => {
         this.setState({
-            info:{
+            info: {
                 ...this.state.info,
-                content:value
+                content: value
             }
         });
     }
 
     handleOrganzationChange = (value) => {
         this.setState({
-            info:{
+            info: {
                 ...this.state.info,
-                organization:value
+                organization: value
             }
         });
     }
 
     handlePhoneChange = (value) => {
         this.setState({
-            info:{
+            info: {
                 ...this.state.info,
-                phone:value
+                phone: value
             }
         });
     }
 
     handleEmailChange = (value) => {
         this.setState({
-            info:{
+            info: {
                 ...this.state.info,
-                email:value
+                email: value
             }
         });
     }
 
     handleImageChange = (value) => {
         this.setState({
-            info:{
+            info: {
                 ...this.state.info,
-                image:value
+                image: value
             }
         });
     };
 
     handlePlaceChange = (value) => {
         this.setState({
-            info:{
+            info: {
                 ...this.state.info,
-                place:value
+                place: value
             }
         });
     };
-/*------------------------------------------------------------------------------------------------------------ */
 
-    onAddStudentEvent = (e) => {
-        this.state.students.forEach((e, index) => {
-            if (e.isChoosed) {
-                this.state.studentsForce.push(e);
-            }
-        })
+    handleChangeFormCheckin = (value) => {
         this.setState({
             ...this.state,
-            collapse:false
+            info: {
+                ...this.state.info,
+                link_register: value
+            }
         })
-    };
+    }
+    /*------------------------------------------------------------------------------------------------------------ */
 
-    makeListStudentsForce = () => {
-        const tmp = this.state.studentsForce.map((e, index) => {
-            return <ListGroupItem className="justify-content-between">{e.name}<i
-                className="fas fa-minus-circle"
-                id={"student-icon"} /></ListGroupItem>
-        })
-        return tmp;
-    };
-    addStudentSearch = (e) => {
-        const tmp = e.target;
-        const tmp1 = document.getElementById('select-major');
-        const tmp2 = tmp1[tmp1.selectedIndex].value;
-        const tmp3 = tmp[tmp.selectedIndex].value;
-        console.log(tmp2);
-        console.log(tmp3);
-        if (tmp2 === 'rand') {
-            const tmp5 = document.getElementById("select-class");
-            tmp5.innerHTML = `
-                                        <option value="class id" >Lớp</option>
-                                    `;
+    
 
-        }
-        else if (tmp2 === "FIT") {
-            if (tmp3 === "rand") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="rand">Lớp</option>
-                                    `;
-            }
-            else if (tmp3 === "k59") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="class id" >K59CNTT1</option>
-                                        <option value="class id">K59CNTT2</option>
-                                        <option value="class id">K59CNTT3</option>
-                                        <option value="class id">K59CNTT4</option>
-                                        <option value="class id">K59CNTT5</option>
-                                    `;
 
-            } else if (tmp3 === "k60") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="class id" >K60CNTT1</option>
-                                        <option value="class id">K60CNTT2</option>
-                                        <option value="class id">K60CNTT3</option>
-                                        <option value="class id">K60CNTT4</option>
-                                        <option value="class id">K60CNTT5</option>
-                                    `;
-
-            } else if (tmp3 === "k61") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="class id" >K61CNTT1</option>
-                                        <option value="class id">K61CNTT2</option>
-                                        <option value="class id">K61CNTT3</option>
-                                        <option value="class id">K61CNTT4</option>
-                                        <option value="class id">K61CNTT5</option>
-                                    `;
-
-            } else if (tmp3 === "k62") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="class id" >K62CNTT1</option>
-                                        <option value="class id">K62CNTT2</option>
-                                        <option value="class id">K62CNTT3</option>
-                                        <option value="class id">K62CNTT4</option>
-                                        <option value="class id">K562CNTT5</option>
-                                    `;
-
-            } else if (tmp3 === "k63") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="class id" >K63CNTT1</option>
-                                        <option value="class id">K63CNTT2</option>
-                                        <option value="class id">K63CNTT3</option>
-                                        <option value="class id">K63CNTT4</option>
-                                        <option value="class id">63CNTT5</option>
-                                    `;
-
-            }
-
-        }
-        else if (tmp2 === 'FET') {
-            if (tmp3 === "rand") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="rand">Lớp</option>
-                                    `;
-            }
-            else if (tmp3 === "k59") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="class id" >K59CNTT1</option>
-                                        <option value="class id">K59CNTT2</option>
-                                        <option value="class id">K59CNTT3</option>
-                                        <option value="class id">K59CNTT4</option>
-                                        <option value="class id">K59CNTT5</option>
-                                    `;
-
-            } else if (tmp3 === "k60") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="class id" >K60CNTT1</option>
-                                        <option value="class id">K60CNTT2</option>
-                                        <option value="class id">K60CNTT3</option>
-                                        <option value="class id">K60CNTT4</option>
-                                        <option value="class id">K60CNTT5</option>
-                                    `;
-
-            } else if (tmp3 === "k61") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="class id" >K61CNTT1</option>
-                                        <option value="class id">K61CNTT2</option>
-                                        <option value="class id">K61CNTT3</option>
-                                        <option value="class id">K61CNTT4</option>
-                                        <option value="class id">K61CNTT5</option>
-                                    `;
-
-            } else if (tmp3 === "k62") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="class id" >K62CNTT1</option>
-                                        <option value="class id">K62CNTT2</option>   
-                                        <option value="class id">K62CNTT3</option>
-                                        <option value="class id">K62CNTT4</option>
-                                        <option value="class id">K562CNTT5</option>
-                                    `;
-
-            } else if (tmp3 === "k63") {
-                const tmp5 = document.getElementById("select-class");
-                tmp5.innerHTML = `
-                                        <option value="class id" >K63CNTT1</option>
-                                        <option value="class id">K63CNTT2</option>
-                                        <option value="class id">K63CNTT3</option>
-                                        <option value="class id">K63CNTT4</option>
-                                        <option value="class id">63CNTT5</option>
-                                    `;
-
-            }
-
-        }
-    };
-
-    toggle = () => {
-        this.setState({ collapse: !this.state.collapse });
-    };
-
-    onCheckBox = (index) => {
-        // let tmp = this.state.students[index - 1].isChoosed;
-        // tmp = !tmp;
-        this.setState(this.state);
-    };
-
-    makeListStudent = () => {
-        const tmp = this.state.students;
-        return tmp.map((x, index) => {
-            return <CardHeader key={index}>
-                <Row >
-                    <Col lg={'1'} md={'1'} sm={'1'} xs={'1'}>{x.name}</Col>
-                    <Col lg={'6'} md={'6'} sm={'6'} xs={'6'}>{x.id}</Col>
-                    <Col lg={'3'} md={'3'} sm={'3'} xs={'3'}>{x.index}</Col>
-                    <Col lg={'2'} md={'2'} sm={'2'} xs={'2'}>
-                        <div className="checkbox checkbox-primary">
-                            <input id="checkbox" type="checkbox" onClick={() => { this.onCheckBox(x.index) }} />
-                        </div>
-                    </Col>
-                </Row>
-            </CardHeader>
-        })
-    };
-/*------------------------------------------------------------------------------------------------------------ */
+    
+    /*------------------------------------------------------------------------------------------------------------ */
 
     handleOnUpdate = async () => {
         const id = this.props.data.id;
-        console.log(this.state.info);
+        //console.log(this.state.info);
+        await this.state.studentToAdd.forEach((e,index)=>{
+            addStudentToEvent(e.mssv , id)
+                .then(res=>console.log(res))
+        });
+
+        await this.state.studentRemove.forEach(e=>{
+            deleteStudentFromEvent(e.id_stu,id)
+                .then(res=>console.log(res))
+        });
+
         await updateEvent(id, this.state.info)
             .then((res) => {
-                if(res.success){
+                if (res.success) {
                     this.props.updateEvent();
                 }
-                else{
+                else {
                     alert(res.reason);
                 }
             });
@@ -361,20 +221,226 @@ export default class EventDetails   extends Component {
             });
     };
 
+    /*------------------------------------------------------------------------------------------------------------ */
+    //Phần xử lý thêm xinh viên
+
+    onAddStudentEvent = (e) => {
+        this.setState({
+            ...this.state,
+            collapse: false
+        })
+    };
+
+    toggle = () => {
+        this.setState({ collapse: !this.state.collapse });
+    };
+
+    chooseCourse = (t, id_course) => {
+
+        getMajor(id_course)
+            .then((res) => {
+                console.log(res.data);
+                this.setState({
+                    ...this.state,
+                    majors: res.data
+                });
+            })
+    };
+    choseOption = (e, className) => {
+        const tmp = document.getElementsByClassName(className)[0];
+        tmp.innerText = e.target.innerText;
+    };
+
+    chooseMajor = (id) => {
+        console.log(id);
+        this.setState({
+            ...this.state,
+            classId: id
+        })
+    };
+
+    toggleShowList = () => {
+        console.log(this.state.classId)
+        getStudentByClassName(this.state.classId)
+            .then((res) => {
+                if (res.success) {
+                    console.log(res)
+                    this.setState({
+                        ...this.state,
+                        students: res.data,
+                        isShowList: true
+                    })
+                }
+            })
+    };
+
+    renderSearchBar = () => {
+        return (
+            <div>
+                <div className="btn-group">
+                    <button
+                        type="button"
+                        className="btn btn-info dropdown-toggle source-option"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        Khóa
+                                </button>
+                    <div className="dropdown-menu">
+                        {
+                            this.renderCourse()
+                        }
+                        <div className="dropdown-divider"></div>
+                        <div className="dropdown-item input-group" href="#">
+                            <input type="text" className="form-control source" />
+                            <Button
+                                className="input-group-text"
+                                onClick={this.addSource}>
+                                Thêm
+                                        </Button>
+                        </div>
+                    </div>
+                </div>
+                <span>     </span>
+                <div className="btn-group">
+                    <button
+                        type="button"
+                        className="btn btn-danger dropdown-toggle major-option"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        Lớp
+                                </button>
+                    <div className="dropdown-menu">
+                        {
+                            this.renderMajor()
+                        }
+                        <div className="dropdown-divider"></div>
+                        <div className="dropdown-item input-group" href="#">
+                            <input type="text" className="form-control major" />
+                            <Button
+                                className="input-group-text"
+                                onClick={this.addMajor}>
+                                Thêm
+                                        </Button>
+                        </div>
+                    </div>
+                </div>
+                <span>     </span>
+                <button type="button" className="btn btn-danger " onClick={this.toggleShowList}>
+                    Xem danh sách
+                            </button>
+            </div>
+        )
+    };
+
+    renderStudentsForce = () => {
+        const tmp = this.state.studentsForce.map((e, index) => {
+            return <ListGroupItem key={index} className="justify-content-between">
+                <Row>
+                    <Col lg={'1'} md={'1'} sm={'1'} xs={'1'}>{index + 1}</Col>
+                    <Col lg={'6'} md={'6'} sm={'6'} xs={'6'}>{e.account.full_name}</Col>
+                    <Col lg={'4'} md={'4'} sm={'4'} xs={'4'}>{e.mssv}</Col>
+                    <Col lg={'1'} md={'1'} sm={'1'} xs={'1'}>
+                        <i
+                            className="fas fa-minus-circle"
+                            id={"student-icon"} 
+                            onClick = {()=>{
+                                this.state.studentRemove.push(e);
+                                const tmp = this.state.studentsForce.indexOf(e); 
+                                this.state.studentsForce.splice(tmp,1);
+                                this.setState(this.state);
+                            }}
+                        />
+                    </Col>
+                </Row>
+            </ListGroupItem>
+        })
+        return tmp;
+    };
+
+    renderStudents = () => {
+        const tmp = this.state.students;
+        return tmp.map((x, index) => {
+            return <CardHeader key={index}>
+                <Row >
+                    <Col lg={'1'} md={'1'} sm={'1'} xs={'1'}>{index + 1}</Col>
+                    <Col lg={'6'} md={'6'} sm={'6'} xs={'6'}>{x.full_name}</Col>
+                    <Col lg={'3'} md={'3'} sm={'3'} xs={'3'}>{x.mssv}</Col>
+                    <Col lg={'2'} md={'2'} sm={'2'} xs={'2'}>
+                        <div className="checkbox checkbox-primary">
+                            <input id="checkbox" type="checkbox" onClick={(e) => {
+                                console.log(e.target.checked)
+                                if (e.target.checked) {
+                                    this.state.studentToAdd.push(x);
+                                    this.setState(this.state);
+                                }
+                                else {
+                                    const tmp = this.state.studentToAdd;
+                                    const index = tmp.indexOf(x);
+                                    tmp.splice(index, 1);
+                                    this.setState(this.state);
+                                }
+                            }} />
+                        </div>
+                    </Col>
+                </Row>
+            </CardHeader>
+        })
+    };
+
+    renderCourse = () => {
+        return this.state.courses.map((e, index) => {
+            return <div className="dropdown-item" key={index} onClick={(t) => {
+                this.choseOption(t, "source-option");
+                this.chooseCourse(t, e.id);
+            }}>{e.name}</div>
+        })
+    };
+
+    renderMajor = () => {
+        return this.state.majors.map((e, index) => {
+            return <div className="dropdown-item" key={index} onClick={(t) => {
+                this.choseOption(t, "major-option");
+                this.chooseMajor(e.id)
+            }}>{e.name}</div>
+        })
+    };
 
 
-/*------------------------------------------------------------------------------------------------------------ */
 
-renderEventType = () =>{
-    const type = this.state.info.event_type;
-        if(type === 1){
+    /*------------------------------------------------------------------------------------------------------------ */
+
+    renderEventType = () => {
+        const type = this.state.info.event_type;
+        if (type === 1) {
             return "Không cần điểm danh";
         }
-        else if (type === 0){
+        else if (type === 0) {
             return "Cần điểm danh";
         }
-};
-/*------------------------------------------------------------------------------------------------------------ */
+    };
+
+    renderLinkFormCheckin = () => {
+        const type = this.state.info.event_type;
+        if (type === 1) {
+            return null;
+        }
+        else if (type === 0) {
+            return <div>
+                <Label>Link đăng ký:</Label>
+                <input
+                    className="form-control"
+                    type="text"
+                    defaultValue={this.state.info.link_register}
+                    onClick={e => {
+                        this.handleChangeFormCheckin(e.target.value)
+                    }}
+                />
+            </div>
+        }
+    };
+    /*------------------------------------------------------------------------------------------------------------ */
 
     render() {
         const students = (this.state.isStudentsOpen) ? this.makeListStudent() : null;
@@ -384,161 +450,141 @@ renderEventType = () =>{
             id,
             content,
             organization,
-            image,
             place,
             phone,
             email,
-            introduce
-            } = this.state.info; 
+            introduce,
+        } = this.state.info;
         return (
             <div>
                 <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.props.toggle}>Chỉnh sửa thông tin sự kiện</ModalHeader>
                     <ModalBody>
-                                <Label>Tiêu đề sự kiện:</Label>
-                                <input className = "form-control" type="text" defaultValue={header}  onChange={e => {
-                                    this.handleNameChange(e.target.value);
-                                }} />
-                                <Label>Mã sự kiện:</Label>
-                                <input className = "form-control" type="text" placeholder={id} disabled />
-                                <Label>Giới thiệu chung:</Label>
-                                <textarea name="" className="form-control" defaultValue={introduce}
-                                    cols="auto" rows="auto" id="event-context" onChange={e => {
-                                        this.handleIntroduceChange(e.target.value);
-                                    }} />
-                                <Label>Nội dung sự kiện:</Label>
-                                <textarea name="" className="form-control" defaultValue={content}
-                                    cols="auto" rows="auto" id="event-context" onChange={e => {
-                                        this.handleContentChange(e.target.value);
-                                    }} />
-                                <Label>Địa điểm:</Label>
-                                <input className = "form-control" type="text" defaultValue={place} onChange={e => {
-                                    this.handlePlaceChange(e.target.value);
-                                }} />
-                                <Label>Thời gian tổ chức</Label>
-                                <br />
-                                <DateTimePicker className='form-control' id='react-datetime-picker'
-                                    onChange={this.handleTimeChange}
-                                    value={this.state.date}
-                                />
-                                <br />
-                                <Label>Đơn vị tổ chức:</Label>
-                                <input className = "form-control" type="text" defaultValue={organization} onChange={e => {
-                                    this.handleOrganzationChange(e.target.value);
-                                }}/>
-                                <Label>Số điện thoại:</Label>
-                                <input className = "form-control" type="text" defaultValue={phone} onChange={e => {
-                                    this.handlePhoneChange(e.target.value);
-                                }}/>
-                                <Label>E-mail:</Label>
-                                <input className = "form-control" type="text" defaultValue={email} onChange={e => {
-                                    this.handleEmailChange(e.target.value);
-                                }} />
-                                <Label>Ảnh bìa đính kèm:</Label>
-                                <input className = "form-control" type="text" defaultValue={image} onChange={e => {
-                                    this.handleImageChange(e.target.value);
-                                }} />
-                                {/* <Input type="file" onChange={e => {
-                                    this.imgOnChange(e.target.files[0]);
-                                }} /> */}
-                                <Label>Sinh viên quan tâm:</Label>
-                                <input className = "form-control" type="number"/>
-                                <Label>Sinh viên mặc định tham gia:</Label>
-                                <ListGroup>
-                                    {this.makeListStudentsForce()}
-                                    <ListGroupItem 
-                                        className="justify-content-between" 
-                                        onClick={this.toggle}>Thêm sinh
-                                        viên
+                        <Label>Tiêu đề sự kiện:</Label>
+                        <input className="form-control" type="text" defaultValue={header} onChange={e => {
+                            this.handleNameChange(e.target.value);
+                        }} />
+                        <Label>Mã sự kiện:</Label>
+                        <input className="form-control" type="text" placeholder={id} disabled />
+                        <Label>Giới thiệu chung:</Label>
+                        <textarea name="" className="form-control" defaultValue={introduce}
+                            cols="auto" rows="auto" id="event-context" onChange={e => {
+                                this.handleIntroduceChange(e.target.value);
+                            }} />
+                        <Label>Nội dung sự kiện:</Label>
+                        <textarea name="" className="form-control" defaultValue={content}
+                            cols="auto" rows="auto" id="event-context" onChange={e => {
+                                this.handleContentChange(e.target.value);
+                            }} />
+                        <Label>Địa điểm:</Label>
+                        <input className="form-control" type="text" defaultValue={place} onChange={e => {
+                            this.handlePlaceChange(e.target.value);
+                        }} />
+                        <Label>Thời gian tổ chức</Label>
+                        <br />
+                        <DateTimePicker className='form-control' id='react-datetime-picker'
+                            onChange={this.handleTimeChange}
+                            value={this.state.date}
+                        />
+                        <br />
+                        <Label>Đơn vị tổ chức:</Label>
+                        <input className="form-control" type="text" defaultValue={organization} onChange={e => {
+                            this.handleOrganzationChange(e.target.value);
+                        }} />
+                        <Label>Số điện thoại:</Label>
+                        <input className="form-control" type="text" defaultValue={phone} onChange={e => {
+                            this.handlePhoneChange(e.target.value);
+                        }} />
+                        <Label>E-mail:</Label>
+                        <input className="form-control" type="text" defaultValue={email} onChange={e => {
+                            this.handleEmailChange(e.target.value);
+                        }} />
+                        <Label>Ảnh bìa đính kèm:</Label>
+                        <Input type="file" onChange={(e) => {
+                            getURLImg(e.target.files[0])
+                                .then((res => {
+                                    if (res.success) {
+                                        console.log(res)
+                                        this.setState({
+                                            ...this.state,
+                                            info: {
+                                                ...this.state.info,
+                                                image: res.url
+                                            }
+                                        })
+                                    }
+                                    else {
+                                        alert(res.result)
+                                    }
+                                }))
+                        }} />
+                        <Label>Sinh viên quan tâm:</Label>
+                        <input className="form-control"  value = {this.state.info.interested} type="number" disabled />
+                        <Label>Sinh viên mặc định tham gia:</Label>
+                        <ListGroup>
+                            {this.renderStudentsForce()}
+                            <ListGroupItem
+                                className="justify-content-between"
+                                onClick={this.toggle}>Thêm sinh
+                                viên
                                         <i
-                                            className="fas fa-plus-circle " 
-                                            id="student-icon" /></ListGroupItem>
-                                    <Collapse isOpen={collapse}>
-                                        <Card id={'add-student-card'}>
-                                            <CardBody>
-                                                <Row>
-                                                    <Col>
-                                                        <Input type='select' name="select" id='select-major'>
-                                                            <option value="rand">Khoa</option>
-                                                            <option value="FIT">Công nghệ thông tin</option>
-                                                            <option value="FET">Điện tử viễn thông</option>
-                                                            <option value="FEMA">Cơ học kỹ thuật & Tự động hóa</option>
-                                                            <option value="FFU">Công nghệ hàng không và vũ trụ</option>
-                                                            <option value="FEPN">Vật lý kỹ thuật & Công nghệ Nano
-                                                            </option>
-                                                        </Input>
-                                                    </Col>
-                                                    <Col>
-                                                        <Input type='select' name="select" id='select-year'
-                                                            onChange={this.addStudentSearch}>
-                                                            <option value="rand">Khóa</option>
-                                                            <option value="k59">K59</option>
-                                                            <option value="k60">K60</option>
-                                                            <option value="k61">K61</option>
-                                                            <option value="k62">K62</option>
-                                                            <option value="k63">K63</option>
-                                                        </Input>
-                                                    </Col>
-                                                    <Col>
-                                                        <Input type='select' name="select" id='select-class'>
-                                                            <option value="rand">Lớp</option>
-                                                        </Input>
-                                                    </Col>
-                                                    <Col>
-                                                        <Button onClick={() => {
-                                                            this.setState({
-                                                                isStudentsOpen: !this.state.isStudentsOpen
-                                                            })
-                                                        }}>Tìm</Button>
-                                                    </Col>
-                                                </Row>
-                                                {students}
-                                                <Row>
-                                                    <Col>
-                                                        <Button className="add-student-event" onClick={this.onAddStudentEvent}>
-                                                            Thêm
+                                    className="fas fa-plus-circle "
+                                    id="student-icon" /></ListGroupItem>
+                            <Collapse isOpen={collapse}>
+                                <Card id={'add-student-card'}>
+                                    <CardBody>
+                                        {this.renderSearchBar()}
+                                        {this.renderStudents()}
+                                        {students}
+                                        <Row>
+                                            <Col>
+                                                <Button className="add-student-event" onClick={this.onAddStudentEvent}>
+                                                   Đóng
                                                         </Button>
-                                                    </Col>
-                                                </Row>
-                                            </CardBody>
-                                        </Card>
-                                    </Collapse>
-                                </ListGroup>
-                                <Label>Sinh viên đã tham gia:</Label>
-                                <ListGroup>
-                                    <ListGroupItem className="justify-content-between">Thêm sinh viên<i
-                                        className="fas fa-plus-circle " id="student-icon" /></ListGroupItem>
-                                </ListGroup>
-                                <Label>Loại sự kiện:</Label>
-                                <br/>
-                                <div className="btn-group">
-                                    <button
-                                        type="button"
-                                        className="btn btn-info dropdown-toggle source-option"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false">
-                                        {this.renderEventType()}
-                                    </button>
-                                    <div className="dropdown-menu">
-                                        <div className="dropdown-item" onClick = {()=>{
-                                                this.setState({
-                                                    info:{
-                                                        ...this.state.info,
-                                                        event_type: 0
-                                                    }
-                                                })
-                                            }}>Cần điểm danh</div>
-                                        <div className="dropdown-item" onClick = {()=>{
-                                                this.setState({
-                                                    info:{
-                                                        ...this.state.info,
-                                                        event_type: 1
-                                                    }
-                                                })
-                                            }}>Không cần điểm danh</div>
-                                    </div>
-                                 </div>   
+                                            </Col>
+                                        </Row>
+                                    </CardBody>
+                                </Card>
+                            </Collapse>
+                        </ListGroup>
+                        <Label>Sinh viên đã tham gia:</Label>
+                        <ListGroup>
+                            <ListGroupItem className="justify-content-between">Thêm sinh viên<i
+                                className="fas fa-plus-circle " id="student-icon" /></ListGroupItem>
+                        </ListGroup>
+                        <Label>Loại sự kiện:</Label>
+                        <br />
+                        <div className="btn-group">
+                            <button
+                                type="button"
+                                className="btn btn-info dropdown-toggle source-option"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                                {this.renderEventType()}
+                            </button>
+                            <div className="dropdown-menu">
+                                <div className="dropdown-item" onClick={() => {
+                                    this.setState({
+                                        info: {
+                                            ...this.state.info,
+                                            event_type: 0
+                                        }
+                                    })
+                                }}>Cần điểm danh</div>
+                                <div className="dropdown-item" onClick={() => {
+                                    this.setState({
+                                        info: {
+                                            ...this.state.info,
+                                            event_type: 1
+                                        }
+                                    })
+                                }}>Không cần điểm danh</div>
+                            </div>
+                        </div>
+                        {
+                            this.renderLinkFormCheckin()
+                        }
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={this.handleOnUpdate}>Hoàn tất</Button>

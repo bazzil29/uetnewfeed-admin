@@ -20,24 +20,42 @@ import routes from '../../routes';
 import DefaultHeader from "../Header/Header";
 import DefaultFooter from "../Footer/Footer";
 import { getToken } from '../../Services/LocalServices';
+import ChangePassword from './ChangePassword';
 
 
 class Home extends Component {
     state = {
         isLogin: getToken() != null,
+        isOpenChangePassword:false
     };
+
     componentDidMount() {
         const token = getToken();
         this.setState({
             isLogin:(token != null)
         });
     };
+
+    toggleChangePassword = () =>{
+        this.setState({
+            ...this.state,
+            isOpenChangePassword:!this.state.isOpenChangePassword
+        })        
+    };
+
+   
+
     render() {
         if (this.state.isLogin) {
             return (
                 <div className="app">
+                    <ChangePassword modal={this.state.isOpenChangePassword}  toggle={()=>{
+                            this.toggleChangePassword()
+                        }}/>
                     <AppHeader fixed>
-                        <DefaultHeader />
+                        <DefaultHeader openChangePassword = {()=>{
+                            this.toggleChangePassword();
+                            }}/>
                     </AppHeader>
                     <div className="app-body">
                         <AppSidebar fixed display="lg">

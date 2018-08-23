@@ -164,7 +164,12 @@ export default class StudentDetails extends React.Component {
         else if (position === 3) {
             return "Cộng tác viên";
         }
-        return "Admin";
+        else if(position === 4){
+            return "Admin";
+        }
+
+        return "Admin chính"
+        
     };
 
     renderCourse = () => {
@@ -244,7 +249,7 @@ export default class StudentDetails extends React.Component {
                                                 ...this.state,
                                                 info: {
                                                     ...this.state.info,
-                                                    role_id: 1
+                                                    role_id: 4
                                                 }
                                             })
                                         }>Admin</div>

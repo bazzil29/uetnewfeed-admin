@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
-
 import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../img/Icon-44@2x.png';
 import sygnet from '../../img/sygnet.svg';
@@ -18,8 +17,8 @@ const defaultProps = {};
 
 class DefaultHeader extends Component {
     logout = () => {
-        this.props.history.push("/login");
         deleteToken();
+        this.props.history.push("/login");
     }
 
     render() {
@@ -49,7 +48,7 @@ class DefaultHeader extends Component {
                         <DropdownMenu right style={{ right: 'auto' }}>
                             <DropdownItem header tag="div" className="text-center"><strong>Thông tin</strong></DropdownItem>
                             <DropdownItem><i className="fa fa-user" />Tài khoản</DropdownItem>
-                            <DropdownItem><i className="fa fa-wrench" />Cài đặt tài khoản</DropdownItem>
+                            <DropdownItem onClick={()=>{this.props.openChangePassword()}}><i className="fa fa-wrench"  />Đổi mật khẩu</DropdownItem>
                             <DropdownItem onClick={this.logout}><i className="fa fa-lock" />Đăng xuất</DropdownItem>
                         </DropdownMenu>
                     </AppHeaderDropdown>
