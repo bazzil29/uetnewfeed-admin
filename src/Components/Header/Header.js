@@ -23,8 +23,6 @@ class DefaultHeader extends Component {
 
     render() {
 
-        // eslint-disable-next-line
-        const { children, ...attributes } = this.props;
 
         return (
             <React.Fragment>
@@ -43,13 +41,37 @@ class DefaultHeader extends Component {
                 <Nav className="ml-auto" navbar>
                     <AppHeaderDropdown direction="down">
                         <DropdownToggle nav>
-                            <img src={'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} className="img-avatar" alt="profilePicture" />
+                            <img 
+                                src={'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} 
+                                className="img-avatar" 
+                                alt="profilePicture" 
+                            />
                         </DropdownToggle>
                         <DropdownMenu right style={{ right: 'auto' }}>
-                            <DropdownItem header tag="div" className="text-center"><strong>Thông tin</strong></DropdownItem>
-                            <DropdownItem><i className="fa fa-user" />Tài khoản</DropdownItem>
-                            <DropdownItem onClick={()=>{this.props.openChangePassword()}}><i className="fa fa-wrench"  />Đổi mật khẩu</DropdownItem>
-                            <DropdownItem onClick={this.logout}><i className="fa fa-lock" />Đăng xuất</DropdownItem>
+                            <DropdownItem 
+                                header 
+                                tag="div" 
+                                className="text-center"
+                            >
+                                <strong>Thông tin</strong>
+                            </DropdownItem>
+                            <DropdownItem>
+                                <i className="fa fa-user" />
+                                Tài khoản
+                            </DropdownItem>
+                            <DropdownItem 
+                                onClick={
+                                    ()=>{this.props.openChangePassword()}
+                                    }>
+                                <i className="fa fa-wrench"  />
+                                Đổi mật khẩu
+                            </DropdownItem>
+                            <DropdownItem 
+                                onClick={this.logout}
+                            >
+                                <i className="fa fa-lock" />
+                                Đăng xuất
+                            </DropdownItem>
                         </DropdownMenu>
                     </AppHeaderDropdown>
                 </Nav>

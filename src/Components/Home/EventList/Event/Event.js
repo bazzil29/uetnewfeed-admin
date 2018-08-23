@@ -6,7 +6,6 @@ export default class Event extends React.Component {
 
     onClickEdit = () =>{
         const id =this.props.data.id;
-        console.log(id);
         this.props.toggle(id);
     }
 /*---------------------------------------------------------------------- */

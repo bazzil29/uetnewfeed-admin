@@ -39,11 +39,9 @@ class ChangePassword extends React.Component {
                         const oldPassword = this.refs.oldPassword.value;
                         const newPassword = this.refs.newPassword.value;
                         const newPasswordUnder = this.refs.newPasswordUnder.value;
-                        console.log(oldPassword, newPassword);
                         if (newPassword === newPasswordUnder) {
                             changePassword(oldPassword, newPassword)
                                 .then(res => {
-                                    console.log(res)
                                     if (res.success) {
                                         this.props.toggle();
                                         deleteToken();

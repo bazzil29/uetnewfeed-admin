@@ -39,10 +39,8 @@ class Login extends Component {
         const password = document.getElementById("password-login").value;
         login(user, password)
             .then((res) => {
-                console.log(res);
                 if (res.success) {
                     const tmp = document.getElementById('fail-login-info');
-                    console.log(res)
                     tmp.style.visibility = 'hidden';
                     saveToken(res.accessToken);
                     this.setState({
@@ -55,7 +53,6 @@ class Login extends Component {
                 }
             })
             .catch((err) => {
-                console.log(err);
             })
 
     };
@@ -74,19 +71,28 @@ class Login extends Component {
                                     <Card className="p-4">
                                         <CardBody>
                                             <h1>Đăng nhập</h1>
-                                            <p className="text-muted">Đăng nhập vào tài khoản của admin</p>
+                                            <p 
+                                                className="text-muted"
+                                            >
+                                                Đăng nhập vào tài khoản của admin
+                                            </p>
                                             <InputGroup className="mb-3" >
                                                 <InputGroupAddon addonType="prepend">
                                                     <InputGroupText >
                                                         <i className="icon-user" />
                                                     </InputGroupText>
                                                 </InputGroupAddon>
-                                                <Input type="text" placeholder="Username" id="user-login" onKeyUp={(e) => {
-                                                    e.preventDefault();
-                                                    if(e.keyCode === 13){
-                                                        this.loginButton.current.onClick();
-                                                    }
-                                                }} />
+                                                <Input 
+                                                    type="text" 
+                                                    placeholder="Username" 
+                                                    id="user-login" 
+                                                    onKeyUp={(e) => {
+                                                        e.preventDefault();
+                                                        if(e.keyCode === 13){
+                                                            this.loginButton.current.onClick();
+                                                                    }
+                                                    }} 
+                                                />
                                             </InputGroup>
                                             <InputGroup className="mb-4">
                                                 <InputGroupAddon addonType="prepend">
@@ -117,7 +123,12 @@ class Login extends Component {
                                                     </Button>
                                                 </Col>
                                                 <Col xs="6" className="text-right">
-                                                    <Button color="link" className="px-0">Quên mật khẩu</Button>
+                                                    <Button 
+                                                        color="link" 
+                                                        className="px-0"
+                                                    >
+                                                        Quên mật khẩu
+                                                    </Button>
                                                 </Col>
                                             </Row>
                                         </CardBody>

@@ -10,7 +10,7 @@ export default class ManageAdmin extends React.Component {
         admins: [],
         valunteers: [],
         modal: false,
-        idLoading: false
+        idLoading: true
     }
     /*-------------------------------------------------------------------------------------------------- */
     componentDidMount() {
@@ -77,10 +77,14 @@ export default class ManageAdmin extends React.Component {
                         <Col lg={'1'} md={'1'}>{index + 1}</Col>
                         <Col lg={'4'} md={'4'}>{e.full_name}</Col>
                         <Col lg={'2'} md={'2'}>{e.phone_number}</Col>
-                        <Col lg={'2'} md={'2'}> <Badge color="danger">Admin</Badge></Col>
+                        <Col lg={'2'} md={'2'}> 
+                            <Badge color="danger">
+                                Admin
+                            </Badge>
+                        </Col>
                         <Col lg={'1'} md={'1'}>
-                            <i className="fas fa-angle-double-down" onClick={() => {
-                                console.log(e);
+                            <i className="fas fa-angle-double-down" 
+                            onClick={() => {
                                 updateAdmin(e.id, e, 3)
                                     .then(res => {
                                         if (res.success) {
@@ -98,6 +102,9 @@ export default class ManageAdmin extends React.Component {
                                                 })
                                                 self.getListAdmin();
                                             }, 2000)
+                                        }
+                                        else{
+                                            alert(res.reason);
                                         }
                                     })
                             }} />
@@ -130,13 +137,15 @@ export default class ManageAdmin extends React.Component {
                         <Col lg={'1'} md={'1'}>{index + 1}</Col>
                         <Col lg={'4'} md={'4'}>{e.full_name}</Col>
                         <Col lg={'2'} md={'2'}>{e.phone_number}</Col>
-                        <Col lg={'2'} md={'2'}> <Badge color="primary">Cộng tác viên</Badge></Col>
+                        <Col lg={'2'} md={'2'}> 
+                            <Badge color="primary">
+                                Cộng tác viên
+                            </Badge>
+                        </Col>
                         <Col lg={'1'} md={'1'}>
                             <i className="fas fa-angle-double-up" onClick={() => {
-                                console.log(e);
                                 updateAdmin(e.id, e, 4)
                                     .then(res => {
-                                        if (res.success) {
                                             if (res.success) {
                                                 const self = this;
                                                 setTimeout(() => {
@@ -153,16 +162,17 @@ export default class ManageAdmin extends React.Component {
                                                     self.getListAdmin();
                                                 }, 2000)
                                             }
-                                        }
+                                            else{
+                                                alert(res.reason)
+                                            }
+                                            
                                     })
                             }} />
                         </Col>
                         <Col lg={'1'} md={'1'}>
                             <i className="fas fa-angle-double-down" onClick={() => {
-                                console.log(e);
                                 updateAdmin(e.id, e, 2)
                                     .then(res => {
-                                        if (res.success) {
                                             if (res.success) {
                                                 const self = this;
                                                 setTimeout(() => {
@@ -179,7 +189,9 @@ export default class ManageAdmin extends React.Component {
                                                     self.getListAdmin();
                                                 }, 1000)
                                             }
-                                        }
+                                            else{
+                                                alert(res.reason)
+                                            }
                                     })
                             }} />
                         </Col>
@@ -188,7 +200,7 @@ export default class ManageAdmin extends React.Component {
             )
         })
 
-        if(this.state.admins.length===0){
+        if(this.state.valunteers.length===0){
             return null
         }
         else{
@@ -204,7 +216,11 @@ export default class ManageAdmin extends React.Component {
     render() {
         return (
             <div>
-                <CreateAcount modal={this.state.modal} toggle={this.toggleCreateAcount} loadingMode={this.loadingMode} />
+                <CreateAcount 
+                    modal={this.state.modal} 
+                    toggle={this.toggleCreateAcount} 
+                    loadingMode={this.loadingMode} 
+                />
                 <div className="animated fadeIn">
                     <Card>
                         <CardHeader>
@@ -220,7 +236,12 @@ export default class ManageAdmin extends React.Component {
                             this.renderAdmin()
                         }
                     {
-                        (this.state.isLoading) ? <ReactLoading id="admin-loading" type="cylon" color="#1e9ecb" /> : null
+                        (this.state.isLoading) ? 
+                        <ReactLoading 
+                            id="admin-loading" 
+                            type="cylon" 
+                            color="#1e9ecb" 
+                        /> : null
                     }
                         {
                             this.renderValunteer()
@@ -235,6 +256,5 @@ export default class ManageAdmin extends React.Component {
                 </div>
             </div>
         )
-
     }
 }

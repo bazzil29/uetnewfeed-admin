@@ -37,7 +37,6 @@ export default class AddStudent extends React.Component {
         getCourse()
             .then((res) => {
                 if (res.success) {
-                    console.log(res.data)
                     this.setState({
                         ...this.state,
                         courses: res.data
@@ -54,7 +53,6 @@ export default class AddStudent extends React.Component {
             full_name:this.refs.full_name.value,
             mssv:this.refs.mssv.value
         };
-        console.log(data,this.refs);
         addStudent(data)
             .then(res=>{
                 if(res.success){
@@ -70,7 +68,6 @@ export default class AddStudent extends React.Component {
 
 /*----------------------------------------------------------------------------------------------------------- */
     chooseCourse = (e) => {
-        console.log(e);
         getMajor(e.id)
             .then((res) => {
                 console.log(res.data);
@@ -87,7 +84,6 @@ export default class AddStudent extends React.Component {
     };
 
     chooseMajor = (e) => {
-        console.log(e.id);
         this.setState({
             ...this.state,
             info:{

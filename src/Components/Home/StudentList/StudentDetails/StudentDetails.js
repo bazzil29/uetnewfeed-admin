@@ -41,7 +41,6 @@ export default class StudentDetails extends React.Component {
         getCourse()
             .then((res) => {
                 if (res.success) {
-                    console.log(res.data)
                     this.setState({
                         ...this.state,
                         courses: res.data
@@ -58,10 +57,8 @@ export default class StudentDetails extends React.Component {
     /*-----------------------------------------------------------------------------------------------------------*/
 
     chooseCourse = (e) => {
-        console.log(e);
         getMajor(e.id)
             .then((res) => {
-                console.log(res.data);
                 this.setState({
                     ...this.state,
                     majors: res.data,
@@ -75,7 +72,6 @@ export default class StudentDetails extends React.Component {
     };
 
     chooseMajor = (e) => {
-        console.log(e.id);
         this.setState({
             ...this.state,
             info:{
@@ -147,12 +143,7 @@ export default class StudentDetails extends React.Component {
         })
     };
 
-    handleChangePosition = (event) => {
-        const tmp = event.target.checked;
-        console.log(tmp);
-        console.log(event.target.checked = tmp);
-        //event.target
-    };
+    
 
     /*-----------------------------------------------------------------------------------------------------------*/
 
@@ -198,7 +189,11 @@ export default class StudentDetails extends React.Component {
         return (
             <div>
                 <Modal isOpen={this.props.modal} toggle={this.props.toggle} >
-                    <ModalHeader toggle={this.props.toggle}>Chỉnh sửa thông tin sinh viên</ModalHeader>
+                    <ModalHeader 
+                        toggle={this.props.toggle}
+                    >
+                        Chỉnh sửa thông tin sinh viên
+                    </ModalHeader>
                     <ModalBody>
                         <Form>
                             <FormGroup>
@@ -314,14 +309,53 @@ export default class StudentDetails extends React.Component {
                                 <Input type="number" />
                                 <Label>Danh sách sự kiện đã tham gia:</Label>
                                 <ListGroup>
-                                    <ListGroupItem className="justify-content-between">Event 1 <Badge
-                                        pill>10</Badge><i className="fas fa-minus-circle" id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">Event 2 <Badge
-                                        pill>10</Badge><i className="fas fa-minus-circle " id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">Event 3 <Badge
-                                        pill>10</Badge><i className="fas fa-minus-circle " id={"student-icon"} /></ListGroupItem>
-                                    <ListGroupItem className="justify-content-between">Thêm sự kiện<i
-                                        className="fas fa-plus-circle " id={"student-icon"} /></ListGroupItem>
+                                    <ListGroupItem 
+                                        className="justify-content-between"
+                                    >
+                                        Event 1 
+                                        <Badge
+                                            pill
+                                        >
+                                            10
+                                        </Badge>
+                                        <i 
+                                            className="fas fa-minus-circle" 
+                                            id="student-icon" 
+                                        />
+                                    </ListGroupItem>
+                                    <ListGroupItem 
+                                        className="justify-content-between"
+                                    >
+                                        Event 2 
+                                        <Badge pill>
+                                                10
+                                        </Badge>
+                                        <i 
+                                            className="fas fa-minus-circle " 
+                                            id="student-icon" 
+                                        />
+                                    </ListGroupItem>
+                                    <ListGroupItem 
+                                        className="justify-content-between"
+                                    >
+                                        Event 3 
+                                        <Badge pill>
+                                            10
+                                        </Badge>
+                                        <i 
+                                            className="fas fa-minus-circle " 
+                                            id="student-icon" 
+                                        />
+                                    </ListGroupItem>
+                                    <ListGroupItem 
+                                        className="justify-content-between"
+                                    >
+                                        Thêm sự kiện
+                                        <i
+                                            className="fas fa-plus-circle " 
+                                            id="student-icon" 
+                                        />
+                                    </ListGroupItem>
                                 </ListGroup>
                             </FormGroup>
                         </Form>

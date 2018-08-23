@@ -100,8 +100,8 @@ export const addEvent = (data) => {
         .then((res) => {
             return res.json();
         })
-        .catch((res) => {
-            console.log(res);
+        .catch((err) => {
+            return err;
         })
 }
 
@@ -275,7 +275,6 @@ export const getStudentByClassName = (id) => {
 
 export const updateStudent = (id, data) => {
     const token = getToken();
-    console.log(data, id);
     const res = new Request(url + "/api/admin/students/" + id, {
         method: "PUT",
         headers: {
@@ -422,7 +421,6 @@ export const getUserByRoleId = (id) =>{
 
 export const updateAdmin = (id,data,role_id) => {
     const token = getToken();
-    console.log(data, id);
     const res = new Request(url + "/api/admin/students/" + id, {
         method: "PUT",
         headers: {
@@ -434,10 +432,10 @@ export const updateAdmin = (id,data,role_id) => {
                 email: data.email,
                 phone_number: data.phone_number,
                 full_name: data.full_name,
-                mssv: null,
-                id_class: null,
-                faculty: null,
-                id_course: null,
+                mssv: data.mssv,
+                id_class: data.id_class,
+                faculty: data.falcuty,
+                id_course: data.id_course,
                 role_id: role_id
             }
         )
@@ -450,7 +448,6 @@ export const updateAdmin = (id,data,role_id) => {
 
 export const changePassword = (oldPassword,newPassword)=>{
     const token = getToken();
-    console.log(oldPassword,newPassword);
     const res =  new Request (url + "/api/change_password", {
         method:"PUT",
         headers:{
@@ -465,5 +462,5 @@ export const changePassword = (oldPassword,newPassword)=>{
 
     return fetch(res)
                 .then(res=>res.json())
-                .catch(err=>console.log(err))
+                .catch(err=>err)
 }

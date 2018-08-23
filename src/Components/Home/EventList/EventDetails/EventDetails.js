@@ -64,7 +64,6 @@ export default class EventDetails extends Component {
 
         getCourse()
             .then((res) => {
-                console.log(res.data);
                 if (res.success) {
                     this.setState({
                         courses: res.data
@@ -74,7 +73,6 @@ export default class EventDetails extends Component {
 
         getStudentEvent(this.state.info.id)
             .then(res=>{
-                console.log(res)
                 if(res.success){
                     this.setState({
                         ...this.state,
@@ -96,7 +94,6 @@ export default class EventDetails extends Component {
                 time_start: date.toISOString(),
             }
         })
-        console.log(date.toISOString());
     };
 
     handleNameChange = (value) => {
@@ -192,13 +189,11 @@ export default class EventDetails extends Component {
         const id = this.props.data.id;
         //console.log(this.state.info);
         await this.state.studentToAdd.forEach((e,index)=>{
-            addStudentToEvent(e.mssv , id)
-                .then(res=>console.log(res))
+            addStudentToEvent(e.mssv , id);
         });
 
         await this.state.studentRemove.forEach(e=>{
-            deleteStudentFromEvent(e.id_stu,id)
-                .then(res=>console.log(res))
+            deleteStudentFromEvent(e.id_stu,id);
         });
 
         await updateEvent(id, this.state.info)
@@ -216,7 +211,6 @@ export default class EventDetails extends Component {
         const id = this.state.info.id;
         await deleteEvent(id)
             .then((res) => {
-                console.log(res);
                 this.props.updateEvent();
             });
     };
@@ -239,7 +233,6 @@ export default class EventDetails extends Component {
 
         getMajor(id_course)
             .then((res) => {
-                console.log(res.data);
                 this.setState({
                     ...this.state,
                     majors: res.data
@@ -252,7 +245,6 @@ export default class EventDetails extends Component {
     };
 
     chooseMajor = (id) => {
-        console.log(id);
         this.setState({
             ...this.state,
             classId: id
@@ -260,11 +252,9 @@ export default class EventDetails extends Component {
     };
 
     toggleShowList = () => {
-        console.log(this.state.classId)
         getStudentByClassName(this.state.classId)
             .then((res) => {
                 if (res.success) {
-                    console.log(res)
                     this.setState({
                         ...this.state,
                         students: res.data,
@@ -370,7 +360,6 @@ export default class EventDetails extends Component {
                     <Col lg={'2'} md={'2'} sm={'2'} xs={'2'}>
                         <div className="checkbox checkbox-primary">
                             <input id="checkbox" type="checkbox" onClick={(e) => {
-                                console.log(e.target.checked)
                                 if (e.target.checked) {
                                     this.state.studentToAdd.push(x);
                                     this.setState(this.state);
@@ -504,7 +493,6 @@ export default class EventDetails extends Component {
                             getURLImg(e.target.files[0])
                                 .then((res => {
                                     if (res.success) {
-                                        console.log(res)
                                         this.setState({
                                             ...this.state,
                                             info: {

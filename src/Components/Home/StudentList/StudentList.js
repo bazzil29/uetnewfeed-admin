@@ -26,7 +26,6 @@ export default class StudentList extends React.Component {
     componentDidMount() {
         getCourse()
             .then((res) => {
-                console.log(res.data);
                 if (res.success) {
                     this.setState({
                         courses:res.data
@@ -40,7 +39,6 @@ export default class StudentList extends React.Component {
         
         getMajor(id_course)
             .then((res) => {
-                console.log(res.data);
                 this.setState({
                     ...this.state,
                     majors:res.data
@@ -49,7 +47,6 @@ export default class StudentList extends React.Component {
     };
 
     chooseMajor = (id) => {
-        console.log(id);
         this.setState({
             ...this.state,
             classId: id
@@ -71,11 +68,9 @@ export default class StudentList extends React.Component {
 
     /*---------------------------------------------------------------------- */
     toggleShowList = () => {
-        console.log(this.state.classId)
         getStudentByClassName(this.state.classId)
             .then((res) => {
                 if(res.success){
-                    console.log(res)
                 this.setState({
                     ...this.state,
                     students: res.data,
@@ -98,7 +93,6 @@ export default class StudentList extends React.Component {
                     studentDetail: res.data
                 })
             })
-        console.log(this.state.studentDetail)
         this.toggleStudentDetails();
     };
 
@@ -161,7 +155,11 @@ export default class StudentList extends React.Component {
             />) : null
         return (
             <div>
-                <AddStudent toggle={this.toggleAddStudent} modal={this.state.isOpenAddStudent} reRender={this.toggleShowList}/>
+                <AddStudent 
+                    toggle={this.toggleAddStudent} 
+                    modal={this.state.isOpenAddStudent} 
+                    reRender={this.toggleShowList}
+                />
                 {studentDetails}
                 <div className="animated fadeIn">
                     <Card>
@@ -216,7 +214,11 @@ export default class StudentList extends React.Component {
                                 </div>
                             </div>
                             <span>     </span>
-                            <button type="button" className="btn btn-danger " onClick={this.toggleShowList}>
+                            <button 
+                                type="button" 
+                                className="btn btn-danger " 
+                                onClick={this.toggleShowList}
+                            >
                                 Xem danh sách
                             </button>
                         </CardHeader>

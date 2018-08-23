@@ -23,13 +23,10 @@ export default class CreateAcount extends React.Component {
             email:email, 
             password:password
         }
-        console.log(data);
 
         createAcount(data)
             .then(res=>{
-                console.log(res);
                 if(res.success){
-                    console.log(res);
                     this.props.toggle();
                     this.props.loadingMode();
                 }
@@ -57,7 +54,11 @@ export default class CreateAcount extends React.Component {
     render() {
         return (
             <Modal isOpen={this.props.modal} toggle={this.props.toggle}>
-                <ModalHeader toggle={this.props.toggle}>Tạo tài khoản Admin , Cộng tác viên</ModalHeader>
+                <ModalHeader 
+                    toggle={this.props.toggle}
+                >
+                Tạo tài khoản Admin , Cộng tác viên
+                </ModalHeader>
                 <ModalBody>
                     <Label>
                         Số điện thoại(dùng làm tài khoản đăng nhập):

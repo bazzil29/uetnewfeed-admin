@@ -39,7 +39,6 @@ export default class AddEvent extends React.Component {
                 time_start:date.toISOString()
             },
         })
-        console.log(date.toISOString());
     };
 
     addEvent = async () => {
@@ -64,7 +63,6 @@ export default class AddEvent extends React.Component {
         await addEvent(info)
             .then((res) => {
                 if(res.success){
-                    console.log(res);
                 this.props.toggleAdd();
                 this.props.toggle();
                 }
@@ -104,35 +102,73 @@ export default class AddEvent extends React.Component {
     render() {
         return (
             <div>
-                <Modal isOpen={this.props.modal} toggle={this.props.toggle} className={this.props.className}>
-                    <ModalHeader toggle={this.props.toggle}>Thêm sự kiện</ModalHeader>
+                <Modal 
+                    isOpen={this.props.modal} 
+                    toggle={this.props.toggle} 
+                    className={this.props.className}
+                >
+                    <ModalHeader 
+                        toggle={this.props.toggle}
+                    >
+                        Thêm sự kiện
+                    </ModalHeader>
                     <ModalBody>
                         <Form>
                             <FormGroup>
                                 <Label>Tiêu đề sự kiện:</Label>
-                                <Input type="text" placeholder={this.state.info.header} id="title-event" />
+                                <Input 
+                                    type="text" 
+                                    placeholder={this.state.info.header} 
+                                    id="title-event" />
                                 <Label>Phần giới thiệu chung:</Label>
                                 <br/>
-                                <textarea type = "text" className="form-control"  id="intro-event" placeholder={this.state.info.header}/>
+                                <textarea 
+                                    type = "text" 
+                                    className="form-control"  
+                                    id="intro-event" 
+                                    placeholder={this.state.info.header}
+                                    />
                                 <br/>
                                 <Label>Nội dung sự kiện:</Label>
-                                <textarea name="" className="form-control" placeholder={this.state.info.content}
-                                    cols="auto" rows="auto" id="event-context"  />
+                                <textarea 
+                                    className="form-control" 
+                                    placeholder={this.state.info.content}
+                                    cols="auto" 
+                                    rows="auto" 
+                                    id="event-context"  />
                                 <Label>Thời gian tổ chức</Label>
                                 <br />
-                                <DateTimePicker className={'form-control'} id={'react-datetime-picker'}
+                                <DateTimePicker 
+                                    className='form-control' 
+                                    id='react-datetime-picker'
                                     onChange={this.handleTimeChange}
                                     value={this.state.date}
                                 />
                                 <br />
                                 <Label>Địa điểm:</Label>
-                                <Input type="text" placeholder={this.state.info.place} id="place-event" />
+                                <Input 
+                                    type="text" 
+                                    placeholder={this.state.info.place} 
+                                    id="place-event" 
+                                />
                                 <Label>Đơn vị tổ chức:</Label>
-                                <Input type="text" placeholder={this.state.info.organization} id="organization-event" />
+                                <Input 
+                                    type="text" 
+                                    placeholder={this.state.info.organization} 
+                                    id="organization-event" 
+                                    />
                                 <Label>Số điện thoại:</Label>
-                                <Input type="phone" placeholder={this.state.info.phone} id="phone=-event" />
+                                <Input 
+                                    type="phone" 
+                                    placeholder={this.state.info.phone} 
+                                    id="phone=-event" 
+                                />
                                 <Label>E-mail:</Label>
-                                <Input type="email" placeholder={this.state.info.email} id="email-event" />
+                                <Input 
+                                    type="email" 
+                                    placeholder={this.state.info.email} 
+                                    id="email-event" 
+                                />
                                 <Label>Ảnh bìa đính kèm:</Label>
                                 <Input type="file" onChange={(e)=>{
                                     getURLImg(e.target.files[0])

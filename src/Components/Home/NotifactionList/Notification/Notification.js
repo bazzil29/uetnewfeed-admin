@@ -15,7 +15,13 @@ export default class Notification extends React.Component{
                             <CardSubtitle>Tên sự kiện thông báo dính kèm</CardSubtitle>
                         </Col>
                         <Col>
-                            <Button className={'event-edit-btn'} color={'primary'} onClick={this.props.toggle}>Chỉnh sửa</Button>
+                            <Button 
+                                className='event-edit-btn' 
+                                color='primary' 
+                                onClick={this.props.toggle}
+                            >
+                                Chỉnh sửa
+                            </Button>
                         </Col>
                     </Row>
 

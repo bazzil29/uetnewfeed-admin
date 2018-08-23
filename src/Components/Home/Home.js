@@ -49,7 +49,9 @@ class Home extends Component {
         if (this.state.isLogin) {
             return (
                 <div className="app">
-                    <ChangePassword modal={this.state.isOpenChangePassword}  toggle={()=>{
+                    <ChangePassword 
+                        modal={this.state.isOpenChangePassword}  
+                        toggle={()=>{
                             this.toggleChangePassword()
                         }}/>
                     <AppHeader fixed>
@@ -70,10 +72,20 @@ class Home extends Component {
                             <Container fluid>
                                 <Switch>
                                     {routes.map((route, idx) => {
-                                        return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
-                                            <route.component {...props} />
-                                        )} />)
-                                            : (null);
+                                        return route.component ? 
+                                                (
+                                                    <Route 
+                                                        key={idx} 
+                                                        path={route.path} 
+                                                        exact={route.exact} 
+                                                        name={route.name} 
+                                                        render={props => (
+                                                                            <route.component {...props} />
+                                                                         )
+                                                                } 
+                                                    />
+                                                )
+                                                : (null);
                                     },
                                     )}
                                     <Redirect from="/" to="/event" />

@@ -42,7 +42,6 @@ export default class EventList extends React.Component {
         this.loadMoreItems();
         getPageNumbers()
             .then(res => {
-                console.log(res.data)
                 this.setState({
                     ...this.state,
                     pageNumbers: res.data
@@ -89,7 +88,6 @@ export default class EventList extends React.Component {
     loadMoreItems = () => {
         getListEvent(this.state.page)
             .then((res) => {
-                console.log(res);
                 if (res.data.success && res.data.data !== null) {
                     this.setState({
                         ...this.state,
@@ -118,7 +116,6 @@ export default class EventList extends React.Component {
     loadEventDetails = async (id) => {
         await getEventDetails(id)
             .then((res) => {
-                console.log(res);
                 if (res.success) {
                     this.state.data = res.data;
                     this.setState(this.state);
