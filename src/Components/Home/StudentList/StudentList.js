@@ -1,10 +1,28 @@
-import React  from 'react';
+import React from 'react';
 import Student from "./Student/Student";
 import StudentDetails from "./StudentDetails/StudentDetails";
-import { Card, CardHeader, Col, Row, Button } from 'reactstrap';
-import { getCourse, getMajor, getStudentByClassName, getStudentDetail } from "../../../Services/APIServices"
+import {
+    Card,
+    CardHeader,
+    Col,
+    Row,
+    Button,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
+    Label
+} from 'reactstrap';
+import {
+    getCourse,
+    getMajor,
+    getStudentByClassName,
+    getStudentDetail,
+    resetPassword
+} from '../../../Services/APIServices';
 import AddStudent from './AddStudent';
 import './StudentDetails/StudentDetails.css';
+import './StudentList.css';
 
 export default class StudentList extends React.Component {
     constructor(props) {
@@ -19,6 +37,7 @@ export default class StudentList extends React.Component {
             courses: [],
             studentDetail: {},
             idClassChoose: null,
+            isOpenReset: false
         }
     };
 
@@ -28,7 +47,7 @@ export default class StudentList extends React.Component {
             .then((res) => {
                 if (res.success) {
                     this.setState({
-                        courses:res.data
+                        courses: res.data
                     });
                 }
             })
@@ -36,12 +55,12 @@ export default class StudentList extends React.Component {
 
 
     chooseCourse = (t, id_course) => {
-        
+
         getMajor(id_course)
             .then((res) => {
                 this.setState({
                     ...this.state,
-                    majors:res.data
+                    majors: res.data
                 });
             })
     };
@@ -67,15 +86,21 @@ export default class StudentList extends React.Component {
     };
 
     /*---------------------------------------------------------------------- */
+    toggleReset = () => {
+        this.setState({
+            ...this.state,
+            isOpenReset: !this.state.isOpenReset
+        })
+    }
     toggleShowList = () => {
         getStudentByClassName(this.state.classId)
             .then((res) => {
-                if(res.success){
-                this.setState({
-                    ...this.state,
-                    students: res.data,
-                    isShowList: true
-                })
+                if (res.success) {
+                    this.setState({
+                        ...this.state,
+                        students: res.data,
+                        isShowList: true
+                    })
                 }
             })
     };
@@ -145,106 +170,142 @@ export default class StudentList extends React.Component {
         const students = (this.state.isShowList) ? this.renderList() : null;
         const studentDetails = (this.state.isOpen) ?
             (<StudentDetails
-                toggle={()=>{
-                        this.toggleStudentDetails();
-                        this.toggleShowList();
-                        }}
+                toggle={() => {
+                    this.toggleStudentDetails();
+                    this.toggleShowList();
+                }}
                 modal={this.state.isOpen}
                 data={this.state.studentDetail}
                 onUpdate={this.handleUpdateStudent}
             />) : null
         return (
             <div>
-                <AddStudent 
-                    toggle={this.toggleAddStudent} 
-                    modal={this.state.isOpenAddStudent} 
-                    reRender={this.toggleShowList}
-                />
-                {studentDetails}
-                <div className="animated fadeIn">
-                    <Card>
-                        <CardHeader>
-                            <div className="btn-group">
-                                <button
-                                    type="button"
-                                    className="btn btn-info dropdown-toggle source-option"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                    Khóa
+                <Button
+                    color="secondary"
+                    className="btn-pill"
+                    id="reset-button "
+                    size="lg"
+                    onClick={this.toggleReset}
+                >Khôi phục mật khẩu</Button>
+                <Modal
+                    isOpen={this.state.isOpenReset}
+                    modalTransition={{ timeout: 700 }}
+                    backdropTransition={{ timeout: 1300 }}
+                    toggle={this.toggleReset}
+                >
+                    <ModalHeader toggle={this.toggleReset}>Khôi phục mật khẩu cho sinh viên</ModalHeader>
+                    <ModalBody>
+                        <Label>
+                            Nhập vào mã sinh viên
+                        </Label>
+                        <input type="number" className="form-control" ref="resetMssv" />
+                    </ModalBody>
+                        <ModalFooter>
+                            <Button color="primary" onClick={()=>{
+                                this.toggleReset();
+                                const mssv = this.refs.resetMssv.value;
+                                resetPassword(mssv)
+                                    .then(res=>{
+                                        if(res.success){
+                                            alert("Thành công!")
+                                        }
+                                    })
+                                }}>Khôi phục</Button>{' '}
+                            <Button color="secondary" onClick={this.toggleReset}>Hủy</Button>
+                        </ModalFooter>
+                </Modal>
+
+
+                    <AddStudent
+                        toggle={this.toggleAddStudent}
+                        modal={this.state.isOpenAddStudent}
+                        reRender={this.toggleShowList}
+                    />
+                    {studentDetails}
+                    <div className="animated fadeIn">
+                        <Card>
+                            <CardHeader>
+                                <div className="btn-group">
+                                    <button
+                                        type="button"
+                                        className="btn btn-info dropdown-toggle source-option"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Khóa
                                 </button>
-                                <div className="dropdown-menu">
-                                    {
-                                        this.renderCourse()
-                                    }
-                                    <div className="dropdown-divider"></div>
-                                    <div className="dropdown-item input-group" href="#">
-                                        <input type="text" className="form-control source" />
-                                        <Button
-                                            className="input-group-text"
-                                            onClick={this.addSource}>
-                                            Thêm
+                                    <div className="dropdown-menu">
+                                        {
+                                            this.renderCourse()
+                                        }
+                                        <div className="dropdown-divider"></div>
+                                        <div className="dropdown-item input-group" href="#">
+                                            <input type="text" className="form-control source" />
+                                            <Button
+                                                className="input-group-text"
+                                                onClick={this.addSource}>
+                                                Thêm
                                         </Button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <span>     </span>
-                            <div className="btn-group">
-                                <button
-                                    type="button"
-                                    className="btn btn-danger dropdown-toggle major-option"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                    Lớp
+                                <span>     </span>
+                                <div className="btn-group">
+                                    <button
+                                        type="button"
+                                        className="btn btn-danger dropdown-toggle major-option"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Lớp
                                 </button>
-                                <div className="dropdown-menu">
-                                    {
-                                        this.renderMajor()
-                                    }
-                                    <div className="dropdown-divider"></div>
-                                    <div className="dropdown-item input-group" href="#">
-                                        <input type="text" className="form-control major" />
-                                        <Button
-                                            className="input-group-text"
-                                            onClick={this.addMajor}>
-                                            Thêm
+                                    <div className="dropdown-menu">
+                                        {
+                                            this.renderMajor()
+                                        }
+                                        <div className="dropdown-divider"></div>
+                                        <div className="dropdown-item input-group" href="#">
+                                            <input type="text" className="form-control major" />
+                                            <Button
+                                                className="input-group-text"
+                                                onClick={this.addMajor}>
+                                                Thêm
                                         </Button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <span>     </span>
-                            <button 
-                                type="button" 
-                                className="btn btn-danger " 
-                                onClick={this.toggleShowList}
-                            >
-                                Xem danh sách
+                                <span>     </span>
+                                <button
+                                    type="button"
+                                    className="btn btn-danger "
+                                    onClick={this.toggleShowList}
+                                >
+                                    Xem danh sách
                             </button>
-                        </CardHeader>
-                    </Card>
-                    <div className="card">
-                        <button
-                            color="primary"
-                            className="btn btn-primary"
-                            onClick={this.toggleAddStudent}
-                        >
-                            Thêm sinh viên
+                            </CardHeader>
+                        </Card>
+                        <div className="card">
+                            <button
+                                color="primary"
+                                className="btn btn-primary"
+                                onClick={this.toggleAddStudent}
+                            >
+                                Thêm sinh viên
                         </button>
+                        </div>
+                        <Card>
+                            <CardHeader>
+                                <Row>
+                                    <Col lg={'1'} md={'1'}>Stt</Col>
+                                    <Col lg={'4'} md={'4'}>Họ và tên</Col>
+                                    <Col lg={'2'} md={'2'}>Mã sinh viên</Col>
+                                    <Col lg={'2'} md={'2'}>Điểm rèn luyện</Col>
+                                </Row>
+                            </CardHeader>
+                            {students}
+                        </Card>
                     </div>
-                    <Card>
-                        <CardHeader>
-                            <Row>
-                                <Col lg={'1'} md={'1'}>Stt</Col>
-                                <Col lg={'4'} md={'4'}>Họ và tên</Col>
-                                <Col lg={'2'} md={'2'}>Mã sinh viên</Col>
-                                <Col lg={'2'} md={'2'}>Điểm rèn luyện</Col>
-                            </Row>
-                        </CardHeader>
-                        {students}
-                    </Card>
-                </div>
             </div>
-        )
-    }
-}
+                )
+            }
+        }

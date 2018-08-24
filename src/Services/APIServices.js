@@ -1,5 +1,5 @@
 import { getToken } from './LocalServices';
-//const url = 'http://192.168.0.181:3005';
+//const url = 'http://192.168.2.174:3005';
 const url = 'http://18.212.50.83';
 export const login = (user, password) => {
     const request = new Request(url + `/api/login`, {
@@ -463,4 +463,17 @@ export const changePassword = (oldPassword,newPassword)=>{
     return fetch(res)
                 .then(res=>res.json())
                 .catch(err=>err)
+}
+
+export const resetPassword = (mssv) =>{
+    const token = getToken();
+    const res = new Request (url +"/api/reset_password/" + mssv,{
+        method:"PUT",
+        headers:{
+            token: token
+        }
+    });
+    return fetch(res)
+            .then(res=>res.json())
+            .catch(err=>err)
 }
