@@ -9,7 +9,7 @@ import {
     getEventDetails,
     getPageNumbers
 } from '../../../Services/APIServices';
-import Waypoint from '../../../../node_modules/react-waypoint';
+import Waypoint from 'react-waypoint';
 import './EventDetails/EventDetails.css';
 import ReactLoading from 'react-loading';
 
