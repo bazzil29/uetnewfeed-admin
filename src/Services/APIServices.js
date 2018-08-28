@@ -1,4 +1,6 @@
-import { getToken } from './LocalServices';
+import {
+    getToken
+} from './LocalServices';
 //const url = 'http://192.168.2.174:3005';
 const url = 'http://qldv.uet.vnu.edu.vn';
 export const login = (user, password) => {
@@ -7,7 +9,7 @@ export const login = (user, password) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({      
+        body: JSON.stringify({
             user: user,
             password: password
         }),
@@ -53,18 +55,16 @@ export const updateEvent = (id, data) => {
             token: token,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(
-            {
-                header: data.header,
-                content: data.content,
-                image: data.image,
-                place: data.place,
-                time_start: data.time_start,
-                event_type: data.event_type,
-                introduce: data.introduce,
-                link_register: data.link_register
-            }
-        )
+        body: JSON.stringify({
+            header: data.header,
+            content: data.content,
+            image: data.image,
+            place: data.place,
+            time_start: data.time_start,
+            event_type: data.event_type,
+            introduce: data.introduce,
+            link_register: data.link_register
+        })
     });
     return fetch(request)
         .then((res) => {
@@ -82,18 +82,16 @@ export const addEvent = (data) => {
             token: token,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(
-            {
-                header: data.header,
-                content: data.content,
-                image: data.image,
-                place: data.place,
-                time_start: data.time_start,
-                introduce: data.introduce,
-                event_type: data.event_type,
+        body: JSON.stringify({
+            header: data.header,
+            content: data.content,
+            image: data.image,
+            place: data.place,
+            time_start: data.time_start,
+            introduce: data.introduce,
+            event_type: data.event_type,
 
-            }
-        )
+        })
     });
     return fetch(request)
         .then((res) => {
@@ -121,16 +119,16 @@ export const deleteEvent = (id) => {
 }
 
 
-export const getStudentEvent = (id) =>{
-    const token  = getToken();
-    const res  = new Request (url +"/api/admin/student_event/" +id ,{
-        method:"GET",
-        headers:{
-            token:token
+export const getStudentEvent = (id) => {
+    const token = getToken();
+    const res = new Request(url + "/api/admin/student_event/" + id, {
+        method: "GET",
+        headers: {
+            token: token
         }
     })
     return fetch(res)
-            .then(res=>res.json())
+        .then(res => res.json())
 }
 
 
@@ -138,9 +136,9 @@ export const addStudentToEvent = (mssv, id_eve) => {
     const token = getToken();
     const res = new Request(url + "/api/admin/student_event", {
         method: "POST",
-        headers:{
-            token:token,
-            'content-type':"application/json"
+        headers: {
+            token: token,
+            'content-type': "application/json"
         },
         body: JSON.stringify({
             mssv: mssv,
@@ -148,8 +146,8 @@ export const addStudentToEvent = (mssv, id_eve) => {
         })
     })
     return fetch(res)
-            .then(res=>res.json())
-            .catch(err=>err)
+        .then(res => res.json())
+        .catch(err => err)
 
 }
 
@@ -157,18 +155,18 @@ export const deleteStudentFromEvent = (id, id_eve) => {
     const token = getToken();
     const res = new Request(url + "/api/admin/student_event", {
         method: "DELETE",
-        headers:{
-            token:token,
-            'content-type':"application/json"
+        headers: {
+            token: token,
+            'content-type': "application/json"
         },
         body: JSON.stringify({
-            id_stu:id,
-            id_eve:id_eve
+            id_stu: id,
+            id_eve: id_eve
         })
     })
     return fetch(res)
-            .then(res=>res.json())
-            .catch(err=>err)
+        .then(res => res.json())
+        .catch(err => err)
 
 }
 
@@ -191,14 +189,11 @@ export const createNotification = (e) => {
             token: token,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(
-            {
-                title: e.title,
-                body: e.body,
-            }
-        )
-    }
-    )
+        body: JSON.stringify({
+            title: e.title,
+            body: e.body,
+        })
+    })
     return fetch(request)
         .then((res) => {
             return res.json();
@@ -207,13 +202,13 @@ export const createNotification = (e) => {
 }
 
 /**
-* 
-* 
-* 
-* 
-* 
-* 
-*/
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 
 
 export const getFalcuty = () => {
@@ -281,18 +276,16 @@ export const updateStudent = (id, data) => {
             token: token,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(
-            {
-                email: data.email,
-                phone_number: data.phone_number,
-                full_name: data.full_name,
-                mssv: data.mssv,
-                id_class: data.id_class,
-                faculty: data.faculty,
-                id_course: data.id_course,
-                role_id: data.role_id
-            }
-        )
+        body: JSON.stringify({
+            email: data.email,
+            phone_number: data.phone_number,
+            full_name: data.full_name,
+            mssv: data.mssv,
+            id_class: data.id_class,
+            faculty: data.faculty,
+            id_course: data.id_course,
+            role_id: data.role_id
+        })
     })
     return fetch(res)
         .then((res) => res.json())
@@ -320,15 +313,13 @@ export const addStudent = (data) => {
             token: token,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(
-            {
-                "mssv": data.mssv,
-                "full_name": data.full_name,
-                "id_class": data.id_class,
-                "id_course": data.id_course,
-                "faculty": "1"
-            }
-        )
+        body: JSON.stringify({
+            "mssv": data.mssv,
+            "full_name": data.full_name,
+            "id_class": data.id_class,
+            "id_course": data.id_course,
+            "faculty": "1"
+        })
     });
 
     return fetch(res)
@@ -364,7 +355,7 @@ export const getPageNumbers = () => {
 }
 
 export const getURLImg = (file) => {
-    
+
     var form = new FormData();
     form.append("fileName", file);
     const token = getToken();
@@ -384,42 +375,42 @@ export const getURLImg = (file) => {
  *Phần xử lý vể chỉnh sửa admin
  *
  */
-export const createAcount = (data) =>{
+export const createAcount = (data) => {
     const token = getToken();
-    const res  = new Request(url+"/api/admin/role_user" , {
-        method:"POST",
-        headers:{
-            token:token,
+    const res = new Request(url + "/api/admin/role_user", {
+        method: "POST",
+        headers: {
+            token: token,
             'Content-Type': 'application/json'
         },
-        body:JSON.stringify({
-                phone_number: data.phone_number,
-                password: data.password,
-                full_name: data.full_name,
-                role_id: data.role_id,
-                email: data.email
+        body: JSON.stringify({
+            phone_number: data.phone_number,
+            password: data.password,
+            full_name: data.full_name,
+            role_id: data.role_id,
+            email: data.email
         })
     });
     return fetch(res)
-            .then(res=>res.json())
-            .catch(err=>err)
+        .then(res => res.json())
+        .catch(err => err)
 }
 
 
-export const getUserByRoleId = (id) =>{
+export const getUserByRoleId = (id) => {
     const token = getToken();
-    const res = new Request(url+"/api/admin/students?role_id=" + id,{
-        method:"GET",
-        headers:{
-            token:token
+    const res = new Request(url + "/api/admin/students?role_id=" + id, {
+        method: "GET",
+        headers: {
+            token: token
         }
     })
 
     return fetch(res)
-            .then(res=>res.json())
+        .then(res => res.json())
 }
 
-export const updateAdmin = (id,data,role_id) => {
+export const updateAdmin = (id, data, role_id) => {
     const token = getToken();
     const res = new Request(url + "/api/admin/students/" + id, {
         method: "PUT",
@@ -427,18 +418,16 @@ export const updateAdmin = (id,data,role_id) => {
             token: token,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(
-            {
-                email: data.email,
-                phone_number: data.phone_number,
-                full_name: data.full_name,
-                mssv: data.mssv,
-                id_class: data.id_class,
-                faculty: data.falcuty,
-                id_course: data.id_course,
-                role_id: role_id
-            }
-        )
+        body: JSON.stringify({
+            email: data.email,
+            phone_number: data.phone_number,
+            full_name: data.full_name,
+            mssv: data.mssv,
+            id_class: data.id_class,
+            faculty: data.falcuty,
+            id_course: data.id_course,
+            role_id: role_id
+        })
     })
     return fetch(res)
         .then((res) => res.json())
@@ -446,36 +435,36 @@ export const updateAdmin = (id,data,role_id) => {
 }
 
 
-export const changePassword = (oldPassword,newPassword)=>{
+export const changePassword = (oldPassword, newPassword) => {
     const token = getToken();
-    const res =  new Request (url + "/api/change_password", {
-        method:"PUT",
-        headers:{
-            token:token,
-            'Content-Type':"application/json"
+    const res = new Request(url + "/api/change_password", {
+        method: "PUT",
+        headers: {
+            token: token,
+            'Content-Type': "application/json"
         },
-        body:JSON.stringify({
-                password: oldPassword,
-                newPassword: newPassword
+        body: JSON.stringify({
+            password: oldPassword,
+            newPassword: newPassword
         })
     })
 
     return fetch(res)
-                .then(res=>res.json())
-                .catch(err=>err)
+        .then(res => res.json())
+        .catch(err => err)
 }
 
-export const resetPassword = (mssv) =>{
+export const resetPassword = (mssv) => {
     const token = getToken();
-    const res = new Request (url +"/api/reset_password/" + mssv,{
-        method:"PUT",
-        headers:{
+    const res = new Request(url + "/api/reset_password/" + mssv, {
+        method: "PUT",
+        headers: {
             token: token
         }
     });
     return fetch(res)
-            .then(res=>res.json())
-            .catch(err=>err)
+        .then(res => res.json())
+        .catch(err => err)
 }
 
 
@@ -483,40 +472,40 @@ export const resetPassword = (mssv) =>{
  * import file student to server
  */
 
- export const importStudentsData  = (file,_course,_class,_faculty) =>{
-    const token = getToken(); 
+export const importStudentsData = (file, _course, _class, _faculty) => {
+    const token = getToken();
     var form = new FormData();
     form.append("file", file);
     form.append("_course", _course);
     form.append("_class", _class);
     form.append("_faculty", _faculty);
 
-    const res = new Request (url + "/api/admin/data_student", {
-        method:'POST',
-        headers:{
-            token:token
+    const res = new Request(url + "/api/admin/data_student", {
+        method: 'POST',
+        headers: {
+            token: token
         },
-        body:form
+        body: form
     })
 
     return fetch(res)
-            .then(res=>res.json())
-            .catch(err =>err)
- }
+        .then(res => res.json())
+        .catch(err => err)
+}
 
- export const importStudentsToEvent = (file,id_eve) =>{
+export const importStudentsToEvent = (file, id_eve) => {
     const token = getToken();
     const form = new FormData();
-    form.append("file",file);
-    form.append("id_eve",id_eve);
-    const res  = new Request(url + "/api/admin/data_event", {
-        method:"POST",
-        headers:{
-            token:token
+    form.append("file", file);
+    form.append("id_eve", id_eve);
+    const res = new Request(url + "/api/admin/data_event", {
+        method: "POST",
+        headers: {
+            token: token
         },
-        body:form
+        body: form
     })
     return fetch(res)
-                .then(res=>res.json())
-                .catch(err=>err)
- }
+        .then(res => res.json())
+        .catch(err => err)
+}

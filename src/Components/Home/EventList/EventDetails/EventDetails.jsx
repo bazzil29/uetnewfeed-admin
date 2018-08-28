@@ -42,7 +42,7 @@ export default class EventDetails extends Component {
                 introduce: this.props.data.introduce,
                 event_type: this.props.data.event_type,
                 link_register: this.props.data.link_register,
-                interested:this.props.data.interested
+                interested: this.props.data.interested
             },
             courses: [],
             majors: [],
@@ -52,15 +52,15 @@ export default class EventDetails extends Component {
             studentsForce: [],
             isStudentsOpen: false,
             isUpdated: false,
-            studentToAdd:[],
-            studentRemove : []
+            studentToAdd: [],
+            studentRemove: []
         };
     }
 
     componentDidMount() {
         this.setState({
             ...this.state,
-            date:new Date(this.state.info.time_start)
+            date: new Date(this.state.info.time_start)
         });
 
         getCourse()
@@ -73,15 +73,15 @@ export default class EventDetails extends Component {
             })
 
         getStudentEvent(this.state.info.id)
-            .then(res=>{
-                if(res.success){
+            .then(res => {
+                if (res.success) {
                     this.setState({
                         ...this.state,
-                        studentsForce:res.data
+                        studentsForce: res.data
                     })
                 }
             })
-            
+
     }
 
     /*------------------------------------------------------------------------------------------------------------ */
@@ -89,7 +89,7 @@ export default class EventDetails extends Component {
         this.setState({ ...this.state, date: date })
         this.setState({
             ...this.state,
-            date:date,
+            date: date,
             info: {
                 ...this.state.info,
                 time_start: date.toISOString(),
@@ -180,31 +180,31 @@ export default class EventDetails extends Component {
     }
     /*------------------------------------------------------------------------------------------------------------ */
 
-    
 
 
-    
+
+
     /*------------------------------------------------------------------------------------------------------------ */
 
     handleOnUpdate = async () => {
         const id = this.props.data.id;
         //console.log(this.state.info);
         const file = this.refs.eventStudents.files[0];
-        await this.state.studentToAdd.forEach((e,index)=>{
-            addStudentToEvent(e.mssv , id);
+        await this.state.studentToAdd.forEach((e, index) => {
+            addStudentToEvent(e.mssv, id);
         });
 
-        await this.state.studentRemove.forEach(e=>{
-            deleteStudentFromEvent(e.id_stu,id);
+        await this.state.studentRemove.forEach(e => {
+            deleteStudentFromEvent(e.id_stu, id);
         });
 
-        await importStudentsToEvent (file,id)
-                .then(res=>{
+        await importStudentsToEvent(file, id)
+            .then(res => {
 
-                    if(!res.success){
-                        alert(res.reason);
-                    }
-                })
+                if (!res.success) {
+                    alert(res.reason);
+                }
+            })
 
         await updateEvent(id, this.state.info)
             .then((res) => {
@@ -344,11 +344,11 @@ export default class EventDetails extends Component {
                     <Col lg={'1'} md={'1'} sm={'1'} xs={'1'}>
                         <i
                             className="fas fa-minus-circle"
-                            id={"student-icon"} 
-                            onClick = {()=>{
+                            id={"student-icon"}
+                            onClick={() => {
                                 this.state.studentRemove.push(e);
-                                const tmp = this.state.studentsForce.indexOf(e); 
-                                this.state.studentsForce.splice(tmp,1);
+                                const tmp = this.state.studentsForce.indexOf(e);
+                                this.state.studentsForce.splice(tmp, 1);
                                 this.setState(this.state);
                             }}
                         />
@@ -517,7 +517,7 @@ export default class EventDetails extends Component {
                                 }))
                         }} />
                         <Label>Sinh viên quan tâm:</Label>
-                        <input className="form-control"  value = {this.state.info.interested} type="number" disabled />
+                        <input className="form-control" value={this.state.info.interested} type="number" disabled />
                         <Label>Sinh viên mặc định tham gia:</Label>
                         <ListGroup>
                             {this.renderStudentsForce()}
@@ -537,7 +537,7 @@ export default class EventDetails extends Component {
                                         <Row>
                                             <Col>
                                                 <Button className="add-student-event" onClick={this.onAddStudentEvent}>
-                                                   Đóng
+                                                    Đóng
                                                         </Button>
                                             </Col>
                                         </Row>
@@ -546,7 +546,7 @@ export default class EventDetails extends Component {
                             </Collapse>
                         </ListGroup>
                         <Label>Them sinh viên dang ky tham gia:</Label>
-                            <input type='file' className="form-control" ref ="eventStudents"/>
+                        <input type='file' className="form-control" ref="eventStudents" />
                         <Label>Loại sự kiện:</Label>
                         <br />
                         <div className="btn-group">

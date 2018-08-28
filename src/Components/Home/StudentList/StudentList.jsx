@@ -39,7 +39,7 @@ export default class StudentList extends React.Component {
             studentDetail: {},
             idClassChoose: null,
             isOpenReset: false,
-            isOpenImport:false
+            isOpenImport: false
         }
     };
 
@@ -113,10 +113,10 @@ export default class StudentList extends React.Component {
         });
     };
 
-    toggleImport = () =>{
+    toggleImport = () => {
         this.setState({
             ...this.state,
-            isOpenImport:!this.state.isOpenImport
+            isOpenImport: !this.state.isOpenImport
         })
     }
 
@@ -213,19 +213,19 @@ export default class StudentList extends React.Component {
                         </Label>
                         <input type="number" className="form-control" ref="resetMssv" />
                     </ModalBody>
-                        <ModalFooter>
-                            <Button color="primary" onClick={()=>{
-                                this.toggleReset();
-                                const mssv = this.refs.resetMssv.value;
-                                resetPassword(mssv)
-                                    .then(res=>{
-                                        if(res.success){
-                                            alert("Thành công!")
-                                        }
-                                    })
-                                }}>Khôi phục</Button>{' '}
-                            <Button color="secondary" onClick={this.toggleReset}>Hủy</Button>
-                        </ModalFooter>
+                    <ModalFooter>
+                        <Button color="primary" onClick={() => {
+                            this.toggleReset();
+                            const mssv = this.refs.resetMssv.value;
+                            resetPassword(mssv)
+                                .then(res => {
+                                    if (res.success) {
+                                        alert("Thành công!")
+                                    }
+                                })
+                        }}>Khôi phục</Button>{' '}
+                        <Button color="secondary" onClick={this.toggleReset}>Hủy</Button>
+                    </ModalFooter>
                 </Modal>
                 {
                     //import data section
@@ -255,133 +255,133 @@ export default class StudentList extends React.Component {
                         </Label>
                         <input type="file" className="form-control" ref="studentsFile" />
                     </ModalBody>
-                        <ModalFooter>
-                            <Button color="primary" onClick = {()=>{
-                               // console.log(this.refs.studentsFile.files[0]);
-                                const _faculty = this.refs.studentsFaculty.value;
-                                const _class = this.refs.studentsClass.value;
-                                const _course = this.refs.studentsCourse.value;
-                                const _file = this.refs.studentsFile.files[0];
-                                //console.log(_faculty,_class,_course)
-                                importStudentsData (_file,_course,_class,_faculty)
-                                    .then((res)=>{
-                                        console.log(res)
-                                       if(res.success){
-                                           this.toggleImport();
-                                       }
-                                       else{
-                                           alert(res.reason)
-                                       }
-                                    })
-                                
-                            }}>Xong</Button>
-                            <Button color="secondary" onClick={this.toggleImport}>Hủy</Button>
-                        </ModalFooter>
+                    <ModalFooter>
+                        <Button color="primary" onClick={() => {
+                            // console.log(this.refs.studentsFile.files[0]);
+                            const _faculty = this.refs.studentsFaculty.value;
+                            const _class = this.refs.studentsClass.value;
+                            const _course = this.refs.studentsCourse.value;
+                            const _file = this.refs.studentsFile.files[0];
+                            //console.log(_faculty,_class,_course)
+                            importStudentsData(_file, _course, _class, _faculty)
+                                .then((res) => {
+                                    console.log(res)
+                                    if (res.success) {
+                                        this.toggleImport();
+                                    }
+                                    else {
+                                        alert(res.reason)
+                                    }
+                                })
+
+                        }}>Xong</Button>
+                        <Button color="secondary" onClick={this.toggleImport}>Hủy</Button>
+                    </ModalFooter>
                 </Modal>
 
 
-                    <AddStudent
-                        toggle={this.toggleAddStudent}
-                        modal={this.state.isOpenAddStudent}
-                        reRender={this.toggleShowList}
-                    />
-                    {studentDetails}
-                    <div className="animated fadeIn">
-                        <Card>
-                            <CardHeader>
-                                <div className="btn-group">
-                                    <button
-                                        type="button"
-                                        className="btn btn-info dropdown-toggle source-option"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false">
-                                        Khóa
-                                </button>
-                                    <div className="dropdown-menu">
-                                        {
-                                            this.renderCourse()
-                                        }
-                                        <div className="dropdown-divider"></div>
-                                        <div className="dropdown-item input-group" href="#">
-                                            <input type="text" className="form-control source" />
-                                            <Button
-                                                className="input-group-text"
-                                                onClick={this.addSource}>
-                                                Thêm
-                                        </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span>     </span>
-                                <div className="btn-group">
-                                    <button
-                                        type="button"
-                                        className="btn btn-danger dropdown-toggle major-option"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false">
-                                        Lớp
-                                </button>
-                                    <div className="dropdown-menu">
-                                        {
-                                            this.renderMajor()
-                                        }
-                                        <div className="dropdown-divider"></div>
-                                        <div className="dropdown-item input-group" href="#">
-                                            <input type="text" className="form-control major" />
-                                            <Button
-                                                className="input-group-text"
-                                                onClick={this.addMajor}>
-                                                Thêm
-                                        </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span>    </span>
-                                <button
-                                    type="`button"
-                                    className="btn btn-danger "
-                                    onClick={this.toggleShowList}
-                                >
-                                    Xem danh sách
-                                </button>
-                                <span>     </span>
+                <AddStudent
+                    toggle={this.toggleAddStudent}
+                    modal={this.state.isOpenAddStudent}
+                    reRender={this.toggleShowList}
+                />
+                {studentDetails}
+                <div className="animated fadeIn">
+                    <Card>
+                        <CardHeader>
+                            <div className="btn-group">
                                 <button
                                     type="button"
-                                    id = "import-button"
-                                    className="btn btn-primary "
-                                    onClick={this.toggleImport}
-                                >
-                                    <i class="fas fa-file-import"/>
-                                    <span/>   <span/>
-                                   Import student database
+                                    className="btn btn-info dropdown-toggle source-option"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
+                                    Khóa
+                                </button>
+                                <div className="dropdown-menu">
+                                    {
+                                        this.renderCourse()
+                                    }
+                                    <div className="dropdown-divider"></div>
+                                    <div className="dropdown-item input-group" href="#">
+                                        <input type="text" className="form-control source" />
+                                        <Button
+                                            className="input-group-text"
+                                            onClick={this.addSource}>
+                                            Thêm
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                            <span>     </span>
+                            <div className="btn-group">
+                                <button
+                                    type="button"
+                                    className="btn btn-danger dropdown-toggle major-option"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
+                                    Lớp
+                                </button>
+                                <div className="dropdown-menu">
+                                    {
+                                        this.renderMajor()
+                                    }
+                                    <div className="dropdown-divider"></div>
+                                    <div className="dropdown-item input-group" href="#">
+                                        <input type="text" className="form-control major" />
+                                        <Button
+                                            className="input-group-text"
+                                            onClick={this.addMajor}>
+                                            Thêm
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                            <span>    </span>
+                            <button
+                                type="`button"
+                                className="btn btn-danger "
+                                onClick={this.toggleShowList}
+                            >
+                                Xem danh sách
+                                </button>
+                            <span>     </span>
+                            <button
+                                type="button"
+                                id="import-button"
+                                className="btn btn-primary "
+                                onClick={this.toggleImport}
+                            >
+                                <i class="fas fa-file-import" />
+                                <span />   <span />
+                                Import student database
                                 </button>
 
-                            </CardHeader>
-                        </Card>
-                        <div className="card">
-                            <button
-                                color="primary"
-                                className="btn btn-primary"
-                                onClick={this.toggleAddStudent}
-                            >
-                                Thêm sinh viên
+                        </CardHeader>
+                    </Card>
+                    <div className="card">
+                        <button
+                            color="primary"
+                            className="btn btn-primary"
+                            onClick={this.toggleAddStudent}
+                        >
+                            Thêm sinh viên
                         </button>
-                        </div>
-                        <Card>
-                            <CardHeader>
-                                <Row>
-                                    <Col lg={'1'} md={'1'}>Stt</Col>
-                                    <Col lg={'4'} md={'4'}>Họ và tên</Col>
-                                    <Col lg={'2'} md={'2'}>Mã sinh viên</Col>
-                                    <Col lg={'2'} md={'2'}>Điểm rèn luyện</Col>
-                                </Row>
-                            </CardHeader>
-                            {students}
-                        </Card>
                     </div>
+                    <Card>
+                        <CardHeader>
+                            <Row>
+                                <Col lg={'1'} md={'1'}>Stt</Col>
+                                <Col lg={'4'} md={'4'}>Họ và tên</Col>
+                                <Col lg={'2'} md={'2'}>Mã sinh viên</Col>
+                                <Col lg={'2'} md={'2'}>Điểm rèn luyện</Col>
+                            </Row>
+                        </CardHeader>
+                        {students}
+                    </Card>
+                </div>
             </div>
-                )
-            }
-        }
+        )
+    }
+}
