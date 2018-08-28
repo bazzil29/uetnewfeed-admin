@@ -10,7 +10,8 @@ export default class ManageAdmin extends React.Component {
         admins: [],
         valunteers: [],
         modal: false,
-        idLoading: true
+        idLoading: true,
+        superAdmin:{}
     }
     /*-------------------------------------------------------------------------------------------------- */
     componentDidMount() {
@@ -41,6 +42,17 @@ export default class ManageAdmin extends React.Component {
                     })
                 }
             })
+
+            getUserByRoleId(1)
+            .then(res => {
+               // console.log(res)
+                if (res.success) {
+                    this.setState({
+                        ...this.state,
+                        superAdmin: res.data[0]
+                    })
+                }
+            })
     }
 
     loadingMode = () => {
@@ -68,7 +80,20 @@ export default class ManageAdmin extends React.Component {
     };
 
     renderAdmin = () => {
-      
+        const superAdmin = <CardHeader >
+        <Row >
+            <Col lg={'1'} md={'1'}>{0}</Col>
+            <Col lg={'4'} md={'4'}>{this.state.superAdmin.full_name}</Col>
+            <Col lg={'2'} md={'2'}>{this.state.superAdmin.phone_number}</Col>
+            <Col lg={'2'} md={'2'}> 
+                <Badge color="danger">
+                    Siêu Admin
+                </Badge>
+            </Col>
+            <Col lg={'1'} md={'1'}>
+            </Col>
+        </Row>
+    </CardHeader>  
 
         const tmp = this.state.admins.map((e, index) => {
             return (
@@ -120,6 +145,7 @@ export default class ManageAdmin extends React.Component {
     else{
         return (
             <Card color="primary">
+                {superAdmin}
                 {tmp}
             </Card>
         )
@@ -127,6 +153,7 @@ export default class ManageAdmin extends React.Component {
 
     
     };
+
 
     renderValunteer = () => {
 
@@ -214,6 +241,7 @@ export default class ManageAdmin extends React.Component {
 
     /*-------------------------------------------------------------------------------------------------- */
     render() {
+        
         return (
             <div>
                 <CreateAcount 

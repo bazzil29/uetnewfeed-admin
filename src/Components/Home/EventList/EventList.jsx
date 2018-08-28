@@ -101,7 +101,7 @@ export default class EventList extends React.Component {
                             listEvent: res.data.data,
                             isLoading: false
                         })
-                    }, 1000);
+                    }, 500);
                 }
                 else {
                     this.setState({

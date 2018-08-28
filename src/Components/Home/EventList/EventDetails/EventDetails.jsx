@@ -545,7 +545,7 @@ export default class EventDetails extends Component {
                                 </Card>
                             </Collapse>
                         </ListGroup>
-                        <Label>Them sinh viên dang ky tham gia:</Label>
+                        <Label>Thêm sinh viên đăng ký tham gia (upload file xlxs):</Label>
                         <input type='file' className="form-control" ref="eventStudents" />
                         <Label>Loại sự kiện:</Label>
                         <br />

@@ -24,6 +24,7 @@ import {
 import AddStudent from './AddStudent';
 import './StudentDetails/StudentDetails.css';
 import './StudentList.css';
+import ReactLoading from "react-loading";
 
 export default class StudentList extends React.Component {
     constructor(props) {
@@ -39,7 +40,8 @@ export default class StudentList extends React.Component {
             studentDetail: {},
             idClassChoose: null,
             isOpenReset: false,
-            isOpenImport: false
+            isOpenImport: false,
+            isLoading:false
         }
     };
 
@@ -70,8 +72,21 @@ export default class StudentList extends React.Component {
     chooseMajor = (id) => {
         this.setState({
             ...this.state,
-            classId: id
+            classId: id,
+            isLoading:true
         })
+        
+        getStudentByClassName(id)
+            .then((res) => {
+                if (res.success) {
+                    this.setState({
+                        ...this.state,
+                        students: res.data,
+                        isShowList: true,
+                        isLoading:false
+                    })
+                }
+            })
     };
 
     addMajor = () => {
@@ -94,18 +109,20 @@ export default class StudentList extends React.Component {
             isOpenReset: !this.state.isOpenReset
         })
     }
-    toggleShowList = () => {
-        getStudentByClassName(this.state.classId)
-            .then((res) => {
-                if (res.success) {
-                    this.setState({
-                        ...this.state,
-                        students: res.data,
-                        isShowList: true
-                    })
-                }
-            })
-    };
+
+
+    // toggleShowList = () => {
+    //     getStudentByClassName(this.state.classId)
+    //         .then((res) => {
+    //             if (res.success) {
+    //                 this.setState({
+    //                     ...this.state,
+    //                     students: res.data,
+    //                     isShowList: true
+    //                 })
+    //             }
+    //         })
+    // };
 
     toggleStudentDetails = () => {
         this.setState({
@@ -187,8 +204,17 @@ export default class StudentList extends React.Component {
                 data={this.state.studentDetail}
                 onUpdate={this.handleUpdateStudent}
             />) : null
+
+        const loading  = (this.state.isLoading) ? 
+                            <ReactLoading 
+                                id="admin-loading" 
+                                type="cylon" 
+                            color="#1e9ecb" 
+                            /> : null
         return (
+            
             <div>
+                 
                 <Button
                     color="secondary"
                     className="btn-pill"
@@ -236,22 +262,22 @@ export default class StudentList extends React.Component {
                     backdropTransition={{ timeout: 1300 }}
                     toggle={this.toggleImport}
                 >
-                    <ModalHeader toggle={this.toggleImport}>Chen giu lieu khoi tao dau vao</ModalHeader>
+                    <ModalHeader toggle={this.toggleImport}>Thêm dữ liệu sinh viên (Điền thông tin còn thiếu bên dưới)</ModalHeader>
                     <ModalBody>
-                        <Label>
-                            Khoas:
-                        </Label>
-                        <input type="number" className="form-control" ref="studentsCourse" />
                         <Label>
                             Khoa:
                         </Label>
+                        <input type="number" className="form-control" ref="studentsCourse" />
+                        <Label>
+                            Khóa:
+                        </Label>
                         <input type="text" className="form-control" ref="studentsFaculty" />
                         <Label>
-                            Lop:
+                            Lớp:
                         </Label>
                         <input type="text" className="form-control" ref="studentsClass" />
                         <Label>
-                            File sheet input:
+                            Gói tin bảng tính (gồm 2 trường: name và mssv ):
                         </Label>
                         <input type="file" className="form-control" ref="studentsFile" />
                     </ModalBody>
@@ -339,13 +365,13 @@ export default class StudentList extends React.Component {
                                 </div>
                             </div>
                             <span>    </span>
-                            <button
+                            {/* <button
                                 type="`button"
                                 className="btn btn-danger "
                                 onClick={this.toggleShowList}
                             >
                                 Xem danh sách
-                                </button>
+                                </button> */}
                             <span>     </span>
                             <button
                                 type="button"
@@ -353,9 +379,9 @@ export default class StudentList extends React.Component {
                                 className="btn btn-primary "
                                 onClick={this.toggleImport}
                             >
-                                <i class="fas fa-file-import" />
+                                <i className="fas fa-file-import" />
                                 <span />   <span />
-                                Import student database
+                                Chèn dữ liệu sinh viên
                                 </button>
 
                         </CardHeader>
@@ -378,7 +404,9 @@ export default class StudentList extends React.Component {
                                 <Col lg={'2'} md={'2'}>Điểm rèn luyện</Col>
                             </Row>
                         </CardHeader>
+                        {loading}
                         {students}
+                        
                     </Card>
                 </div>
             </div>
