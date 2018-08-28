@@ -18,7 +18,8 @@ import {
     getMajor,
     getStudentByClassName,
     getStudentDetail,
-    resetPassword
+    resetPassword,
+    importStudentsData
 } from '../../../Services/APIServices';
 import AddStudent from './AddStudent';
 import './StudentDetails/StudentDetails.css';
@@ -37,7 +38,8 @@ export default class StudentList extends React.Component {
             courses: [],
             studentDetail: {},
             idClassChoose: null,
-            isOpenReset: false
+            isOpenReset: false,
+            isOpenImport:false
         }
     };
 
@@ -110,6 +112,13 @@ export default class StudentList extends React.Component {
             isOpen: !this.state.isOpen,
         });
     };
+
+    toggleImport = () =>{
+        this.setState({
+            ...this.state,
+            isOpenImport:!this.state.isOpenImport
+        })
+    }
 
     getStudentToggle = async (id) => {
         await getStudentDetail(id)
@@ -187,6 +196,10 @@ export default class StudentList extends React.Component {
                     size="lg"
                     onClick={this.toggleReset}
                 >Khôi phục mật khẩu</Button>
+                {
+                    //reset password for student
+                }
+
                 <Modal
                     isOpen={this.state.isOpenReset}
                     modalTransition={{ timeout: 700 }}
@@ -212,6 +225,57 @@ export default class StudentList extends React.Component {
                                     })
                                 }}>Khôi phục</Button>{' '}
                             <Button color="secondary" onClick={this.toggleReset}>Hủy</Button>
+                        </ModalFooter>
+                </Modal>
+                {
+                    //import data section
+                }
+                <Modal
+                    isOpen={this.state.isOpenImport}
+                    modalTransition={{ timeout: 700 }}
+                    backdropTransition={{ timeout: 1300 }}
+                    toggle={this.toggleImport}
+                >
+                    <ModalHeader toggle={this.toggleImport}>Chen giu lieu khoi tao dau vao</ModalHeader>
+                    <ModalBody>
+                        <Label>
+                            Khoas:
+                        </Label>
+                        <input type="number" className="form-control" ref="studentsCourse" />
+                        <Label>
+                            Khoa:
+                        </Label>
+                        <input type="text" className="form-control" ref="studentsFaculty" />
+                        <Label>
+                            Lop:
+                        </Label>
+                        <input type="text" className="form-control" ref="studentsClass" />
+                        <Label>
+                            File sheet input:
+                        </Label>
+                        <input type="file" className="form-control" ref="studentsFile" />
+                    </ModalBody>
+                        <ModalFooter>
+                            <Button color="primary" onClick = {()=>{
+                               // console.log(this.refs.studentsFile.files[0]);
+                                const _faculty = this.refs.studentsFaculty.value;
+                                const _class = this.refs.studentsClass.value;
+                                const _course = this.refs.studentsCourse.value;
+                                const _file = this.refs.studentsFile.files[0];
+                                //console.log(_faculty,_class,_course)
+                                importStudentsData (_file,_course,_class,_faculty)
+                                    .then((res)=>{
+                                        console.log(res)
+                                       if(res.success){
+                                           this.toggleImport();
+                                       }
+                                       else{
+                                           alert(res.reason)
+                                       }
+                                    })
+                                
+                            }}>Xong</Button>
+                            <Button color="secondary" onClick={this.toggleImport}>Hủy</Button>
                         </ModalFooter>
                 </Modal>
 
@@ -274,14 +338,26 @@ export default class StudentList extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <span>     </span>
+                                <span>    </span>
                                 <button
-                                    type="button"
+                                    type="`button"
                                     className="btn btn-danger "
                                     onClick={this.toggleShowList}
                                 >
                                     Xem danh sách
-                            </button>
+                                </button>
+                                <span>     </span>
+                                <button
+                                    type="button"
+                                    id = "import-button"
+                                    className="btn btn-primary "
+                                    onClick={this.toggleImport}
+                                >
+                                    <i class="fas fa-file-import"/>
+                                    <span/>   <span/>
+                                   Import student database
+                                </button>
+
                             </CardHeader>
                         </Card>
                         <div className="card">

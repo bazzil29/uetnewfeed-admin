@@ -19,6 +19,7 @@ export default class Event extends React.Component {
                 </div>
                 <div className="card-body">
                     <Row>
+                        asd
                         <Col lg='4'><img id={"event-img"}
                             src={this.props.data.image}
                             height="200px" alt="event"/></Col>

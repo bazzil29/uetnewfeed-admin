@@ -24,7 +24,8 @@ import {
     getStudentByClassName,
     addStudentToEvent,
     getStudentEvent,
-    deleteStudentFromEvent
+    deleteStudentFromEvent,
+    importStudentsToEvent
 } from '../../../../Services/APIServices';
 export default class EventDetails extends Component {
     constructor(props) {
@@ -188,6 +189,7 @@ export default class EventDetails extends Component {
     handleOnUpdate = async () => {
         const id = this.props.data.id;
         //console.log(this.state.info);
+        const file = this.refs.eventStudents.files[0];
         await this.state.studentToAdd.forEach((e,index)=>{
             addStudentToEvent(e.mssv , id);
         });
@@ -195,6 +197,14 @@ export default class EventDetails extends Component {
         await this.state.studentRemove.forEach(e=>{
             deleteStudentFromEvent(e.id_stu,id);
         });
+
+        await importStudentsToEvent (file,id)
+                .then(res=>{
+
+                    if(!res.success){
+                        alert(res.reason);
+                    }
+                })
 
         await updateEvent(id, this.state.info)
             .then((res) => {
@@ -535,11 +545,8 @@ export default class EventDetails extends Component {
                                 </Card>
                             </Collapse>
                         </ListGroup>
-                        <Label>Sinh viên đã tham gia:</Label>
-                        <ListGroup>
-                            <ListGroupItem className="justify-content-between">Thêm sinh viên<i
-                                className="fas fa-plus-circle " id="student-icon" /></ListGroupItem>
-                        </ListGroup>
+                        <Label>Them sinh viên dang ky tham gia:</Label>
+                            <input type='file' className="form-control" ref ="eventStudents"/>
                         <Label>Loại sự kiện:</Label>
                         <br />
                         <div className="btn-group">

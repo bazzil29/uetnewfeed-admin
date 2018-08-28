@@ -3,3 +3,7 @@
     bottom: 60px;
     right: 10px;
 }
+
+#import-button{
+    float: right
+}

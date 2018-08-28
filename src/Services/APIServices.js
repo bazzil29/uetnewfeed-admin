@@ -1,13 +1,13 @@
 import { getToken } from './LocalServices';
 //const url = 'http://192.168.2.174:3005';
-const url = 'http://18.212.50.83';
+const url = 'http://qldv.uet.vnu.edu.vn';
 export const login = (user, password) => {
     const request = new Request(url + `/api/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
+        body: JSON.stringify({      
             user: user,
             password: password
         }),
@@ -16,7 +16,6 @@ export const login = (user, password) => {
         .then(res => res.json())
 
 }
-
 export const getListEvent = (page) => {
     const axios = require('axios');
     const getUrl = url + `/api/events/`;
@@ -240,6 +239,7 @@ export const getCourse = (falcuty) => {
         method: "GET",
         headers: {
             token: token,
+            'Content-Type': 'application/json'
         }
     })
     return fetch(res)
@@ -477,3 +477,46 @@ export const resetPassword = (mssv) =>{
             .then(res=>res.json())
             .catch(err=>err)
 }
+
+
+/**
+ * import file student to server
+ */
+
+ export const importStudentsData  = (file,_course,_class,_faculty) =>{
+    const token = getToken(); 
+    var form = new FormData();
+    form.append("file", file);
+    form.append("_course", _course);
+    form.append("_class", _class);
+    form.append("_faculty", _faculty);
+
+    const res = new Request (url + "/api/admin/data_student", {
+        method:'POST',
+        headers:{
+            token:token
+        },
+        body:form
+    })
+
+    return fetch(res)
+            .then(res=>res.json())
+            .catch(err =>err)
+ }
+
+ export const importStudentsToEvent = (file,id_eve) =>{
+    const token = getToken();
+    const form = new FormData();
+    form.append("file",file);
+    form.append("id_eve",id_eve);
+    const res  = new Request(url + "/api/admin/data_event", {
+        method:"POST",
+        headers:{
+            token:token
+        },
+        body:form
+    })
+    return fetch(res)
+                .then(res=>res.json())
+                .catch(err=>err)
+ }
