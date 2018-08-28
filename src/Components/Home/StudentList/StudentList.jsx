@@ -265,11 +265,11 @@ export default class StudentList extends React.Component {
                     <ModalHeader toggle={this.toggleImport}>Thêm dữ liệu sinh viên (Điền thông tin còn thiếu bên dưới)</ModalHeader>
                     <ModalBody>
                         <Label>
-                            Khoa:
+                            Khoá:
                         </Label>
                         <input type="number" className="form-control" ref="studentsCourse" />
                         <Label>
-                            Khóa:
+                            Khoa:
                         </Label>
                         <input type="text" className="form-control" ref="studentsFaculty" />
                         <Label>
