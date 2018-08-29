@@ -111,18 +111,18 @@ export default class StudentList extends React.Component {
     }
 
 
-    // toggleShowList = () => {
-    //     getStudentByClassName(this.state.classId)
-    //         .then((res) => {
-    //             if (res.success) {
-    //                 this.setState({
-    //                     ...this.state,
-    //                     students: res.data,
-    //                     isShowList: true
-    //                 })
-    //             }
-    //         })
-    // };
+    toggleShowList = () => {
+        getStudentByClassName(this.state.classId)
+            .then((res) => {
+                if (res.success) {
+                    this.setState({
+                        ...this.state,
+                        students: res.data,
+                        isShowList: true
+                    })
+                }
+            })
+    };
 
     toggleStudentDetails = () => {
         this.setState({

@@ -99,6 +99,7 @@ export default class EventDetails extends Component {
 
     handleNameChange = (value) => {
         this.setState({
+            ...this.state,
             info: {
                 ...this.state.info,
                 header: value
@@ -108,6 +109,7 @@ export default class EventDetails extends Component {
 
     handleIntroduceChange = (value) => {
         this.setState({
+            ...this.state,
             info: {
                 ...this.state.info,
                 introduce: value
@@ -117,6 +119,7 @@ export default class EventDetails extends Component {
 
     handleContentChange = (value) => {
         this.setState({
+            ...this.state,
             info: {
                 ...this.state.info,
                 content: value
@@ -126,6 +129,7 @@ export default class EventDetails extends Component {
 
     handleOrganzationChange = (value) => {
         this.setState({
+            ...this.state,
             info: {
                 ...this.state.info,
                 organization: value
@@ -135,6 +139,7 @@ export default class EventDetails extends Component {
 
     handlePhoneChange = (value) => {
         this.setState({
+            ...this.state,
             info: {
                 ...this.state.info,
                 phone: value
@@ -144,6 +149,7 @@ export default class EventDetails extends Component {
 
     handleEmailChange = (value) => {
         this.setState({
+            ...this.state,
             info: {
                 ...this.state.info,
                 email: value
@@ -153,6 +159,7 @@ export default class EventDetails extends Component {
 
     handleImageChange = (value) => {
         this.setState({
+            ...this.state,
             info: {
                 ...this.state.info,
                 image: value
@@ -162,6 +169,7 @@ export default class EventDetails extends Component {
 
     handlePlaceChange = (value) => {
         this.setState({
+            ...this.state,
             info: {
                 ...this.state.info,
                 place: value
@@ -200,14 +208,14 @@ export default class EventDetails extends Component {
 
         await importStudentsToEvent(file, id)
             .then(res => {
-
-                if (!res.success) {
-                    alert(res.reason);
+                if (res.success) {
+                    //alert(res.reason);
                 }
             })
 
         await updateEvent(id, this.state.info)
             .then((res) => {
+                console.log(this.state.info,res)
                 if (res.success) {
                     this.props.updateEvent();
                 }
@@ -502,6 +510,7 @@ export default class EventDetails extends Component {
                         <Input type="file" onChange={(e) => {
                             getURLImg(e.target.files[0])
                                 .then((res => {
+                                    console.log(res);
                                     if (res.success) {
                                         this.setState({
                                             ...this.state,
