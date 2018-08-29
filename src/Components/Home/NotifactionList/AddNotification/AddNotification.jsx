@@ -1,11 +1,9 @@
 import React  from 'react';
-import DateTimePicker from 'react-datetime-picker';
+//import DateTimePicker from 'react-datetime-picker';
 import {createNotification} from "../../../../Services/APIServices.js" 
 import {
     Input,
     Label,
-    ListGroup,
-    ListGroupItem,
     ModalFooter,
     Modal,
     Button,
@@ -62,18 +60,18 @@ export default class AddNotification extends React.Component{
                                     placeholder="Điền vào tiêu đề" 
                                     id="title-noti"
                                 />
-                                <Label>Sự kiện đính kèm thông báo:</Label>
+                                {/* <Label>Sự kiện đính kèm thông báo:</Label>
                                 <Input 
                                     type="text" 
                                     placeholder="Sự kiện đính kèm thông báo"
-                                />
+                                /> */}
                                 <Label>Nội dung thông báo:</Label>
                                 <Input 
                                     type="text" 
                                     placeholder="Nội dung của thông báo" 
                                     id="content-noti"
                                 />
-                                <Label>Thời gian thông báo:</Label>
+                                {/* <Label>Thời gian thông báo:</Label>
                                 <br/>
                                 <DateTimePicker 
                                     className={'form-control'} 
@@ -120,7 +118,7 @@ export default class AddNotification extends React.Component{
                                             id={"student-icon"}
                                         />
                                     </ListGroupItem>
-                                </ListGroup>
+                                </ListGroup> */}
                             </FormGroup>
                         </Form>
                     </ModalBody>

@@ -127,7 +127,6 @@ class Login extends Component {
                                                         color="link" 
                                                         className="px-0"
                                                     >
-                                                        Quên mật khẩu
                                                     </Button>
                                                 </Col>
                                             </Row>
