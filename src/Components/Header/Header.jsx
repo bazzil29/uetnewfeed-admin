@@ -42,7 +42,7 @@ class DefaultHeader extends Component {
                     <AppHeaderDropdown direction="down">
                         <DropdownToggle nav>
                             <img 
-                                src={'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} 
+                                src={'https://cdn.iconscout.com/public/images/icon/premium/png-512/user-account-profile-avatar-person-student-male-350e51fe6c4466ae-512x512.png'} 
                                 className="img-avatar" 
                                 alt="profilePicture" 
                             />
