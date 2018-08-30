@@ -12,7 +12,7 @@ const routes = [
   { path: '/event', exact: true, name: 'Sự kiện', component: EventList},
   { path: '/event/event-list', name: 'Danh sách sự kiện', component: EventList },
   { path: '/event/add-event', name: 'Thêm sự kiện', component: Home },
-  { path: '/event/notification-list', name: 'Danh sách thông báo', component: NotificationList},
+  { path: '/notification-list', name: 'Thông báo', component: NotificationList},
   { path: '/student-list', exact:true, name: 'Danh sách sinh viên', component: StudentList },
   { path: '/admin', exact:true, name: 'Danh sách admin', component: ManageAdmin },
 ];

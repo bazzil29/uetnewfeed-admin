@@ -525,15 +525,15 @@ export const getEventsOfStudents = (id) =>{
             .catch(err=>err)
 }
 
-export const getFileEvents = (fileName) =>{
-    const token  = getToken();
-    const res  = new Request(url +  "/api/public/download/"+fileName,{
-        method:"GET",
-        headers:{
-            token:token
-        }
-    }) 
-    return fetch(res)
-            .then(res=>res.json())
-            .catch(err=>err)
-}
+// export const getFileEvents = (fileName) =>{
+//     const token  = getToken();
+//     const res  = new Request(fileName,{
+//         method:"GET",
+//         headers:{
+//             token:token
+//         }
+//     }) 
+
+//     return fetch(res)
+            
+// }

@@ -13,7 +13,7 @@ import {
     ListGroupItem,
     ListGroup
 } from "reactstrap";
-import { updateStudent, getMajor, getCourse, deleteStudent, getEventsOfStudents, getFileEvents } from '../../../../Services/APIServices';
+import { updateStudent, getMajor, getCourse, deleteStudent, getEventsOfStudents } from '../../../../Services/APIServices';
 
 export default class StudentDetails extends React.Component {
 
@@ -34,7 +34,7 @@ export default class StudentDetails extends React.Component {
         events: [],
         courses: [],
         majors: [],
-        fileName:"",
+        fileName: "",
     };
 
     /*-----------------------------------------------------------------------------------------------------------*/
@@ -52,11 +52,10 @@ export default class StudentDetails extends React.Component {
         getEventsOfStudents(this.props.data.mssv)
             .then(res => {
                 if (res.success) {
-                    console.log(res)
                     this.setState({
                         ...this.state,
                         events: res.data,
-                        fileName:res.filename
+                        fileName: res.filename
                     })
                 }
             })
@@ -112,11 +111,12 @@ export default class StudentDetails extends React.Component {
             })
     };
 
-    handleGetFile = () =>{
-        console.log(this.state.fileName)
-        const tmp = this.state.fileName.split("/");
-        getFileEvents(tmp[tmp.length-1])
-    }
+    // handleGetFile = () => {
+    //     console.log(this.state.fileName)
+    //     const tmp = this.state.fileName.split("/");
+    //     getFileEvents(this.state.fileName)
+    //         .then(res => console.log(res))
+    // }
     /*-----------------------------------------------------------------------------------------------------------*/
     //onchange text field
 
@@ -203,7 +203,7 @@ export default class StudentDetails extends React.Component {
                 key={index}
                 className="justify-content-between"
             >
-              {e.event.header}
+                {e.event.header}
 
             </ListGroupItem>
         })
@@ -342,6 +342,8 @@ export default class StudentDetails extends React.Component {
                                     {
                                         this.renderEvent()
                                     }
+                                    <a className = "btn btn-warning"  href = {"http://"+this.state.fileName} target = "_blank" download>Tải xuống sự kiện đã tham gia</a>
+
                                 </ListGroup>
                             </FormGroup>
                         </Form>
@@ -359,8 +361,6 @@ export default class StudentDetails extends React.Component {
                                     }
                                 })
                         }}>Xóa sinh viên</Button>
-                        <Button color="warning" onClick={this.handleGetFile}>Export su kien da tham gia</Button>
-
                         <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
                     </ModalFooter>
                 </Modal>

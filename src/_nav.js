@@ -23,8 +23,8 @@ export default {
       icon: 'fas fa-calendar-alt',
     },
      {
-      name: 'Danh sách thông báo',
-      url: '/event/notification-list',
+      name: 'Thông báo',
+      url: '/notification-list',
       icon: 'fas fa-bell',
     },
     {

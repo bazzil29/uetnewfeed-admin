@@ -58,13 +58,13 @@ class Login extends Component {
                     // tmp.style.visibility = 'visible';
                     this.setState({
                         ...this.state,
-                        warning:"Sai thong tin tai khoan"
+                        warning:"Sai thông tin tài khoản"
                     })
                 }
             })
             .catch((err) => {
                this.setState({
-                   warning:"Ban da dang nhap qua nhieu lan , hay thu la sau 15 phut"
+                   warning:"Bạn đã đăng nhập quá nhiều lần ,  hãy thử lại sau 15 phút"
                })
             })
 
