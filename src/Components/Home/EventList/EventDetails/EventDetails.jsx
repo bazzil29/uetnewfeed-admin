@@ -215,7 +215,7 @@ export default class EventDetails extends Component {
 
         await updateEvent(id, this.state.info)
             .then((res) => {
-                console.log(this.state.info,res)
+                //console.log(this.state.info,res)
                 if (res.success) {
                     this.props.updateEvent();
                 }

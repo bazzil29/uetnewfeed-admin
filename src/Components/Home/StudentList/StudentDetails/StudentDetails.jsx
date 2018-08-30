@@ -11,9 +11,9 @@ import {
     Label,
     Input,
     ListGroupItem,
-    ListGroup, Badge
+    ListGroup
 } from "reactstrap";
-import { updateStudent, getMajor, getCourse, deleteStudent } from '../../../../Services/APIServices';
+import { updateStudent, getMajor, getCourse, deleteStudent, getEventsOfStudents, getFileEvents } from '../../../../Services/APIServices';
 
 export default class StudentDetails extends React.Component {
 
@@ -31,8 +31,10 @@ export default class StudentDetails extends React.Component {
             faculty: this.props.data.faculty,
             id: this.props.data.id
         },
+        events: [],
         courses: [],
-        majors: []
+        majors: [],
+        fileName:"",
     };
 
     /*-----------------------------------------------------------------------------------------------------------*/
@@ -44,6 +46,17 @@ export default class StudentDetails extends React.Component {
                     this.setState({
                         ...this.state,
                         courses: res.data
+                    })
+                }
+            })
+        getEventsOfStudents(this.props.data.mssv)
+            .then(res => {
+                if (res.success) {
+                    console.log(res)
+                    this.setState({
+                        ...this.state,
+                        events: res.data,
+                        fileName:res.filename
                     })
                 }
             })
@@ -62,10 +75,10 @@ export default class StudentDetails extends React.Component {
                 this.setState({
                     ...this.state,
                     majors: res.data,
-                    info:{
+                    info: {
                         ...this.state.info,
-                        course:e.name,
-                        id_course:e.id
+                        course: e.name,
+                        id_course: e.id
                     }
                 });
             })
@@ -74,10 +87,10 @@ export default class StudentDetails extends React.Component {
     chooseMajor = (e) => {
         this.setState({
             ...this.state,
-            info:{
+            info: {
                 ...this.state.info,
-                class_name:e.name,
-                id_class:e.id
+                class_name: e.name,
+                id_class: e.id
             }
         });
     };
@@ -99,6 +112,11 @@ export default class StudentDetails extends React.Component {
             })
     };
 
+    handleGetFile = () =>{
+        console.log(this.state.fileName)
+        const tmp = this.state.fileName.split("/");
+        getFileEvents(tmp[tmp.length-1])
+    }
     /*-----------------------------------------------------------------------------------------------------------*/
     //onchange text field
 
@@ -143,7 +161,7 @@ export default class StudentDetails extends React.Component {
         })
     };
 
-    
+
 
     /*-----------------------------------------------------------------------------------------------------------*/
 
@@ -155,12 +173,12 @@ export default class StudentDetails extends React.Component {
         else if (position === 3) {
             return "Cộng tác viên";
         }
-        else if(position === 4){
+        else if (position === 4) {
             return "Admin";
         }
 
         return "Admin chính"
-        
+
     };
 
     renderCourse = () => {
@@ -179,17 +197,29 @@ export default class StudentDetails extends React.Component {
         })
     };
 
+    renderEvent = () => {
+        return this.state.events.map((e, index) => {
+            return <ListGroupItem
+                key={index}
+                className="justify-content-between"
+            >
+              {e.event.header}
+
+            </ListGroupItem>
+        })
+    }
+
     /*-----------------------------------------------------------------------------------------------------------*/
 
 
     render() {
         const {
-            full_name, mssv, phone_number, course, email, class_name,faculty,id
+            full_name, mssv, phone_number, course, email, class_name, faculty, id
         } = this.state.info;
         return (
             <div>
                 <Modal isOpen={this.props.modal} toggle={this.props.toggle} >
-                    <ModalHeader 
+                    <ModalHeader
                         toggle={this.props.toggle}
                     >
                         Chỉnh sửa thông tin sinh viên
@@ -252,7 +282,7 @@ export default class StudentDetails extends React.Component {
                                 </div>
                                 <br />
                                 <Label>Khóa:</Label>
-                                    <br/>
+                                <br />
                                 <div className="btn-group">
                                     <button
                                         type="button"
@@ -263,16 +293,16 @@ export default class StudentDetails extends React.Component {
                                         {
                                             course
                                         }
-                                </button>
+                                    </button>
                                     <div className="dropdown-menu">
                                         {
                                             this.renderCourse()
                                         }
                                     </div>
                                 </div>
-                                <br/>
+                                <br />
                                 <Label>Lớp:</Label>
-                                <br/>
+                                <br />
                                 <div className="btn-group">
                                     <button
                                         type="button"
@@ -283,7 +313,7 @@ export default class StudentDetails extends React.Component {
                                         {
                                             class_name
                                         }
-                                </button>
+                                    </button>
                                     <div className="dropdown-menu">
                                         {
                                             this.renderMajor()
@@ -309,70 +339,28 @@ export default class StudentDetails extends React.Component {
                                 <Input type="number" />
                                 <Label>Danh sách sự kiện đã tham gia:</Label>
                                 <ListGroup>
-                                    <ListGroupItem 
-                                        className="justify-content-between"
-                                    >
-                                        Event 1 
-                                        <Badge
-                                            pill
-                                        >
-                                            10
-                                        </Badge>
-                                        <i 
-                                            className="fas fa-minus-circle" 
-                                            id="student-icon" 
-                                        />
-                                    </ListGroupItem>
-                                    <ListGroupItem 
-                                        className="justify-content-between"
-                                    >
-                                        Event 2 
-                                        <Badge pill>
-                                                10
-                                        </Badge>
-                                        <i 
-                                            className="fas fa-minus-circle " 
-                                            id="student-icon" 
-                                        />
-                                    </ListGroupItem>
-                                    <ListGroupItem 
-                                        className="justify-content-between"
-                                    >
-                                        Event 3 
-                                        <Badge pill>
-                                            10
-                                        </Badge>
-                                        <i 
-                                            className="fas fa-minus-circle " 
-                                            id="student-icon" 
-                                        />
-                                    </ListGroupItem>
-                                    <ListGroupItem 
-                                        className="justify-content-between"
-                                    >
-                                        Thêm sự kiện
-                                        <i
-                                            className="fas fa-plus-circle " 
-                                            id="student-icon" 
-                                        />
-                                    </ListGroupItem>
+                                    {
+                                        this.renderEvent()
+                                    }
                                 </ListGroup>
                             </FormGroup>
                         </Form>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={this.handleOnUpdate}>Hoàn tất</Button>
-                        <Button color="danger" onClick={()=>{
-                                                    deleteStudent(id)
-                                                        .then(res=>{
-                                                            if(res.success){
-                                                                this.props.toggle();
-                                                            }
-                                                            else{
-                                                                alert(res.reason)
-                                                            }
-                                                        })
-                                                    }}>Xóa sinh viên</Button>
+                        <Button color="danger" onClick={() => {
+                            deleteStudent(id)
+                                .then(res => {
+                                    if (res.success) {
+                                        this.props.toggle();
+                                    }
+                                    else {
+                                        alert(res.reason)
+                                    }
+                                })
+                        }}>Xóa sinh viên</Button>
+                        <Button color="warning" onClick={this.handleGetFile}>Export su kien da tham gia</Button>
+
                         <Button color="secondary" onClick={this.props.toggle}>Hủy</Button>
                     </ModalFooter>
                 </Modal>

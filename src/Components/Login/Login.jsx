@@ -23,6 +23,7 @@ class Login extends Component {
         super(props);
         this.state = {
             isLogin: false,
+            warning:""
         };
         this.loginButton = React.createRef();    
     };
@@ -40,19 +41,31 @@ class Login extends Component {
         login(user, password)
             .then((res) => {
                 if (res.success) {
-                    const tmp = document.getElementById('fail-login-info');
-                    tmp.style.visibility = 'hidden';
+                   // const tmp = document.getElementById('fail-login-info');
+                    //tmp.style.visibility = 'hidden';
+                    this.setState({
+                        ...this.state,
+                        warning:""
+                    })
                     saveToken(res.accessToken);
                     this.setState({
-                        isLogin: true
+                        ...this.state,
+                        isLogin: true,
                     });
                 }
                 else {
-                    const tmp = document.getElementById('fail-login-info');
-                    tmp.style.visibility = 'visible';
+                    // const tmp = document.getElementById('fail-login-info');
+                    // tmp.style.visibility = 'visible';
+                    this.setState({
+                        ...this.state,
+                        warning:"Sai thong tin tai khoan"
+                    })
                 }
             })
             .catch((err) => {
+               this.setState({
+                   warning:"Ban da dang nhap qua nhieu lan , hay thu la sau 15 phut"
+               })
             })
 
     };
@@ -111,7 +124,9 @@ class Login extends Component {
                                                 }} 
                                                         />
                                             </InputGroup>
-                                            <p id='fail-login-info'>Sai thông tin tài khoản</p>
+                                            <p id='fail-login-info'>
+                                                {this.state.warning}
+                                            </p>
                                             <Row>
                                                 <Col xs="6">
                                                     <Button

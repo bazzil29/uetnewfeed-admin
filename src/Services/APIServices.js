@@ -1,7 +1,7 @@
 import {
     getToken
 } from './LocalServices';
-//const url = 'http://192.168.0.149:3006';
+//const url = 'http://192.168.2.174:3006';
 const url = 'http://qldv.uet.vnu.edu.vn';
 export const login = (user, password) => {
     const request = new Request(url + `/api/login`, {
@@ -508,4 +508,32 @@ export const importStudentsToEvent = (file, id_eve) => {
     return fetch(res)
         .then(res => res.json())
         .catch(err => err)
+}
+
+
+export const getEventsOfStudents = (id) =>{
+    const token = getToken();
+    const res  = new Request(url+"/api/admin/events_student_joined/"+id,{
+        method:"GET",
+        headers:{
+            token:token
+        }
+        
+    })
+    return fetch(res)
+            .then(res=>res.json())
+            .catch(err=>err)
+}
+
+export const getFileEvents = (fileName) =>{
+    const token  = getToken();
+    const res  = new Request(url +  "/api/public/download/"+fileName,{
+        method:"GET",
+        headers:{
+            token:token
+        }
+    }) 
+    return fetch(res)
+            .then(res=>res.json())
+            .catch(err=>err)
 }

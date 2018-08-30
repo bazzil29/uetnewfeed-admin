@@ -1,9 +1,8 @@
 export default {
   items: [
     {
-      name: 'Trang quản lý',
-      url: '/dashboard',
-      icon: 'icon-speedometer',
+      name: 'Manager',
+      url: '/',
       badge: {
         variant: 'info',
         text: 'UET',
