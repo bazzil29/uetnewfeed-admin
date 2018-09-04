@@ -126,7 +126,7 @@ export default class AddEvent extends React.Component {
                                     type = "text" 
                                     className="form-control"  
                                     id="intro-event" 
-                                    placeholder={this.state.info.header}
+                                    placeholder={this.state.info.introduce}
                                     />
                                 <br/>
                                 <Label>Nội dung sự kiện:</Label>
