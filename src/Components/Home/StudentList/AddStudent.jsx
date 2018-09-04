@@ -42,6 +42,9 @@ export default class AddStudent extends React.Component {
                         courses: res.data
                     })
                 }
+                else(
+                    alert(res.message)
+                )
             })
     };
 
@@ -59,9 +62,9 @@ export default class AddStudent extends React.Component {
                     this.props.toggle();
                     this.props.reRender();
                 }
-                else{
-                    alert(res.reason)
-                }
+                else(
+                    alert(res.message)
+                )
             })
             
     }
@@ -70,7 +73,6 @@ export default class AddStudent extends React.Component {
     chooseCourse = (e) => {
         getMajor(e.id)
             .then((res) => {
-                console.log(res.data);
                 this.setState({
                     ...this.state,
                     majors: res.data,

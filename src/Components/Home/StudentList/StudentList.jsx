@@ -62,10 +62,17 @@ export default class StudentList extends React.Component {
 
         getMajor(id_course)
             .then((res) => {
-                this.setState({
-                    ...this.state,
-                    majors: res.data
-                });
+                if(res.success){
+                    this.setState({
+                        ...this.state,
+                        majors: res.data
+                    });
+                }
+                else(
+                    alert(res.message)
+                )
+
+                
             })
     };
 
@@ -85,6 +92,9 @@ export default class StudentList extends React.Component {
                         isShowList: true,
                         isLoading:false
                     })
+                }
+                else{
+                    alert(res.message)
                 }
             })
     };
@@ -120,6 +130,9 @@ export default class StudentList extends React.Component {
                         students: res.data,
                         isShowList: true
                     })
+                }
+                else{
+                    alert(res.message)
                 }
             })
     };
@@ -328,15 +341,15 @@ export default class StudentList extends React.Component {
                                     {
                                         this.renderCourse()
                                     }
-                                    <div className="dropdown-divider"></div>
-                                    <div className="dropdown-item input-group" href="#">
+                                    {/* <div className="dropdown-divider"></div> */}
+                                    {/* <div className="dropdown-item input-group" href="#">
                                         <input type="text" className="form-control source" />
                                         <Button
                                             className="input-group-text"
                                             onClick={this.addSource}>
                                             Thêm
                                         </Button>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             <span>     </span>
@@ -353,15 +366,15 @@ export default class StudentList extends React.Component {
                                     {
                                         this.renderMajor()
                                     }
-                                    <div className="dropdown-divider"></div>
-                                    <div className="dropdown-item input-group" href="#">
+                                    {/* <div className="dropdown-divider"></div> */}
+                                    {/* <div className="dropdown-item input-group" href="#">
                                         <input type="text" className="form-control major" />
                                         <Button
                                             className="input-group-text"
                                             onClick={this.addMajor}>
                                             Thêm
                                         </Button>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             <span>    </span>

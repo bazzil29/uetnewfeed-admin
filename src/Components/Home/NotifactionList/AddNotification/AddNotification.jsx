@@ -30,10 +30,11 @@ export default class AddNotification extends React.Component{
             .then((res)=>{
                 if(res.success){
                     this.props.toggle();
+                    alert("Thông báo đã được gửi!")
                 }
-                else{
-                    alert(res.reason);
-                }
+                else(
+                    alert(res.message)
+                )
             })
         
     }

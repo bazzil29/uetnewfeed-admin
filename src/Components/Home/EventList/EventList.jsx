@@ -9,7 +9,6 @@ import {
     getEventDetails,
     getPageNumbers
 } from '../../../Services/APIServices';
-import Waypoint from 'react-waypoint';
 import './EventDetails/EventDetails.css';
 import ReactLoading from 'react-loading';
 
@@ -39,14 +38,14 @@ export default class EventList extends React.Component {
     * */
 
     componentDidMount() {
-        this.loadMoreItems();
         getPageNumbers()
             .then(res => {
                 this.setState({
                     ...this.state,
                     pageNumbers: res.data
                 })
-            })
+            });
+        this.loadMoreItems(this.state.page);
     };
 
     /** 
@@ -68,7 +67,7 @@ export default class EventList extends React.Component {
     };
 
     handleUpdateEvent = (t) => {
-        this.loadMoreItems();
+        this.loadMoreItems(this.state.page);
         this.setState({
             isOpen: !this.state.isOpen,
         });
@@ -85,20 +84,23 @@ export default class EventList extends React.Component {
     *  
     * */
 
-    loadMoreItems = () => {
-        getListEvent(this.state.page)
+    loadMoreItems = (index) => {
+        this.setState({
+            ...this.state,
+            page:index
+        })
+        getListEvent(index)
             .then((res) => {
                 if (res.data.success && res.data.data !== null) {
                     this.setState({
                         ...this.state,
-                        isLoading: true
+                        listEvent: res.data.data,
+                        isLoading: true,
                     });
                     const self = this;
                     setTimeout(function () {
-                        // add data
                         self.setState({
                             ...self.state,
-                            listEvent: res.data.data,
                             isLoading: false
                         })
                     }, 500);
@@ -110,7 +112,6 @@ export default class EventList extends React.Component {
                     });
                 }
             })
-        // fake an async. ajax call with setTimeout
     };
 
     loadEventDetails = async (id) => {
@@ -147,15 +148,6 @@ export default class EventList extends React.Component {
         return listEvent;
     };
 
-    renderWaypoint = () => {
-        if (!this.state.isLoading) {
-            return (
-                <Waypoint onEnter={this.loadMoreItems}
-                />
-            );
-        }
-    };
-
     renderPanigation = () => {
         const tmp = this.state.pageNumbers;
         var a = [];
@@ -175,11 +167,7 @@ export default class EventList extends React.Component {
             return (
                 <PaginationItem key={index} index={index} onClick={
                     (e) => {
-                        this.setState({
-                            ...this.state,
-                            page: index
-                        })
-                        this.loadMoreItems();
+                        this.loadMoreItems(index);
                     }
                 }>
                     <PaginationLink >
@@ -237,11 +225,9 @@ export default class EventList extends React.Component {
                 {eventDetails}
                 <Pagination aria-label="Page navigation example">
                     <PaginationItem>
-                        <PaginationLink previous href="#" />
                     </PaginationItem>
                     {this.renderPanigation()}
                     <PaginationItem>
-                        <PaginationLink next href="#" />
                     </PaginationItem>
                 </Pagination>
             </div>

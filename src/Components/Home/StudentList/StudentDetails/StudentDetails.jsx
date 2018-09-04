@@ -106,7 +106,7 @@ export default class StudentDetails extends React.Component {
                     this.props.toggle();
                 }
                 else {
-                    alert(res.reason);
+                    alert(res.message);
                 }
             })
     };
@@ -354,6 +354,7 @@ export default class StudentDetails extends React.Component {
                             deleteStudent(id)
                                 .then(res => {
                                     if (res.success) {
+                                        this.props.onUpdate();
                                         this.props.toggle();
                                     }
                                     else {
