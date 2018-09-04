@@ -2,6 +2,13 @@
     font-size: 30px;
 }
 
+.fa-user-times {
+    font-size: 20px;
+    padding-top: 5px;
+}
+.fa-user-times:hover{
+    font-size:30px;
+}
 .fa-angle-double-up:hover {
     font-size: 40px;
 }

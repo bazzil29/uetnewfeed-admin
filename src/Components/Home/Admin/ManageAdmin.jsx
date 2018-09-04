@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, CardHeader, Card, Col, Badge, Button } from 'reactstrap';
 import './ManageAdmin.css';
-import { getUserByRoleId, updateAdmin } from '../../../Services/APIServices';
+import { getUserByRoleId, updateAdmin, deleteStudent } from '../../../Services/APIServices';
 import CreateAcount from './CreateAcount';
 import ReactLoading from "react-loading";
 
@@ -134,6 +134,33 @@ export default class ManageAdmin extends React.Component {
                                         })
                                 }} />
                         </Col>
+                        <Col lg={'1'} md={'1'}>
+                        <i className="fas fa-user-times" onClick = {()=>{
+                                deleteStudent(e.id)
+                                    .then(res=>{
+                                        if(res.success){
+                                            const self = this;
+                                            setTimeout(() => {
+                                                self.setState({
+                                                    ...self.state,
+                                                    isLoading: true
+                                                })
+                                            }, 1000)
+                                            setTimeout(() => {
+                                                self.setState({
+                                                    ...self.state,
+                                                    isLoading: false
+                                                })
+                                                self.getListAdmin();
+                                            }, 2000)
+                                        }
+                                        else{
+                                            alert(res.message)
+                                        }
+                                    })
+                            }} 
+                        />
+                        </Col>
                     </Row>
                 </CardHeader>
             )
@@ -199,29 +226,31 @@ export default class ManageAdmin extends React.Component {
                             }} />
                         </Col>
                         <Col lg={'1'} md={'1'}>
-                            <i className="fas fa-angle-double-down" onClick={() => {
-                                updateAdmin(e.id, e, 2)
-                                    .then(res => {
-                                        if (res.success) {
+                        <i className="fas fa-user-times" onClick = {()=>{
+                                deleteStudent(e.id)
+                                    .then(res=>{
+                                        if(res.success){
                                             const self = this;
                                             setTimeout(() => {
                                                 self.setState({
                                                     ...self.state,
                                                     isLoading: true
                                                 })
-                                            }, 0)
+                                            }, 1000)
                                             setTimeout(() => {
                                                 self.setState({
                                                     ...self.state,
                                                     isLoading: false
                                                 })
                                                 self.getListAdmin();
-                                            }, 1000)
+                                            }, 2000)
                                         }
-                                        else {
-                                        }alert(res.message)
+                                        else{
+                                            alert(res.message)
+                                        }
                                     })
-                            }} />
+                            }} 
+                        />
                         </Col>
                     </Row>
                 </CardHeader>

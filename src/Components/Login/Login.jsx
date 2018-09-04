@@ -40,7 +40,7 @@ class Login extends Component {
         const password = document.getElementById("password-login").value;
         login(user, password)
             .then((res) => {
-                if (res.success&&(res.role_id===1||res.tole_id===4)) {
+                if (res.success&&(res.role_id===1||res.role_id===4)) {
                    // console.log(res);
                    // const tmp = document.getElementById('fail-login-info');
                     //tmp.style.visibility = 'hidden';
