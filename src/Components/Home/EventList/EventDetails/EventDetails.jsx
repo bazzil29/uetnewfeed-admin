@@ -86,15 +86,28 @@ export default class EventDetails extends Component {
 
     /*------------------------------------------------------------------------------------------------------------ */
     handleTimeChange = (date) => {
-        this.setState({ ...this.state, date: date })
-        this.setState({
-            ...this.state,
-            date: date,
-            info: {
-                ...this.state.info,
-                time_start: date.toISOString(),
-            }
-        })
+        if(date!==null){
+            this.setState({
+                ...this.state,
+                date: date,
+                info: {
+                    ...this.state.info,
+                    time_start: date.toISOString(),
+                }
+            })
+        }
+        else{
+            const tmp = new Date();
+            this.setState({
+                ...this.state,
+                date:tmp,
+                info:{
+                    ...this.state.info,
+                    time_start:tmp.toISOString()
+                }
+            })
+        }
+        
     };
 
     handleNameChange = (value) => {
@@ -298,15 +311,6 @@ export default class EventDetails extends Component {
                         {
                             this.renderCourse()
                         }
-                        <div className="dropdown-divider"></div>
-                        <div className="dropdown-item input-group" href="#">
-                            <input type="text" className="form-control source" />
-                            <Button
-                                className="input-group-text"
-                                onClick={this.addSource}>
-                                Thêm
-                                        </Button>
-                        </div>
                     </div>
                 </div>
                 <span>     </span>
@@ -323,15 +327,6 @@ export default class EventDetails extends Component {
                         {
                             this.renderMajor()
                         }
-                        <div className="dropdown-divider"></div>
-                        <div className="dropdown-item input-group" href="#">
-                            <input type="text" className="form-control major" />
-                            <Button
-                                className="input-group-text"
-                                onClick={this.addMajor}>
-                                Thêm
-                                        </Button>
-                        </div>
                     </div>
                 </div>
                 <span>     </span>

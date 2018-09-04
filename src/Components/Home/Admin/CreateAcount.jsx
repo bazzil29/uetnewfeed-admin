@@ -27,11 +27,12 @@ export default class CreateAcount extends React.Component {
         createAcount(data)
             .then(res=>{
                 if(res.success){
+                    console.log(res);
                     this.props.toggle();
                     this.props.loadingMode();
                 }
                 else{
-                    alert(res.reason);
+                    alert(res.message);
                 }
             })
     }

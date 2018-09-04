@@ -82,7 +82,7 @@ export default class ManageAdmin extends React.Component {
     renderAdmin = () => {
         const superAdmin = <CardHeader >
             <Row >
-                <Col lg={'1'} md={'1'}>{0}</Col>
+                <Col lg={'1'} md={'1'}>{1}</Col>
                 <Col lg={'4'} md={'4'}>{this.state.superAdmin.full_name}</Col>
                 <Col lg={'2'} md={'2'}>{this.state.superAdmin.phone_number}</Col>
                 <Col lg={'2'} md={'2'}>
@@ -99,7 +99,7 @@ export default class ManageAdmin extends React.Component {
             return (
                 <CardHeader key={index} >
                     <Row >
-                        <Col lg={'1'} md={'1'}>{index + 1}</Col>
+                        <Col lg={'1'} md={'1'}>{index + 2}</Col>
                         <Col lg={'4'} md={'4'}>{e.full_name}</Col>
                         <Col lg={'2'} md={'2'}>{e.phone_number}</Col>
                         <Col lg={'2'} md={'2'}>
@@ -192,7 +192,7 @@ export default class ManageAdmin extends React.Component {
                                             }, 2000)
                                         }
                                         else {
-                                            alert(res.reason)
+                                            alert(res.message)
                                         }
 
                                     })
@@ -219,8 +219,7 @@ export default class ManageAdmin extends React.Component {
                                             }, 1000)
                                         }
                                         else {
-                                            alert(res.reason)
-                                        }
+                                        }alert(res.message)
                                     })
                             }} />
                         </Col>
