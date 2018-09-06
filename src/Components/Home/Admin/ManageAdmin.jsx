@@ -131,12 +131,14 @@ export default class ManageAdmin extends React.Component {
                                             else {
                                                 alert(res.reason);
                                             }
-                                        })
+                                            }
+                                        )
                                 }} />
                         </Col>
                         <Col lg={'1'} md={'1'}>
                         <i className="fas fa-user-times" onClick = {()=>{
-                                deleteStudent(e.id)
+                                if(e.mssv===null){
+                                    deleteStudent(e.id)
                                     .then(res=>{
                                         if(res.success){
                                             const self = this;
@@ -158,6 +160,32 @@ export default class ManageAdmin extends React.Component {
                                             alert(res.message)
                                         }
                                     })
+                                }
+                                else{
+                                    updateAdmin(e.id, e, 2)
+                                        .then(res => {
+                                            if (res.success) {
+                                                const self = this;
+                                                setTimeout(() => {
+                                                    self.setState({
+                                                        ...self.state,
+                                                        isLoading: true
+                                                    })
+                                                }, 1000)
+                                                setTimeout(() => {
+                                                    self.setState({
+                                                        ...self.state,
+                                                        isLoading: false
+                                                    })
+                                                    self.getListAdmin();
+                                                }, 2000)
+                                            }
+                                            else {
+                                                alert(res.reason);
+                                            }
+                                            }
+                                        )
+                                }
                             }} 
                         />
                         </Col>
@@ -227,7 +255,8 @@ export default class ManageAdmin extends React.Component {
                         </Col>
                         <Col lg={'1'} md={'1'}>
                         <i className="fas fa-user-times" onClick = {()=>{
-                                deleteStudent(e.id)
+                            if(e.mssv===null){
+                                    deleteStudent(e.id)
                                     .then(res=>{
                                         if(res.success){
                                             const self = this;
@@ -249,6 +278,32 @@ export default class ManageAdmin extends React.Component {
                                             alert(res.message)
                                         }
                                     })
+                                }
+                                else{
+                                    updateAdmin(e.id, e, 2)
+                                        .then(res => {
+                                            if (res.success) {
+                                                const self = this;
+                                                setTimeout(() => {
+                                                    self.setState({
+                                                        ...self.state,
+                                                        isLoading: true
+                                                    })
+                                                }, 1000)
+                                                setTimeout(() => {
+                                                    self.setState({
+                                                        ...self.state,
+                                                        isLoading: false
+                                                    })
+                                                    self.getListAdmin();
+                                                }, 2000)
+                                            }
+                                            else {
+                                                alert(res.reason);
+                                            }
+                                            }
+                                        )
+                                }
                             }} 
                         />
                         </Col>
